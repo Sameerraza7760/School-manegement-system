@@ -1,0 +1,1 @@
+src/assets/OBS-Studio-30.0.2-Full-Installer-x64.exe filter=lfs diff=lfs merge=lfs -text
