@@ -1,9 +1,11 @@
 // import { Link } from "react-router-dom";
 import { Box, Button, Container, Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import students from "./../../assets/students.svg";
 // import { LightPurpleButton } from '../components/buttonStyles';
 function Home() {
+  const navigate=useNavigate()
   return (
     <StyledContainer>
       <Grid container spacing={0}>
@@ -26,7 +28,7 @@ function Home() {
               effortlessly.
             </StyledText>
             <StyledBox>
-              <Button variant="contained" fullWidth>
+              <Button variant="contained" onClick={()=>navigate('/chooseUser')} fullWidth>
                 Login
               </Button>
 

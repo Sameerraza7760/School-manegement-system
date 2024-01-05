@@ -1,27 +1,24 @@
 import { AccountCircle, Group, School } from "@mui/icons-material";
-import {
-    Box,
-    Container,
-    Grid,
-    Paper
-} from "@mui/material";
+import { Box, Container, Grid, Paper } from "@mui/material";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 // import { useDispatch, useSelector } from 'react-redux';
 // import { loginUser } from '../redux/userRelated/userHandle';
 // import Popup from '../components/Popup';
 
 const ChooseUser = () => {
+  const navigate=useNavigate()
   return (
     <StyledContainer>
       <Container>
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
             <div>
-              <StyledPaper elevation={3}>
+              <StyledPaper elevation={3} onClick={()=>navigate('/adminSignup')} >
                 <Box mb={2}>
                   <AccountCircle fontSize="large" />
                 </Box>
-                <StyledTypography>Admin</StyledTypography>
+                <StyledTypography >Admin</StyledTypography>
                 Login as an administrator to access the dashboard to manage app
                 data.
               </StyledPaper>

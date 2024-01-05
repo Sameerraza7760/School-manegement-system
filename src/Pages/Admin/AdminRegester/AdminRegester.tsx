@@ -1,27 +1,69 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-    Box,
-    Button,
-    Checkbox,
-    CssBaseline,
-    FormControlLabel,
-    Grid,
-    IconButton,
-    InputAdornment,
-    Paper,
-    TextField,
-    Typography
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  CssBaseline,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import useAuth from "../../../CustomHooks/useAuth";
 import { useState } from "react";
 import bgpic from "./../../../assets/designlogin.jpg";
-// import Popup from '../../components/Popup';
-// import { LightPurpleButton } from '../../components/buttonStyles';
-
+import { useNavigate } from "react-router-dom";
+import { typeAuth } from "./../../../types/types.auth";
 const defaultTheme = createTheme();
 
 function AdminRegester() {
+  const { signup } = useAuth();
+  const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [adminNameError, setAdminNameError] = useState(false);
+  const [schoolNameError, setSchoolNameError] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const role = "Admin";
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoader(true);
+    const target = event.target as typeof event.target & typeAuth;
+
+    const adminName = target.adminName.value;
+    const schoolName = target.schoolName.value;
+    const email = target.email.value;
+    const password = target.password.value;
+
+    if (!adminName || !schoolName || !email || !password) {
+      if (!adminName) setAdminNameError(true);
+      if (!schoolName) setSchoolNameError(true);
+      if (!email) setEmailError(true);
+      if (!password) setPasswordError(true);
+      return;
+    }
+    const fields = { adminName, email, password, schoolName };
+    console.log(fields);
+    await signup(fields);
+    setLoader(false);
+    navigate("/Login");
+    // dispatch(registerUser(fields, role))
+  };
+  const handleInputChange = (event: any) => {
+    const { name } = event.target;
+    if (name === "email") setEmailError(false);
+    if (name === "password") setPasswordError(false);
+    if (name === "adminName") setAdminNameError(false);
+    if (name === "schoolName") setSchoolNameError(false);
+  };
+
   return (
     <div>
       <ThemeProvider theme={defaultTheme}>
@@ -54,7 +96,12 @@ function AdminRegester() {
                 You will be able to add students and faculty and manage the
                 system.
               </Typography>
-              <Box component="form" noValidate sx={{ mt: 2 }}>
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 2 }}
+              >
                 <TextField
                   margin="normal"
                   required
@@ -64,9 +111,9 @@ function AdminRegester() {
                   name="adminName"
                   autoComplete="name"
                   autoFocus
-                  // error={adminNameError}
-                  // helperText={adminNameError && 'Name is required'}
-                  // onChange={handleInputChange}
+                  error={adminNameError}
+                  helperText={adminNameError && "Name is required"}
+                  onChange={handleInputChange}
                 />
                 <TextField
                   margin="normal"
@@ -76,9 +123,9 @@ function AdminRegester() {
                   label="Create your school name"
                   name="schoolName"
                   autoComplete="off"
-                  // error={schoolNameError}
-                  // helperText={schoolNameError && 'School name is required'}
-                  // onChange={handleInputChange}
+                  error={schoolNameError}
+                  helperText={schoolNameError && "School name is required"}
+                  onChange={handleInputChange}
                 />
                 <TextField
                   margin="normal"
@@ -88,9 +135,9 @@ function AdminRegester() {
                   label="Enter your email"
                   name="email"
                   autoComplete="email"
-                  // error={emailError}
-                  // helperText={emailError && 'Email is required'}
-                  // onChange={handleInputChange}
+                  error={emailError}
+                  helperText={emailError && "Email is required"}
+                  onChange={handleInputChange}
                 />
                 <TextField
                   margin="normal"
@@ -101,9 +148,9 @@ function AdminRegester() {
                   type={toggle ? "text" : "password"}
                   id="password"
                   autoComplete="current-password"
-                  // error={passwordError}
-                  // helperText={passwordError && 'Password is required'}
-                  // onChange={handleInputChange}
+                  error={passwordError}
+                  helperText={passwordError && "Password is required"}
+                  onChange={handleInputChange}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -130,12 +177,16 @@ function AdminRegester() {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Regester
+                  {loader ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Register"
+                  )}
                 </Button>
                 <Grid container>
                   <Grid>Already have an account?</Grid>
                   <Grid item sx={{ ml: 2 }}>
-                    <p style={{ color: "purple" }}>Log in</p>
+                    <p style={{ color: "purple",cursor:'pointer' }}  onClick={()=>navigate('/login')} >Log in</p>
                   </Grid>
                 </Grid>
               </Box>

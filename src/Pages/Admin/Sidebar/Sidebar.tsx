@@ -14,8 +14,10 @@ interface SidebarProps {
   visible: boolean;
   onClosed: () => void;
 }
+import { useNavigate } from "react-router-dom";
 
 const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
+  const navigate = useNavigate();
   const { SubMenu } = Menu;
 
   const [collapsed, setCollapsed] = useState(false);
@@ -82,6 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
           key="6"
           icon={<LogoutOutlined />}
           style={{ fontSize: "20px" }}
+          onClick={() => navigate("/logout")}
         >
           Logout
         </Menu.Item>

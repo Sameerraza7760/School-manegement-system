@@ -1,4 +1,9 @@
+import useAuth from "../../CustomHooks/useAuth";
+import { useNavigate } from "react-router-dom";
+
 function Logout() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-md">
@@ -9,11 +14,16 @@ function Logout() {
           Are you sure you want to log out?
         </p>
         <div className="flex justify-center space-x-4">
-          <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-md focus:outline-none focus:ring focus:border-blue-300 transition duration-300">
+          <button
+            onClick={logout}
+            className="bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-md focus:outline-none focus:ring focus:border-blue-300 transition duration-300"
+          >
             Logout
           </button>
-
-          <button className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-6 rounded-md focus:outline-none focus:ring focus:border-blue-300 transition duration-300">
+          <button
+            onClick={() => navigate("/adminHome")}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-6 rounded-md focus:outline-none focus:ring focus:border-blue-300 transition duration-300"
+          >
             Cancel
           </button>
         </div>

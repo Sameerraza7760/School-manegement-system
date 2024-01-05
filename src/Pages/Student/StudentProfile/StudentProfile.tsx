@@ -3,7 +3,6 @@ import { useState } from "react";
 
 const StudentProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const showModal = () => {
     setIsModalOpen(true);
   };

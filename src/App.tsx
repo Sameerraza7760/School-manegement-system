@@ -1,24 +1,16 @@
-// import AdminRegester from "./Pages/Admin/AdminRegester/AdminRegester";
-// import ChooseUser from "./Pages/ChooseUser/ChooseUser";
+// App.tsx
 
-import ShowSubject from "./Pages/Admin/SubjectRelated/ShowSubject";
+import AppRouter from "./Config/Router/Router";
+import ErrorBoundary from "./ErrrorBoundry/ErrorBoundry";
 
-function App() {
+function App(): JSX.Element {
   return (
-    <div>
-      {/* <Home /> */}
-      {/* <ChooseUser/> */}
-      {/* <AdminRegester/> */}
-      {/* <Login /> */}
-      {/* <Header/> */}
-      {/* <SideBar /> */}
-      {/* <AdminProfile/> */}
-      {/* <Logout /> */}
-      {/* <AdminHome /> */}
-      {/* <StudentProfile/> */}
-      {/* <TeacherProfile/> */}
-      {/* <ShowSubject /> */}
-    </div>
+    // <Provider store={store}>
+    <ErrorBoundary>
+      <AppRouter />
+    </ErrorBoundary>
+
+    // </Provider>
   );
 }
 

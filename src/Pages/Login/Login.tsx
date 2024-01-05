@@ -2,29 +2,64 @@
 // import { useDispatch, useSelector } from 'react-redux';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-    Box,
-    Button,
-    Checkbox,
-    CssBaseline,
-    FormControlLabel,
-    Grid,
-    IconButton,
-    InputAdornment,
-    Paper,
-    TextField,
-    Typography
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  CssBaseline,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import bgpic from "../../assets/designlogin.jpg";
 // import { LightPurpleButton } from '../components/buttonStyles';
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../CustomHooks/useAuth";
+import { typeAuth } from "../../types/types.auth";
+
 // import { loginUser } from '../redux/userRelated/userHandle';
 // import Popup from '../components/Popup';
 
 const defaultTheme = createTheme();
 
 function Login() {
-    const [toggle, setToggle] = useState(false)
+  const { signin } = useAuth();
+  const navigate = useNavigate();
+  const [toggle, setToggle] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const [loader, setLoader] = useState(false);
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    setLoader(true);
+    const target = event.target as typeof event.target & typeAuth;
+    const email = target.email.value;
+    const password = target.password.value;
+
+    if (!email || !password) {
+      if (!email) setEmailError(true);
+      if (!password) setPasswordError(true);
+      return;
+    }
+    const fields: typeAuth = { email, password };
+    console.log(fields);
+    await signin(fields);
+    setLoader(false);
+    navigate('/adminHome')
+  };
+  const handleInputChange = (event: any) => {
+    const { name } = event.target;
+    if (name === "email") setEmailError(false);
+    if (name === "password") setPasswordError(false);
+  };
   return (
     <>
       <ThemeProvider theme={defaultTheme}>
@@ -52,7 +87,12 @@ function Login() {
                 Admin Login
               </Typography>
               <Typography>Welcome back! Please enter your details</Typography>
-              <Box component="form" noValidate sx={{ mt: 2 }}>
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 2 }}
+              >
                 {/* {role === "Student" ? (
                         <>
                             <TextField
@@ -93,9 +133,9 @@ function Login() {
                   name="email"
                   autoComplete="email"
                   autoFocus
-                  // error={emailError}
-                  // helperText={emailError && 'Email is required'}
-                  // onChange={handleInputChange}
+                  error={emailError}
+                  helperText={emailError && "Email is required"}
+                  onChange={handleInputChange}
                 />
                 {/* )} */}
                 <TextField
@@ -107,9 +147,9 @@ function Login() {
                   // type={toggle ? 'text' : 'password'}
                   id="password"
                   autoComplete="current-password"
-                  // error={passwordError}
-                  // helperText={passwordError && 'Password is required'}
-                  // onChange={handleInputChange}
+                  error={passwordError}
+                  helperText={passwordError && "Password is required"}
+                  onChange={handleInputChange}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -136,10 +176,11 @@ function Login() {
                   variant="contained"
                   sx={{ mt: 3 }}
                 >
-                  {/* {loader ?
-                            <CircularProgress size={24} color="inherit" />
-                            : "Login"} */}
-                            Login
+                  {loader ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Login"
+                  )}
                 </Button>
                 <Button
                   fullWidth
