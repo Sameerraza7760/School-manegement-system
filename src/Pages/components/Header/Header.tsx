@@ -2,23 +2,21 @@ import { MenuOutlined } from "@ant-design/icons";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Switch from "@mui/material/Switch";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Button } from "antd";
 import * as React from "react";
-import Sidebar from "../../Admin/Sidebar/Sidebar";
+import { useNavigate } from "react-router-dom";
+import Sidebar from "../Sidebar/Sidebar";
 
 function Header() {
+  const navigate = useNavigate();
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [drawerVisible, setDrawerVisible] = React.useState(false);
-
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAuth(event.target.checked);
@@ -28,8 +26,9 @@ function Header() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (route: string) => {
     setAnchorEl(null);
+    navigate(route);
   };
 
   const showDrawer = () => {
@@ -42,7 +41,6 @@ function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-  
       <AppBar position="fixed">
         <Toolbar>
           <Button type="text" icon={<MenuOutlined />} onClick={showDrawer} />
@@ -78,8 +76,12 @@ function Header() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={() => handleClose("/adminProfile")}>
+                  Profile
+                </MenuItem>
+                <MenuItem onClick={() => handleClose("/adminProfile")}>
+                  My account
+                </MenuItem>
               </Menu>
             </div>
           )}

@@ -2,20 +2,16 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { typeAuth } from "../types/types.auth";
 import { auth, db } from "../Config/firebase/firebase";
-import { useNavigate } from "react-router-dom";
-import { setDoc, doc } from "firebase/firestore";
+import { typeAuth } from "../types/types.auth";
 
 const useAuth = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  //   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  //SIGNUP USER
+  // SIGNUP USER
   const signup = async (userinfo: typeAuth) => {
     const { email, password } = userinfo;
     try {
@@ -24,9 +20,7 @@ const useAuth = () => {
         email,
         password
       );
-      await addUserToDB(userinfo, userCredential.user.uid);
-      console.log("Registered successfully");
-
+      await addAdminToDb(userinfo, userCredential.user.uid);
       setSuccessMessage("Registered successfully");
       return userCredential;
     } catch (e: any) {
@@ -34,35 +28,40 @@ const useAuth = () => {
     }
   };
 
-  //ADD USER IN DATABASE
-  const addUserToDB = async (userProfile: typeAuth, uid: string) => {
+  // ADD USER IN DATABASE
+  const addAdminToDb = async (userProfile: typeAuth, uid: string) => {
     let { email, adminName, schoolName } = userProfile;
     let adminData = { schoolName, email, adminName, uid };
     return setDoc(doc(db, "Admin", uid), adminData);
   };
 
-  //SIGININ THE USER
+  // SIGNIN THE USER
   const signin = async (userinfo: typeAuth) => {
     try {
       const { email, password } = userinfo;
       await signInWithEmailAndPassword(auth, email, password);
-      console.log("Loggedin");
-
-      // setSuccessMessage("Loggedin");
+      setSuccessMessage("Signin Succsessfully");
     } catch (e: any) {
       setError(e.message);
     }
   };
 
-  //LOGOUT THE CURRUENT USER
+  // LOGOUT THE CURRENT USER
   async function logout() {
-    await auth.signOut();
-    navigate("/");
+    try {
+      await auth.signOut();
+      setSuccessMessage("Logout");
+    } catch (e: any) {
+      setError(e.message);
+    }
   }
+
   return {
     signup,
     logout,
     signin,
+    successMessage,
+    error,
   };
 };
 

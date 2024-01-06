@@ -1,7 +1,7 @@
- export interface typeAuth<T = HTMLInputElement> {
-    adminName?: T;
-    schoolName?: T;
-    email: T;
-    password: T;
+ export interface typeAuth {
+    adminName?: string ;
+    schoolName?: string;
+    email:string  ;
+    password:string;
   }
   

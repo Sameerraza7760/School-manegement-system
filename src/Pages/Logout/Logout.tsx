@@ -1,9 +1,23 @@
+import { useEffect } from "react";
 import useAuth from "../../CustomHooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Logout() {
-  const { logout } = useAuth();
+  const { logout, successMessage, error } = useAuth();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (successMessage) {
+      toast.warn(successMessage);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } else if (error) {
+      toast.error(error);
+    }
+  }, [successMessage, error]);
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-md">
@@ -26,6 +40,7 @@ function Logout() {
           >
             Cancel
           </button>
+          <ToastContainer />
         </div>
       </div>
     </div>

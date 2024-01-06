@@ -5,29 +5,33 @@ import React, { useState } from "react";
 // import useAuth from "./../../../hooks/useAuth";
 // import "./style.css";
 import {
-  AppstoreOutlined,
+  BookOutlined,
+  HomeOutlined,
   LogoutOutlined,
-  ShopOutlined,
+  MehOutlined,
+  NotificationOutlined,
+  ReadOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+
 // import { useNavigate } from "react-router-dom";
 interface SidebarProps {
   visible: boolean;
   onClosed: () => void;
 }
-import { useNavigate } from "react-router-dom";
 
 const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
   const navigate = useNavigate();
   const { SubMenu } = Menu;
-
   const [collapsed, setCollapsed] = useState(false);
   const [defaultSelectedKey, setDefaultSelectedKey] = useState<string | null>(
     null
   );
-
   const Route = (key: string) => {
     setDefaultSelectedKey(key);
-    // navigate(`/${key}`);
+    navigate(`/${key}`);
   };
 
   return (
@@ -49,37 +53,70 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
       >
         <Menu.Item
           key="AdminDashboard"
-          onClick={() => Route("AdminDashboard")}
-          icon={<AppstoreOutlined />}
+          onClick={() => Route("adminHome")}
+          icon={<HomeOutlined />}
           style={{ fontSize: "20px" }}
         >
-          DashBoard
+          Home
         </Menu.Item>
         <Menu.Item
           key="CreateOrder"
-          onClick={() => Route("CreateOrder")}
-          icon={<ShopOutlined />}
+          onClick={() => Route("classAdd")}
           style={{ fontSize: "20px" }}
+          icon={<BookOutlined />}
         >
-          Create Product
+          Classes
         </Menu.Item>
         <Menu.Item
           key="ManegeOrder"
           onClick={() => Route("ManegeOrder")}
-          icon={<AppstoreOutlined />}
+          icon={<ReadOutlined />}
           style={{ fontSize: "20px" }}
         >
-          Manage Order
+          Subjects
         </Menu.Item>
         <Menu.Item
           key="AdminProfile"
           onClick={() => Route("AdminProfile")}
-          icon={<AppstoreOutlined />}
+          icon={<UserOutlined />}
           style={{ fontSize: "20px" }}
         >
-          Setting
+          Teachers
         </Menu.Item>
 
+        <Menu.Item
+          key="AdminProfile"
+          onClick={() => Route("AdminProfile")}
+          icon={<TeamOutlined />}
+          style={{ fontSize: "20px" }}
+        >
+          Students
+        </Menu.Item>
+
+        <Menu.Item
+          key="AdminProfile"
+          onClick={() => Route("AdminProfile")}
+          icon={<NotificationOutlined />}
+          style={{ fontSize: "20px" }}
+        >
+          Notices
+        </Menu.Item>
+        <Menu.Item
+          key="AdminProfile"
+          onClick={() => Route("AdminProfile")}
+          icon={<MehOutlined />}
+          style={{ fontSize: "20px" }}
+        >
+          Complain
+        </Menu.Item>
+        <Menu.Item
+          key="AdminProfile"
+          onClick={() => Route("AdminProfile")}
+          icon={<UserOutlined />}
+          style={{ fontSize: "20px" }}
+        >
+          Profile
+        </Menu.Item>
         <Menu.Item
           key="6"
           icon={<LogoutOutlined />}
