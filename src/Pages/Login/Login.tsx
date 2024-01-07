@@ -22,7 +22,7 @@ import bgpic from "../../assets/designlogin.jpg";
 // import { LightPurpleButton } from '../components/buttonStyles';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../CustomHooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 import { typeAuth } from "../../types/types.auth";
 
 // import { loginUser } from '../redux/userRelated/userHandle';

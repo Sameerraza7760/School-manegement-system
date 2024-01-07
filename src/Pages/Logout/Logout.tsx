@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useAuth from "../../CustomHooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

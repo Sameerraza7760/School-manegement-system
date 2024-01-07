@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "./../../Pages/Home/Home";
+import Home from "../../Pages/Home/Home";
 import ChooseUser from "../../Pages/ChooseUser/ChooseUser";
 import AdminRegester from "../../Pages/Admin/AdminRegester/AdminRegester";
-import Login from "./../../Pages/Login/Login";
+import Login from "../../Pages/Login/Login";
 import AdminHome from "../../Pages/Admin/AdminHome/AdminHome";
 import Logout from "../../Pages/Logout/Logout";
 import AdminProfile from "../../Pages/Admin/AdminProfile/AdminProfile";
-import AddClass from "./../../Pages/Admin/ClassRelated/AddClass";
+import AddClass from "../../Pages/Admin/ClassRelated/AddClass";
 import ClassDetail from "../../Pages/Admin/ClassRelated/ClassDetail";
 import AddStudentForm from "../../Pages/Admin/ClassRelated/AddStudentForm/StudentForm";
 const AppRouter: React.FC = () => {

@@ -16,7 +16,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import useAuth from "../../../CustomHooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import bgpic from "./../../../assets/designlogin.jpg";
 import { useNavigate } from "react-router-dom";

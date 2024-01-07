@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import useClass from "../../../CustomHooks/useClass";
+import useClassRoom from "../../../hooks/useClassRoom";
 import Header from "../../components/Header/Header";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const ClassAdd = () => {
-  const { addClassinDb, deleteClassFromDb, getClassesFromDb } = useClass();
+  const { addClassToDb, deleteClassFromDb, getClassesFromDb } = useClassRoom();
   const [className, setClassName] = useState("");
   const [classList, setClassList] = useState<any[]>([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); // New state variable
   const navigate = useNavigate();
   const handleAddClass = async () => {
     if (className.trim() !== "") {
-      await addClassinDb(className);
+      await addClassToDb(className);
       toast.success("Class Added");
       setShowSuccessMessage(true);
       setClassName("");
@@ -93,13 +93,13 @@ const ClassAdd = () => {
                   <div className="flex gap-2">
                     <button
                       className="text-red-500 hover:text-red-700"
-                      onClick={() => deleteClass(item.classId)}
+                      onClick={() => deleteClass(item.id)}
                     >
                       Remove
                     </button>
                     <button
                       onClick={() =>
-                        navigate(`/classDetail/${item.classId || ""}`)
+                        navigate(`/classDetail/${item.id || ""}`)
                       }
                       className="text-blue-500 hover:text-blue-700"
                     >

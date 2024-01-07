@@ -4,7 +4,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth, db } from "../Config/firebase/firebase";
+import {auth,db} from './../db/firebase'
 import { typeAuth } from "../types/types.auth";
 
 const useAuth = () => {

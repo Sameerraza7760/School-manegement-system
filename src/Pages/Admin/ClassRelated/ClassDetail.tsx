@@ -1,22 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import { useParams } from "react-router-dom";
-import useClass from "../../../CustomHooks/useClass";
-import { typeClass } from "../../../types/types.class";
-import { useState } from "react";
+import useClassRoom from "../../../hooks/useClassRoom";
+import { ClassRoom } from "../../../types/types.class";
+import { useEffect, useState } from "react";
 const ClassDetail = () => {
-  const [classDetail, setClassDetail] = useState<typeClass | null>();
+  const [classDetail, setClassDetail] = useState<ClassRoom | null>();
   const navigate = useNavigate();
-  const { getClassDetailByUid } = useClass();
+  const { getClassDetailById } = useClassRoom();
   const { id } = useParams();
 
+useEffect(()=>{
   const getClassDetail = async () => {
     if (id) {
-      const getClassDetail: typeClass | null = await getClassDetailByUid(id);
+      const getClassDetail: ClassRoom | null = await getClassDetailById(id);
       setClassDetail(getClassDetail)
     }
   };
   getClassDetail();
+},[])
   return (
     <>
       <Header />
