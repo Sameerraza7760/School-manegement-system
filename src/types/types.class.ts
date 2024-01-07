@@ -1,6 +1,11 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface typeClass {
-  class: number;
-  students: any[];
-  teachers: any[];
-  subjects: any[];
+  classId: string;
+  className: number;
+  students?: string[];
+  teachers?: string[];
+  subjects?: string[];
+
+  timestamp: Timestamp;
 }

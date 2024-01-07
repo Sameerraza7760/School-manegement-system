@@ -178,6 +178,7 @@ function Login() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3 }}
+                style={{ backgroundColor: "purple" }}
               >
                 {loader ? (
                   <CircularProgress size={24} color="inherit" />
@@ -188,7 +189,7 @@ function Login() {
               <Button
                 fullWidth
                 // onClick={guestModeHandler}
-                variant="outlined"
+                variant="outlined" 
                 sx={{
                   mt: 2,
                   mb: 3,

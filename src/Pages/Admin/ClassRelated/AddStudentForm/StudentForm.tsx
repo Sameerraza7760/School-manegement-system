@@ -1,65 +1,109 @@
 import React, { useState } from "react";
 import Header from "../../../components/Header/Header";
+import { Button, CircularProgress, TextField, Typography } from "@mui/material";
 
 const AddStudentForm = () => {
-  const [studentName, setStudentName] = useState("");
-  const [studentRollNo, setStudentRollNo] = useState("");
-  const [studentClass, setStudentClass] = useState("");
-  const [studentSubjects, setStudentSubjects] = useState([]);
-
-  const handleAddSubject = () => {
-    // Implement subject addition logic if needed
+  const [nameError, setNameError] = useState<boolean>();
+  const [studentRollNoError, setRollNumberError] = useState<boolean>();
+  const [classError, setClassError] = useState<boolean>(false);
+  const [subjectError, setSubjectError] = useState<boolean>(false);
+  const [loader, setLoader] = useState(false);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    if (name === "studentName") setNameError(false);
+    if (name === "studentRollNo") setRollNumberError(false);
+    if (name === "className") setClassError(false);
+    if (name === "subject") setSubjectError(false);
   };
+  
+  const handleEnrollStudent = (event: React.FormEvent) => {
+    event.preventDefault();
+  
+    const target = event.target as any;
+    const studentName = target.studentName.value;
+    const studentRollNum = target.studentRollNo.value;
+    const studentClass = target.className.value;
+    const studentSubject = target.subject.value;
+  
+    // ... rest of your logic
+    
+    if (!studentName || !studentRollNum || !studentClass || !studentSubject) {
+      if (!studentName) setNameError(true);
+      if (!studentRollNum) setRollNumberError(true);
+      if (!studentClass) setClassError(true);
+      if (!studentSubject) setSubjectError(true);
+      return;
+    }
 
-  const handleEnrollStudent = () => {
-    // Implement student enrollment logic
+
+    const StudentDetail={
+      
+    }
+    setLoader(true);
+   
   };
-
   return (
     <>
       <Header />
-      <div className="container mx-auto pt-9 mt-10">
-        <div className="w-[60%] mx-auto bg-white p-8">
-          <h2 className="text-3xl font-bold mb-6 text-purple-800">
+      <form
+        // onSubmit={handleEnrollStudent}
+        className="container mx-auto pt-9 mt-10"
+        onSubmit={handleEnrollStudent}
+        noValidate
+      >
+        <div className="w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
+          <Typography variant="h4" color="primary" gutterBottom>
             Enroll Student
-          </h2>
+          </Typography>
           <div className="mb-4">
             <label htmlFor="studentName" className="text-gray-600 mb-2 block">
               Student Name:
             </label>
-            <input
-              type="text"
-              id="studentName"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="schoolName"
+              label="Enter Student Name"
               name="studentName"
-              value={studentName}
-              onChange={(e) => setStudentName(e.target.value)}
-              className="w-full border rounded-md p-2"
+              autoComplete="off"
+              error={nameError}
+              helperText={nameError && "Student Name is required"}
+              onChange={handleInputChange}
             />
           </div>
           <div className="mb-4">
             <label htmlFor="studentRollNo" className="text-gray-600 mb-2 block">
               Roll Number:
             </label>
-            <input
-              type="text"
-              id="studentRollNo"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="rollNumber"
+              label="Enter Roll Number"
               name="studentRollNo"
-              value={studentRollNo}
-              onChange={(e) => setStudentRollNo(e.target.value)}
-              className="w-full border rounded-md p-2"
+              autoComplete="off"
+              error={studentRollNoError}
+              helperText={studentRollNoError && "Roll Number is required"}
+              onChange={handleInputChange}
             />
           </div>
           <div className="mb-4">
             <label htmlFor="studentClass" className="text-gray-600 mb-2 block">
               Class:
             </label>
-            <input
-              type="text"
-              id="studentClass"
-              name="studentClass"
-              value={studentClass}
-              onChange={(e) => setStudentClass(e.target.value)}
-              className="w-full border rounded-md p-2"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="className"
+              label="Enter Student Class"
+              name="className"
+              autoComplete="ClassName"
+              error={classError}
+              helperText={classError && "Class is required"}
+              onChange={handleInputChange}
             />
           </div>
           <div className="mb-4">
@@ -69,37 +113,48 @@ const AddStudentForm = () => {
             >
               Subjects:
             </label>
-            {/* Implement a dynamic way to add and display subjects */}
             <div className="flex items-center space-x-2">
-              <input
-                type="text"
-                placeholder="Add subject"
-                className="border rounded-md p-2 flex-1"
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="subject"
+                label="Enter a Subject"
+                name="subject"
+                autoComplete="off"
+                error={subjectError}
+                helperText={subjectError && "Subject is required"}
+                onChange={handleInputChange}
               />
-              <button
-                onClick={handleAddSubject}
-                className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none"
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="medium"
               >
                 Add
-              </button>
+              </Button>
             </div>
             <ul className="list-disc pl-5 mt-2">
               {/* Display added subjects */}
-              {studentSubjects.map((subject, index) => (
-                <li key={index} className="text-purple-800">
-                  {subject}
-                </li>
-              ))}
             </ul>
           </div>
-          <button
-            onClick={handleEnrollStudent}
-            className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none"
+          <Button
+            // onClick={handleEnrollStudent}
+            style={{ backgroundColor: "purple" }}
+                type="submit"
+               
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
           >
-            Enroll Student
-          </button>
+            {loader ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Enroll Student"
+            )}
+          </Button>
         </div>
-      </div>
+      </form>
     </>
   );
 };

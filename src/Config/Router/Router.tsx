@@ -21,7 +21,7 @@ const AppRouter: React.FC = () => {
       <Route path="/logout" element={<Logout />}></Route>
       <Route path="/adminProfile" element={<AdminProfile />}></Route>
       <Route path="/classAdd" element={<AddClass />}></Route>
-      <Route path="/classDetail" element={<ClassDetail />}></Route>
+      <Route path="/classDetail/:id" element={<ClassDetail />}></Route>
       <Route path="/StudentForm" element={<AddStudentForm />}>
         {" "}
       </Route>

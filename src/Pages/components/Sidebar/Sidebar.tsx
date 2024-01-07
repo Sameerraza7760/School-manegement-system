@@ -68,8 +68,8 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
           Classes
         </Menu.Item>
         <Menu.Item
-          key="ManegeOrder"
-          onClick={() => Route("ManegeOrder")}
+          key="Subjects"
+          onClick={() => Route("addSubject")}
           icon={<ReadOutlined />}
           style={{ fontSize: "20px" }}
         >
@@ -77,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
         </Menu.Item>
         <Menu.Item
           key="AdminProfile"
-          onClick={() => Route("AdminProfile")}
+          onClick={() => Route("addTeacher")}
           icon={<UserOutlined />}
           style={{ fontSize: "20px" }}
         >
@@ -86,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
 
         <Menu.Item
           key="AdminProfile"
-          onClick={() => Route("AdminProfile")}
+          onClick={() => Route("addStudents")}
           icon={<TeamOutlined />}
           style={{ fontSize: "20px" }}
         >
@@ -95,7 +95,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
 
         <Menu.Item
           key="AdminProfile"
-          onClick={() => Route("AdminProfile")}
+          onClick={() => Route("Notices")}
           icon={<NotificationOutlined />}
           style={{ fontSize: "20px" }}
         >
@@ -103,7 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
         </Menu.Item>
         <Menu.Item
           key="AdminProfile"
-          onClick={() => Route("AdminProfile")}
+          onClick={() => Route("Complain")}
           icon={<MehOutlined />}
           style={{ fontSize: "20px" }}
         >
