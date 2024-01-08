@@ -10,6 +10,7 @@ import AdminProfile from "../../Pages/Admin/AdminProfile/AdminProfile";
 import AddClass from "../../Pages/Admin/ClassRelated/AddClass";
 import ClassDetail from "../../Pages/Admin/ClassRelated/ClassDetail";
 import AddStudentForm from "../../Pages/Admin/ClassRelated/AddStudentForm/StudentForm";
+import StudentList from "../../Pages/Admin/Studentlist/StudentList";
 const AppRouter: React.FC = () => {
   return (
     <Routes>
@@ -22,9 +23,10 @@ const AppRouter: React.FC = () => {
       <Route path="/adminProfile" element={<AdminProfile />}></Route>
       <Route path="/classAdd" element={<AddClass />}></Route>
       <Route path="/classDetail/:id" element={<ClassDetail />}></Route>
-      <Route path="/StudentForm" element={<AddStudentForm />}>
+      <Route path="/StudentForm/:classRoomid" element={<AddStudentForm />}>
         {" "}
       </Route>
+      <Route path="/studentList/:classRoomid" element={<StudentList />}></Route>
     </Routes>
   );
 };

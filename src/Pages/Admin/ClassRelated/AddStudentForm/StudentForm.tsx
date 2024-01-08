@@ -1,13 +1,23 @@
-import React, { useState } from "react";
-import Header from "../../../components/Header/Header";
 import { Button, CircularProgress, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useStudent from "../../../../hooks/useStudent";
+import { StudentDetail } from "../../../../types/types.student";
+import Header from "../../../components/Header/Header";
+
 
 const AddStudentForm = () => {
+  const { classRoomid } = useParams();
+
+
   const [nameError, setNameError] = useState<boolean>();
   const [studentRollNoError, setRollNumberError] = useState<boolean>();
   const [classError, setClassError] = useState<boolean>(false);
   const [subjectError, setSubjectError] = useState<boolean>(false);
   const [loader, setLoader] = useState(false);
+  const { addStudentDetail } = useStudent();
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     if (name === "studentName") setNameError(false);
@@ -15,18 +25,15 @@ const AddStudentForm = () => {
     if (name === "className") setClassError(false);
     if (name === "subject") setSubjectError(false);
   };
-  
-  const handleEnrollStudent = (event: React.FormEvent) => {
+
+  const handleEnrollStudent = async (event: React.FormEvent) => {
     event.preventDefault();
-  
     const target = event.target as any;
     const studentName = target.studentName.value;
     const studentRollNum = target.studentRollNo.value;
     const studentClass = target.className.value;
     const studentSubject = target.subject.value;
-  
-    // ... rest of your logic
-    
+
     if (!studentName || !studentRollNum || !studentClass || !studentSubject) {
       if (!studentName) setNameError(true);
       if (!studentRollNum) setRollNumberError(true);
@@ -34,14 +41,25 @@ const AddStudentForm = () => {
       if (!studentSubject) setSubjectError(true);
       return;
     }
-
-
-    const StudentDetail={
-      
-    }
     setLoader(true);
-   
+    const StudentDetail: StudentDetail = {
+      studentName,
+      studentRollNum,
+      studentClass,
+      studentSubject,
+    };
+    if (classRoomid) {
+      try {
+        await addStudentDetail(StudentDetail, classRoomid);
+        toast.success("Student Add");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setLoader(false);
   };
+
+
   return (
     <>
       <Header />
@@ -142,10 +160,9 @@ const AddStudentForm = () => {
           <Button
             // onClick={handleEnrollStudent}
             style={{ backgroundColor: "purple" }}
-                type="submit"
-               
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+            type="submit"
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
           >
             {loader ? (
               <CircularProgress size={24} color="inherit" />
@@ -154,6 +171,7 @@ const AddStudentForm = () => {
             )}
           </Button>
         </div>
+        <ToastContainer />
       </form>
     </>
   );

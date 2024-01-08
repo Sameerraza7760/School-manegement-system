@@ -1,6 +1,8 @@
 import ReactDOM from "react-dom/client"; // Update this line
 import { BrowserRouter as Router } from "react-router-dom"; // Add this line
-import { ToastProvider } from "react-toast-notifications";
+
+import store from "./Config/store/store.ts";
+import { Provider } from "react-redux";
 
 import App from "./App.tsx";
 
@@ -13,11 +15,12 @@ if (rootElement) {
 
   root.render(
     // ThemeProvider
-    <ToastProvider>
+
+    <Provider store={store}>
       <Router>
         <App />
       </Router>
-    </ToastProvider>
+    </Provider>
   );
 } else {
   console.error("Element with id 'root' not found.");

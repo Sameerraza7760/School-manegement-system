@@ -3,4 +3,5 @@ export interface StudentDetail {
   studentRollNum: number;
   studentClass: number;
   studentSubject: string;
+  studentid?:string
 }

@@ -1,3 +1,4 @@
+
 import { Timestamp } from "firebase/firestore";
 import { Student } from "./types.stundent";
 
@@ -7,5 +8,5 @@ export interface ClassRoom {
   students?: Student[];
   teachers?: string[];
   subjects?: string[];
-  timestamp: Timestamp;
+  timestamp: any;
 }
