@@ -19,14 +19,12 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import bgpic from "../../assets/designlogin.jpg";
-// import { LightPurpleButton } from '../components/buttonStyles';
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import { typeAuth } from "../../types/types.auth";
-
-// import { loginUser } from '../redux/userRelated/userHandle';
-// import Popup from '../components/Popup';
+import { adminDetail } from "../../types/types.auth";
+import { useSelector } from "react-redux";
 
 function Login() {
   const { signin, successMessage, error } = useAuth();
@@ -35,6 +33,9 @@ function Login() {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [loader, setLoader] = useState(false);
+  const authData=useSelector((state)=>(state))
+  console.log(authData);
+  
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -48,7 +49,7 @@ function Login() {
       return;
     }
     setLoader(true);
-    const fields: typeAuth = { email, password };
+    const fields: adminDetail = { email, password };
     console.log(fields);
     await signin(fields);
     setLoader(false);

@@ -1,26 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { StudentDetail } from "../../../types/types.student";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import useStudent from "../../../hooks/useStudent";
 import { useParams } from "react-router-dom";
+import useStudent from "../../../hooks/useStudent";
+import { StudentDetail } from "../../../types/types.student";
 const StudentList = () => {
   const { classRoomid } = useParams();
-  // const [students, setStudents] = useState([])
   const { getAllStudentsInClassroom } = useStudent();
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
   useEffect(() => {
-    getAllStudentsInClassroom(classRoomid);
+    (async () => {
+      await getAllStudentsInClassroom();
+    })();
   }, []);
 
-  const handleDelete = (id) => {};
+  const filterStudent: StudentDetail[] = enrolledStudents?.filter(
+    (item) => item.studentid?.slice(0, 20) === classRoomid
+  );
+
+  const handleDelete = (id:string | undefined) => {};
 
   return (
     <div className="container mx-auto mt-10">
       <h1 className="text-3xl font-bold mb-6">Student List</h1>
       <div className="grid grid-cols-2 gap-4">
-        {enrolledStudents.map((student) => (
+        {filterStudent.map((student) => (
           <div
             key={student.studentid}
             className="bg-white p-4 rounded-md shadow-md"

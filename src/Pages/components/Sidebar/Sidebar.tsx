@@ -77,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
         </Menu.Item>
         <Menu.Item
           key="AdminProfile"
-          onClick={() => Route("addTeacher")}
+          onClick={() => Route("ClassList")}
           icon={<UserOutlined />}
           style={{ fontSize: "20px" }}
         >

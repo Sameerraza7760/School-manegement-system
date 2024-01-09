@@ -9,4 +9,5 @@ export interface ClassRoom {
   teachers?: string[];
   subjects?: string[];
   timestamp: any;
+  role?:string
 }

@@ -1,6 +1,9 @@
 import Header from "../../components/Header/Header";
-
+// import { useSelector } from "react-redux";
 const AdminProfile = () => {
+  // const adminProfile=useSelector((state)=>state)
+  // console.log(adminProfile);
+  
   return (
     <>
       <Header />

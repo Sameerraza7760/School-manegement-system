@@ -1,8 +1,10 @@
 import ReactDOM from "react-dom/client"; // Update this line
 import { BrowserRouter as Router } from "react-router-dom"; // Add this line
+import { PersistGate } from "redux-persist/integration/react";
 
-import store from "./Config/store/store.ts";
 import { Provider } from "react-redux";
+import { persistor } from "./../src/Config/store/store.ts";
+import store from "./../src/Config/store/store.ts";
 
 import App from "./App.tsx";
 
@@ -17,9 +19,11 @@ if (rootElement) {
     // ThemeProvider
 
     <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <App />
+        </Router>
+      </PersistGate>
     </Provider>
   );
 } else {

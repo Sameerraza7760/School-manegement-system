@@ -1,23 +1,33 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import useClassRoom from "../../../hooks/useClassRoom";
+import { ClassRoom } from "../../../types/types.class";
 import Header from "./../../components/Header/Header";
-import React, { useState } from "react";
 
 function ShowSubject() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [newSubject, setNewSubject] = useState("");
-
-  const subjects = [
-    { id: 1, name: "Mathematics" },
-    { id: 2, name: "Science" },
-    { id: 3, name: "English" },
-    { id: 4, name: "History" },
-    // Add more subjects as needed
-  ];
+  const [subject, setSubject] = useState<ClassRoom | null>();
+  const { getClassDetailById } = useClassRoom();
+  const { classRoomid } = useParams();
 
   const handleAddSubject = () => {
     // Add logic to handle adding a new subject to the list
     // For now, let's just close the modal
     setModalOpen(false);
   };
+
+  useEffect(() => {
+    const getClassDetail = async () => {
+      if (classRoomid) {
+        const getClassDetail: ClassRoom | null = await getClassDetailById(
+          classRoomid
+        );
+        setSubject(getClassDetail);
+      }
+    };
+    getClassDetail();
+  }, []);
 
   return (
     <>
@@ -33,13 +43,13 @@ function ShowSubject() {
 
         {/* Subject List */}
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {subjects.map((subject) => (
+          {subject?.subjects?.map((item) => (
             <li
               key={subject.id}
               className="p-4 bg-gray-100 rounded-md shadow-md"
             >
               <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                {subject.name}
+                {item}
               </h3>
               {/* Add additional information or actions related to each subject if needed */}
             </li>

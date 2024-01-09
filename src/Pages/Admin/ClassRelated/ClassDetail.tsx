@@ -8,13 +8,12 @@ import Header from "../../components/Header/Header";
 import { useEffect, useState } from "react";
 import { StudentDetail } from "../../../types/types.student";
 const ClassDetail = () => {
+  const navigate = useNavigate();
   const { getAllStudentsInClassroom } = useStudent();
   const [classDetail, setClassDetail] = useState<ClassRoom | null>();
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
-
-  const navigate = useNavigate();
   const { getClassDetailById } = useClassRoom();
   const { id } = useParams();
 
@@ -28,7 +27,10 @@ const ClassDetail = () => {
     getClassDetail();
     getAllStudentsInClassroom();
   }, []);
-  console.log("hi==>", enrolledStudents);
+  const filterStudent: StudentDetail[] = enrolledStudents?.filter(
+    (item) => item.studentid?.slice(0, 20) === id
+  );
+
   return (
     <>
       <Header />
@@ -82,8 +84,8 @@ const ClassDetail = () => {
               No Of Students:
             </label>
 
-            <ul className="list-disc pl-5">
-              <li className="text-purple-800">{enrolledStudents.length}</li>
+            <ul className=" pl-5">
+              <li className="text-purple-800">{filterStudent.length}</li>
             </ul>
             <button
               onClick={() => navigate(`/studentList/${id || ""}`)}
@@ -101,11 +103,16 @@ const ClassDetail = () => {
             >
               No Of Subjects:
             </label>
-            <ul className="list-disc pl-5">
-              <li className="text-purple-800">Subject 1</li>
-              <li className="text-purple-800">Subject 2</li>
-              <li className="text-purple-800">Subject 3</li>
+            <ul className=" pl-5 list-none ">
+              <li className="text-purple-800">{classDetail?.subjects?.length}</li>
+          
             </ul>
+            <button
+              onClick={() => navigate(`/subjectDetail/${id || ""}`)}
+              className="text-purple-800 hover:underline focus:outline-none"
+            >
+              Subject Detail
+            </button>
           </div>
 
           {/* Action Buttons */}
@@ -118,7 +125,7 @@ const ClassDetail = () => {
             </button>
             <button
               className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none"
-              onClick={() => alert("Add subject")}
+              onClick={() => navigate(`/addSubject/${id || ""}`)}
             >
               Add Subject
             </button>

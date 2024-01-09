@@ -20,7 +20,7 @@ import useAuth from "../../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import bgpic from "./../../../assets/designlogin.jpg";
 import { useNavigate } from "react-router-dom";
-import { typeAuth } from "./../../../types/types.auth";
+import { adminDetail } from "./../../../types/types.auth";
 
 function AdminRegester() {
   const { signup, successMessage, error } = useAuth();
@@ -51,10 +51,12 @@ function AdminRegester() {
       return;
     }
     setLoader(true);
-    const fields: typeAuth = { adminName, email, password, schoolName };
-    await signup(fields);
+    const fields: adminDetail = { adminName, email, password, schoolName };
+    await signup(fields,role);
     setLoader(false);
     // dispatch(registerUser(fields, role))
+    // console.log(adminData);
+    
   };
   const handleInputChange = (event: any) => {
     const { name } = event.target;
