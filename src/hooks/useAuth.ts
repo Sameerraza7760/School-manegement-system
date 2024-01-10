@@ -4,9 +4,9 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { auth, db } from "./../db/firebase";
-import { adminDetail } from "../types/types.auth";
 import { useDispatch } from "react-redux";
+import { adminDetail } from "../types/types.auth";
+import { auth, db } from "./../db/firebase";
 // import { setAuth,Logout } from "../Config/store/slice/AuthSlice";
 
 const useAuth = () => {
@@ -44,7 +44,7 @@ const useAuth = () => {
       const adminDoc = await getDoc(doc(db, "Admin", uid));
 
       if (adminDoc.exists()) {
-        const adminData = adminDoc.data() as adminDetail; 
+        const adminData = adminDoc.data() as adminDetail;
         // dispatch(setAuth(adminData));
         return adminData;
       } else {

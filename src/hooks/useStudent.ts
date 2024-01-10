@@ -1,29 +1,25 @@
-import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+import { enrollStudent } from "../Config/store/slice/StudentSlice";
 import { db } from "../db/firebase";
 import { StudentDetail } from "../types/types.student";
-import { enrollStudent } from "../Config/store/slice/StudentSlice";
-import { useDispatch } from "react-redux";
 
 const useStudent = () => {
-    const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const addStudentDetail = async (
     studentData: StudentDetail,
     classroomId: string
   ): Promise<void> => {
     try {
-      return setDoc(doc(db, "students", classroomId+Date.now()), studentData);
+      return setDoc(doc(db, "students", classroomId + Date.now()), studentData);
     } catch (error: any) {
       console.error("Error adding document:", error.message);
     }
   };
 
-  const getAllStudentsInClassroom = async (
-    
-  ): Promise<StudentDetail[]> => {
+  const getAllStudentsInClassroom = async (): Promise<StudentDetail[]> => {
     try {
-      const querySnapshot = await getDocs(
-        collection(db, "students")
-      );
+      const querySnapshot = await getDocs(collection(db, "students"));
       const students: StudentDetail[] = [];
 
       querySnapshot.forEach((doc) => {

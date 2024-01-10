@@ -1,15 +1,11 @@
-// import React from "react";
-import Header from "./../../components/Header/Header";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-// import { addSubject } from "../../redux/slice/SubjectSlice";
-import useSubject from "../../../hooks/useSubject";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import useSubject from "../../../hooks/useSubject";
+import Header from "./../../components/Header/Header";
 
 function AddSubject() {
   const { classRoomid } = useParams();
-  const dispatch = useDispatch();
+
   const { addSubjectinClass } = useSubject();
   const [subjectName, setSubjectName] = useState("");
 
@@ -18,11 +14,10 @@ function AddSubject() {
       alert("Please enter a subject name");
       return;
     }
-    
+
     if (classRoomid) {
       await addSubjectinClass(classRoomid, subjectName);
       setSubjectName("");
-      toast.success("Subject add");
     }
   };
   return (

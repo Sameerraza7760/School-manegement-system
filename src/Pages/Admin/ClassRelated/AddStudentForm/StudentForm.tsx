@@ -7,10 +7,8 @@ import useStudent from "../../../../hooks/useStudent";
 import { StudentDetail } from "../../../../types/types.student";
 import Header from "../../../components/Header/Header";
 
-
 const AddStudentForm = () => {
   const { classRoomid } = useParams();
-
 
   const [nameError, setNameError] = useState<boolean>();
   const [studentRollNoError, setRollNumberError] = useState<boolean>();
@@ -58,7 +56,6 @@ const AddStudentForm = () => {
     }
     setLoader(false);
   };
-
 
   return (
     <>
@@ -144,14 +141,7 @@ const AddStudentForm = () => {
                 helperText={subjectError && "Subject is required"}
                 onChange={handleInputChange}
               />
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                size="medium"
-              >
-                Add
-              </Button>
+            
             </div>
             <ul className="list-disc pl-5 mt-2">
               {/* Display added subjects */}

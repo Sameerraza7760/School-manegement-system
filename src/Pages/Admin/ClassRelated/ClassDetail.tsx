@@ -4,7 +4,7 @@ import useClassRoom from "../../../hooks/useClassRoom";
 import useStudent from "../../../hooks/useStudent";
 import { ClassRoom } from "../../../types/types.class";
 import Header from "../../components/Header/Header";
-
+import useTeacher from "../../../hooks/useTeacher";
 import { useEffect, useState } from "react";
 import { StudentDetail } from "../../../types/types.student";
 const ClassDetail = () => {
@@ -16,17 +16,29 @@ const ClassDetail = () => {
   );
   const { getClassDetailById } = useClassRoom();
   const { id } = useParams();
-
+  const {getAllTeacher} = useTeacher()
   useEffect(() => {
-    const getClassDetail = async () => {
-      if (id) {
-        const getClassDetail: ClassRoom | null = await getClassDetailById(id);
-        setClassDetail(getClassDetail);
+    const fetchData = async () => {
+      const getClassDetail = async () => {
+        if (id) {
+          const classDetail: ClassRoom | null = await getClassDetailById(id);
+          setClassDetail(classDetail);
+        }
+      };
+  
+      await getClassDetail();
+      await getAllStudentsInClassroom();
+  
+      try {
+        const teachers = await getAllTeacher();
+        console.log("hi==>",teachers);
+      } catch (error) {
+        console.error("Error fetching teachers:", error);
       }
     };
-    getClassDetail();
-    getAllStudentsInClassroom();
-  }, []);
+  
+    fetchData();
+  }, [id]);
   const filterStudent: StudentDetail[] = enrolledStudents?.filter(
     (item) => item.studentid?.slice(0, 20) === id
   );
@@ -70,9 +82,16 @@ const ClassDetail = () => {
               htmlFor="classTeacher"
               className="text-gray-600 mb-2 block text-lg font-semibold"
             >
-              Class Teacher:
+              No Of Teacher:
             </label>
             <span className="text-purple-800 text-lg">None</span>
+            <br />
+            <button
+              onClick={() => navigate(`/studentList/${id || ""}`)}
+              className="text-purple-800 hover:underline focus:outline-none"
+            >
+              Teachers Detail
+            </button>
           </div>
 
           {/* Students List */}
@@ -104,8 +123,9 @@ const ClassDetail = () => {
               No Of Subjects:
             </label>
             <ul className=" pl-5 list-none ">
-              <li className="text-purple-800">{classDetail?.subjects?.length}</li>
-          
+              <li className="text-purple-800">
+                {classDetail?.subjects?.length}
+              </li>
             </ul>
             <button
               onClick={() => navigate(`/subjectDetail/${id || ""}`)}

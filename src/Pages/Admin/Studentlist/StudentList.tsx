@@ -19,7 +19,7 @@ const StudentList = () => {
     (item) => item.studentid?.slice(0, 20) === classRoomid
   );
 
-  const handleDelete = (id:string | undefined) => {};
+  const handleDelete = (id: string | undefined) => {};
 
   return (
     <div className="container mx-auto mt-10">

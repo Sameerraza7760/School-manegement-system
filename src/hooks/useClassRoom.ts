@@ -8,10 +8,12 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { ClassRoom } from "../types/types.class";
+import { useDispatch } from "react-redux";
+import { setClass } from "../Config/store/slice/ClassSlice";
 import { db } from "../db/firebase";
-
+import { ClassRoom } from "../types/types.class";
 const useClassRoom = () => {
+  const dispatch = useDispatch();
   const addClassToDb = async (className: string) => {
     try {
       const docRef = await addDoc(collection(db, "classes"), {
@@ -31,6 +33,7 @@ const useClassRoom = () => {
       querySnapshot.forEach((doc) => {
         classes.push({ ...(doc.data() as ClassRoom) });
       });
+      dispatch(setClass(classes));
       return classes;
     } catch (error: any) {
       console.log("Error retrieving classes from the database");
@@ -55,6 +58,7 @@ const useClassRoom = () => {
       if (classSnapshot.exists()) {
         const classData = classSnapshot.data() as ClassRoom;
         console.log("Class details:", classData);
+
         return classData;
       } else {
         console.log("Class not found");
