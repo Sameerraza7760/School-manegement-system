@@ -2,20 +2,20 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { adminDetail } from "../types/types.auth";
+import { AdminCredentials } from "../types/types.auth";
 import { auth, db } from "./../db/firebase";
+import { signupAdmin } from "../Config/store/slice/AuthSlice";
 // import { setAuth,Logout } from "../Config/store/slice/AuthSlice";
 
 const useAuth = () => {
+  const dispatch = useDispatch();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const dispatch = useDispatch();
-
   // SIGNUP USER
-  const signup = async (userinfo: adminDetail, role: string) => {
+  const signup = async (userinfo: AdminCredentials) => {
     const { email, password } = userinfo;
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -24,7 +24,8 @@ const useAuth = () => {
         password
       );
       await addAdminToDb(userinfo, userCredential.user.uid);
-      await getAdminByid(userCredential.user.uid, role);
+      dispatch(signupAdmin(userinfo));
+
       setSuccessMessage("Registered successfully");
       return userCredential;
     } catch (e: any) {
@@ -33,29 +34,29 @@ const useAuth = () => {
   };
 
   // ADD USER IN DATABASE
-  const addAdminToDb = async (userProfile: adminDetail, uid: string) => {
-    let { email, adminName, schoolName } = userProfile;
-    let adminData = { schoolName, email, adminName, uid };
+  const addAdminToDb = async (userProfile: AdminCredentials, uid: string) => {
+    let { email, username, schoolName } = userProfile;
+    let adminData = { schoolName, email, username, uid };
     return setDoc(doc(db, "Admin", uid), adminData);
   };
 
-  const getAdminByid = async (uid: string, role: string) => {
-    try {
-      const adminDoc = await getDoc(doc(db, "Admin", uid));
+  // const getAdminByid = async (uid: string) => {
+  //   try {
+  //     const adminDoc = await getDoc(doc(db, "Admin", uid));
 
-      if (adminDoc.exists()) {
-        const adminData = adminDoc.data() as adminDetail;
-        // dispatch(setAuth(adminData));
-        return adminData;
-      } else {
-        console.log("Admin not found");
-        return null;
-      }
-    } catch (error: any) {
-      console.error("Error getting admin by UID:", error.message);
-      return null;
-    }
-  };
+  //     if (adminDoc.exists()) {
+  //       const adminData = adminDoc.data() as AdminCredentials;
+  //       // dispatch(setAuth(adminData));
+  //       return adminData;
+  //     } else {
+  //       console.log("Admin not found");
+  //       return null;
+  //     }
+  //   } catch (error: any) {
+  //     console.error("Error getting admin by UID:", error.message);
+  //     return null;
+  //   }
+  // };
 
   // // Example usage:
   // const uid = "your_admin_uid";
@@ -68,7 +69,7 @@ const useAuth = () => {
   // }
 
   // SIGNIN THE USER
-  const signin = async (userinfo: adminDetail) => {
+  const signin = async (userinfo: AdminCredentials) => {
     try {
       const { email, password } = userinfo;
       await signInWithEmailAndPassword(auth, email, password);
@@ -95,7 +96,7 @@ const useAuth = () => {
     signin,
     successMessage,
     error,
-    getAdminByid,
+    // getAdminByid,
   };
 };
 

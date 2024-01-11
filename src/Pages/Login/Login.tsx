@@ -23,10 +23,13 @@ import bgpic from "../../assets/designlogin.jpg";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import { adminDetail } from "../../types/types.auth";
+import { AdminCredentials } from "../../types/types.auth";
 import { useSelector } from "react-redux";
 
 function Login() {
+  const auth = useSelector((state:any) => state.auth);
+  console.log(auth);
+  
   const { signin, successMessage, error } = useAuth();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
@@ -49,7 +52,7 @@ function Login() {
       return;
     }
     setLoader(true);
-    const fields: adminDetail = { email, password };
+    const fields: AdminCredentials = { email, password };
     console.log(fields);
     await signin(fields);
     setLoader(false);

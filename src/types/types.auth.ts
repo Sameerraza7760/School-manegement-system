@@ -1,8 +1,34 @@
- export interface adminDetail {
-    adminName?: string ;
-    schoolName?: string;
-    email:string  ;
-    password:string;
-    role?:string
-  }
+export enum UserRole {
+  Admin = 'admin',
+  Teacher = 'teacher',
+  Student = 'student',
+}
+
+
+export interface AdminCredentials {
+  username: string;
+  schoolName?: string;
+  email: string;
+  password: string;
+  role: UserRole.Admin;
+}
+
+export interface TeacherCredentials {
+  username: string;
+  password: string;
+  email: string;
+  role: UserRole.Teacher;
+}
+
+export interface StudentCredentials {
+  username: string;
+  password: string;
+  rollNumber: string;
+  role: UserRole.Student;
+}
+
+export type UserCredentials =
+  | StudentCredentials
+  | TeacherCredentials
+  | AdminCredentials
   

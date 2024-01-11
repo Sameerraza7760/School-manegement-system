@@ -20,7 +20,8 @@ import useAuth from "../../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import bgpic from "./../../../assets/designlogin.jpg";
 import { useNavigate } from "react-router-dom";
-import { adminDetail } from "./../../../types/types.auth";
+
+import { AdminCredentials, UserRole } from "./../../../types/types.auth";
 
 function AdminRegester() {
   const { signup, successMessage, error } = useAuth();
@@ -38,25 +39,30 @@ function AdminRegester() {
 
     const target = event.target as any;
 
-    const adminName = target.adminName.value;
+    const username = target.adminName.value;
     const schoolName = target.schoolName.value;
     const email = target.email.value;
     const password = target.password.value;
 
-    if (!adminName || !schoolName || !email || !password) {
-      if (!adminName) setAdminNameError(true);
+    if (!username || !schoolName || !email || !password) {
+      if (!username) setAdminNameError(true);
       if (!schoolName) setSchoolNameError(true);
       if (!email) setEmailError(true);
       if (!password) setPasswordError(true);
       return;
     }
     setLoader(true);
-    const fields: adminDetail = { adminName, email, password, schoolName };
-    await signup(fields,role);
+    const fields: AdminCredentials = {
+      username,
+      email,
+      password,
+      schoolName,
+      role: UserRole.Admin,
+    };
+    await signup(fields);
     setLoader(false);
     // dispatch(registerUser(fields, role))
     // console.log(adminData);
-    
   };
   const handleInputChange = (event: any) => {
     const { name } = event.target;
@@ -68,7 +74,7 @@ function AdminRegester() {
 
   useEffect(() => {
     if (successMessage) {
-      toast.success(successMessage)
+      toast.success(successMessage);
       setTimeout(() => {
         navigate("/login");
       }, 2000);
