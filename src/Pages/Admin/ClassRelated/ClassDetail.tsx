@@ -1,12 +1,13 @@
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useClassRoom from "../../../hooks/useClassRoom";
 import useStudent from "../../../hooks/useStudent";
 import { ClassRoom } from "../../../types/types.class";
 import Header from "../../components/Header/Header";
 import useTeacher from "../../../hooks/useTeacher";
-import { useEffect, useState } from "react";
 import { StudentDetail } from "../../../types/types.student";
+import { useSelector } from "react-redux";
+
 const ClassDetail = () => {
   const navigate = useNavigate();
   const { getAllStudentsInClassroom } = useStudent();
@@ -14,9 +15,12 @@ const ClassDetail = () => {
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
+  console.log(enrolledStudents);
+  
   const { getClassDetailById } = useClassRoom();
   const { id } = useParams();
-  const {getAllTeacher} = useTeacher()
+  const { getAllTeacher } = useTeacher();
+
   useEffect(() => {
     const fetchData = async () => {
       const getClassDetail = async () => {
@@ -25,20 +29,21 @@ const ClassDetail = () => {
           setClassDetail(classDetail);
         }
       };
-  
+
       await getClassDetail();
       await getAllStudentsInClassroom();
-  
+
       try {
         const teachers = await getAllTeacher();
-        console.log("hi==>",teachers);
+        console.log("hi==>", teachers);
       } catch (error) {
         console.error("Error fetching teachers:", error);
       }
     };
-  
+
     fetchData();
   }, [id]);
+
   const filterStudent: StudentDetail[] = enrolledStudents?.filter(
     (item) => item.studentid?.slice(0, 20) === id
   );
@@ -47,65 +52,33 @@ const ClassDetail = () => {
     <>
       <Header />
       <div className="container mx-auto mt-10">
-        <div className="max-w-2xl mx-auto bg-white p-8  shadow-lg">
-          <h2 className="text-3xl font-bold mb-6 text-purple-800">
-            Class Detail
-          </h2>
+        <div className="max-w-2xl mx-auto bg-white p-8 rounded-md shadow-lg">
+          <h2 className="text-3xl font-bold mb-6 text-purple-800">Class Detail</h2>
 
-          {/* Current Date */}
           <div className="mb-6">
-            <label
-              htmlFor="currentDate"
-              className="text-gray-600 mb-2 block text-lg font-semibold"
-            >
-              Current Date:
-            </label>
-            <span className="text-purple-800 text-lg">17 feb 2023</span>
+            <p className="text-gray-600 text-lg font-semibold">Current Date:</p>
+            <p className="text-purple-800 text-lg">17 Feb 2023</p>
           </div>
 
-          {/* Class Name */}
           <div className="mb-6">
-            <label
-              htmlFor="className"
-              className="text-gray-600 mb-2 block text-lg font-semibold"
-            >
-              Class Name:
-            </label>
-            <span className="text-purple-800 text-lg">
-              {classDetail?.className}
-            </span>
+            <p className="text-gray-600 text-lg font-semibold">Class Name:</p>
+            <p className="text-purple-800 text-lg">{classDetail?.className}</p>
           </div>
 
-          {/* Class Teacher */}
           <div className="mb-6">
-            <label
-              htmlFor="classTeacher"
-              className="text-gray-600 mb-2 block text-lg font-semibold"
-            >
-              No Of Teacher:
-            </label>
-            <span className="text-purple-800 text-lg">None</span>
-            <br />
+            <p className="text-gray-600 text-lg font-semibold">No Of Teacher:</p>
+            <p className="text-purple-800 text-lg">None</p>
             <button
-              onClick={() => navigate(`/studentList/${id || ""}`)}
+              onClick={() => navigate(`/TeacherDetail/${id || ""}`)}
               className="text-purple-800 hover:underline focus:outline-none"
             >
               Teachers Detail
             </button>
           </div>
 
-          {/* Students List */}
           <div className="mb-6">
-            <label
-              htmlFor="classStudents"
-              className="text-gray-600 mb-2 block text-lg font-semibold"
-            >
-              No Of Students:
-            </label>
-
-            <ul className=" pl-5">
-              <li className="text-purple-800">{filterStudent.length}</li>
-            </ul>
+            <p className="text-gray-600 text-lg font-semibold">No Of Students:</p>
+            <p className="text-purple-800 text-lg">{filterStudent.length}</p>
             <button
               onClick={() => navigate(`/studentList/${id || ""}`)}
               className="text-purple-800 hover:underline focus:outline-none"
@@ -114,19 +87,11 @@ const ClassDetail = () => {
             </button>
           </div>
 
-          {/* Subjects List */}
           <div className="mb-6">
-            <label
-              htmlFor="classSubjects"
-              className="text-gray-600 mb-2 block text-lg font-semibold"
-            >
-              No Of Subjects:
-            </label>
-            <ul className=" pl-5 list-none ">
-              <li className="text-purple-800">
-                {classDetail?.subjects?.length}
-              </li>
-            </ul>
+            <p className="text-gray-600 text-lg font-semibold">No Of Subjects:</p>
+            <p className="text-purple-800 text-lg">
+              {classDetail?.subjects?.length}
+            </p>
             <button
               onClick={() => navigate(`/subjectDetail/${id || ""}`)}
               className="text-purple-800 hover:underline focus:outline-none"
@@ -135,7 +100,6 @@ const ClassDetail = () => {
             </button>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex space-x-4">
             <button
               className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none"

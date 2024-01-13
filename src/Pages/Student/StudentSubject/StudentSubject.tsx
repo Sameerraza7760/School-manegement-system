@@ -1,5 +1,6 @@
 // StudentSubjects.js
 import React from 'react';
+import StudentDashboard from '../StudentProfile/StudentDashboard/StudentDashboard';
 
 const subjectsList = [
     'Mathematics',
@@ -12,7 +13,9 @@ const subjectsList = [
 
 const StudentSubjects = () => {
     return (
-        <div className="container mx-auto mt-8">
+<>
+
+<div className="container mx-auto mt-8">
             <h1 className="text-3xl font-semibold mb-4">Your Subjects</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {subjectsList.map((subject, index) => (
@@ -29,6 +32,7 @@ const StudentSubjects = () => {
                 ))}
             </div>
         </div>
+</>
     );
 };
 

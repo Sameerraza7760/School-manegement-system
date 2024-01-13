@@ -12,6 +12,8 @@ function App(): JSX.Element {
       {/* <StudentDashboard /> */}
       
     <AppRouter />
+
+    {/* <StudentDashboard/> */}
     </>
 
     // </Provider>

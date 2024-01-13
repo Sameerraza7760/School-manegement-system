@@ -7,25 +7,31 @@ import { useNavigate } from "react-router-dom";
 // import Popup from '../components/Popup';
 
 const ChooseUser = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   return (
     <StyledContainer>
       <Container>
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
             <div>
-              <StyledPaper elevation={3} onClick={()=>navigate('/adminSignup')} >
+              <StyledPaper
+                elevation={3}
+                onClick={() => navigate("/adminSignup")}
+              >
                 <Box mb={2}>
                   <AccountCircle fontSize="large" />
                 </Box>
-                <StyledTypography >Admin</StyledTypography>
+                <StyledTypography>Admin</StyledTypography>
                 Login as an administrator to access the dashboard to manage app
                 data.
               </StyledPaper>
             </div>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <StyledPaper elevation={3}>
+            <StyledPaper
+              elevation={3}
+              onClick={() => navigate(`/Login/${"Student"}`)}
+            >
               <div>
                 <Box mb={2}>
                   <School fontSize="large" />
@@ -36,7 +42,7 @@ const ChooseUser = () => {
             </StyledPaper>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <StyledPaper elevation={3}>
+          <StyledPaper elevation={3} onClick={() => navigate(`/Login/${"Teacher"}`)}>
               <div>
                 <Box mb={2}>
                   <Group fontSize="large" />

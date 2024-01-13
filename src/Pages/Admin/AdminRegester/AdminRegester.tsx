@@ -76,7 +76,7 @@ function AdminRegester() {
     if (successMessage) {
       toast.success(successMessage);
       setTimeout(() => {
-        navigate("/login");
+        navigate(`/login/${"Admin"}`);
       }, 2000);
       return;
     }
@@ -199,7 +199,7 @@ function AdminRegester() {
                 <Grid item sx={{ ml: 2 }}>
                   <p
                     style={{ color: "purple", cursor: "pointer" }}
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate(`/login/${"Admin"}`)}
                   >
                     Log in
                   </p>

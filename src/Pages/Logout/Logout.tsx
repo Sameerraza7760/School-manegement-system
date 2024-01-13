@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Header from "../components/Header/Header";
 import "react-toastify/dist/ReactToastify.css";
 
 function Logout() {
@@ -19,6 +20,8 @@ function Logout() {
   }, [successMessage, error]);
 
   return (
+   <>
+   <Header/>
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-md">
         <h1 className="text-4xl font-extrabold mb-4 text-gray-800">
@@ -44,6 +47,7 @@ function Logout() {
         </div>
       </div>
     </div>
+   </>
   );
 }
 

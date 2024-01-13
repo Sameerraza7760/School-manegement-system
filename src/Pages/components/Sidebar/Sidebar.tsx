@@ -76,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
           Subjects
         </Menu.Item>
         <Menu.Item
-          key="AdminProfile"
+          key="ClassList"
           onClick={() => Route("ClassList")}
           icon={<UserOutlined />}
           style={{ fontSize: "20px" }}
@@ -85,8 +85,8 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
         </Menu.Item>
 
         <Menu.Item
-          key="AdminProfile"
-          onClick={() => Route("addStudents")}
+          key="AllStudent"
+          onClick={() => Route("AllStudent")}
           icon={<TeamOutlined />}
           style={{ fontSize: "20px" }}
         >
@@ -94,15 +94,15 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
         </Menu.Item>
 
         <Menu.Item
-          key="AdminProfile"
-          onClick={() => Route("Notices")}
+          key="noticeAdmin"
+          onClick={() => Route("noticeAdmin")}
           icon={<NotificationOutlined />}
           style={{ fontSize: "20px" }}
         >
           Notices
         </Menu.Item>
         <Menu.Item
-          key="AdminProfile"
+          key="Complain"
           onClick={() => Route("Complain")}
           icon={<MehOutlined />}
           style={{ fontSize: "20px" }}

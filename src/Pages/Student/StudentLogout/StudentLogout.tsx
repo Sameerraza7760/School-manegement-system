@@ -1,15 +1,19 @@
-import React from 'react';
 // import { useHistory } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { removeStudent } from "../../../Config/store/slice/CurrentStudentSlice";
+// import {remove}
 
 const StudentLogout = () => {
-//   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLogout = () => {
-    // Implement your logout logic here
-    // For example, clearing authentication tokens, etc.
-    
-    // Redirect to the login page after logout
-    // history.push('/login');
+    toast.warning("Logout");
+    setTimeout(() => {
+      navigate("/chooseUser");
+      dispatch(removeStudent());
+    }, 2000);
   };
 
   return (
@@ -31,6 +35,7 @@ const StudentLogout = () => {
             Cancel
           </button>
         </div>
+        <ToastContainer />
       </div>
     </div>
   );

@@ -14,34 +14,68 @@ import {
   Paper,
   TextField,
   Typography,
+  styled,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import bgpic from "../../assets/designlogin.jpg";
-
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { AdminCredentials } from "../../types/types.auth";
-import { useSelector } from "react-redux";
+import { StudentDetail } from "../../types/types.student";
+import { setStudent } from "../../Config/store/slice/CurrentStudentSlice";
 
 function Login() {
-  const auth = useSelector((state:any) => state.auth);
-  console.log(auth);
-  
+  const dispatch = useDispatch();
+  const enrolledStudents: StudentDetail[] = useSelector(
+    (state?: any) => state.students.enrolledStudents
+  );
+  console.log(enrolledStudents);
+
+  const { Role } = useParams();
+
   const { signin, successMessage, error } = useAuth();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [loader, setLoader] = useState(false);
-  const authData=useSelector((state)=>(state))
-  console.log(authData);
-  
-
-  const handleSubmit = async (event: React.FormEvent) => {
+  const [rollNumberError, setRollNumberError] = useState(false);
+  const [studentNameError, setStudentNameError] = useState(false);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (Role === "Student") {
+      const rollNum = event.currentTarget.rollNumber.value;
+      const studentName = event.currentTarget.studentName.value;
+
+      if (!rollNum || !studentName) {
+        if (!rollNum) setRollNumberError(true);
+        if (!studentName) setStudentNameError(true);
+
+        return;
+      }
+
+      const findStudent = enrolledStudents.find(
+        (std) =>
+          std.studentName === studentName && std.studentRollNum === rollNum
+      );
+      if (!findStudent) {
+        toast.warn("Wrong Name or Rollnumber");
+        return;
+      }
+      console.log(findStudent);
+      dispatch(setStudent(findStudent));
+      toast.success("Login");
+      setTimeout(() => {
+        navigate("/StudentDashboard");
+      }, 2000);
+    }
 
     const target = event.target as any;
     const email = target.email.value;
@@ -76,6 +110,7 @@ function Login() {
     if (name === "email") setEmailError(false);
     if (name === "password") setPasswordError(false);
   };
+
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -91,7 +126,7 @@ function Login() {
             }}
           >
             <Typography variant="h4" sx={{ mb: 2, color: "#2c2143" }}>
-              Admin Login
+              {Role} Login
             </Typography>
             <Typography>Welcome back! Please enter your details</Typography>
             <Box
@@ -100,73 +135,75 @@ function Login() {
               noValidate
               sx={{ mt: 2 }}
             >
-              {/* {role === "Student" ? (
-                        <>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="rollNumber"
-                                label="Enter your Roll Number"
-                                name="rollNumber"
-                                autoComplete="off"
-                                type="number"
-                                autoFocus
-                                error={rollNumberError}
-                                helperText={rollNumberError && 'Roll Number is required'}
-                                onChange={handleInputChange}
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="studentName"
-                                label="Enter your name"
-                                name="studentName"
-                                autoComplete="name"
-                                autoFocus
-                                error={studentNameError}
-                                helperText={studentNameError && 'Name is required'}
-                                onChange={handleInputChange}
-                            />
-                        </>
-                    ) : ( */}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Enter your email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                error={emailError}
-                helperText={emailError && "Email is required"}
-                onChange={handleInputChange}
-              />
-              {/* )} */}
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type={toggle ? 'text' : 'password'}
-                id="password"
-                autoComplete="current-password"
-                error={passwordError}
-                helperText={passwordError && "Password is required"}
-                onChange={handleInputChange}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => setToggle(!toggle)}>
-                        {toggle ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              {Role === "Student" ? (
+                <>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="rollNumber"
+                    label="Enter your Roll Number"
+                    name="rollNumber"
+                    autoComplete="off"
+                    type="number"
+                    autoFocus
+                    error={rollNumberError}
+                    helperText={rollNumberError && "Roll Number is required"}
+                    onChange={handleInputChange}
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="studentName"
+                    label="Enter your name"
+                    name="studentName"
+                    autoComplete="name"
+                    autoFocus
+                    error={studentNameError}
+                    helperText={studentNameError && "Name is required"}
+                    onChange={handleInputChange}
+                  />
+                </>
+              ) : (
+                <>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Enter your email"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    error={emailError}
+                    helperText={emailError && "Email is required"}
+                    onChange={handleInputChange}
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type={toggle ? "text" : "password"}
+                    id="password"
+                    autoComplete="current-password"
+                    error={passwordError}
+                    helperText={passwordError && "Password is required"}
+                    onChange={handleInputChange}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={() => setToggle(!toggle)}>
+                            {toggle ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </>
+              )}
               <Grid
                 container
                 sx={{ display: "flex", justifyContent: "space-between" }}
@@ -193,7 +230,7 @@ function Login() {
               <Button
                 fullWidth
                 // onClick={guestModeHandler}
-                variant="outlined" 
+                variant="outlined"
                 sx={{
                   mt: 2,
                   mb: 3,
@@ -203,18 +240,14 @@ function Login() {
               >
                 Login as Guest
               </Button>
-              {/* {role === "Admin" &&
-                        <Grid container>
-                            <Grid>
-                                Don't have an account?
-                            </Grid>
-                            <Grid item sx={{ ml: 2 }}>
-                                <StyledLink to="/Adminregister">
-                                    Sign up
-                                </StyledLink>
-                            </Grid>
-                        </Grid>
-                    } */}
+              {Role === "Admin" && (
+                <Grid container>
+                  <Grid>Don't have an account?</Grid>
+                  <Grid item sx={{ ml: 2 }}>
+                    <Link to="/adminSignup">Sign up</Link>
+                  </Grid>
+                </Grid>
+              )}
             </Box>
           </Box>
         </Grid>

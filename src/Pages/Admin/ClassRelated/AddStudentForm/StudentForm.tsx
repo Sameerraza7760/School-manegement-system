@@ -9,7 +9,6 @@ import Header from "../../../components/Header/Header";
 
 const AddStudentForm = () => {
   const { classRoomid } = useParams();
-
   const [nameError, setNameError] = useState<boolean>();
   const [studentRollNoError, setRollNumberError] = useState<boolean>();
   const [classError, setClassError] = useState<boolean>(false);
@@ -141,7 +140,6 @@ const AddStudentForm = () => {
                 helperText={subjectError && "Subject is required"}
                 onChange={handleInputChange}
               />
-            
             </div>
             <ul className="list-disc pl-5 mt-2">
               {/* Display added subjects */}

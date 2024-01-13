@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 import { StudentDetail } from "../../../types/types.student";
 
 export interface StudentState {
@@ -16,8 +15,6 @@ const studentSlice = createSlice({
   reducers: {
     enrollStudent: (state, action: PayloadAction<StudentDetail[] | null>) => {
       state.enrolledStudents = action.payload;
-   
-      
     },
   },
 });
