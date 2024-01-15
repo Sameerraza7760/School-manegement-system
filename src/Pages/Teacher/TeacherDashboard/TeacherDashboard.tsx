@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
+
 import {
   BookOutlined,
   ExclamationCircleOutlined,
@@ -6,23 +9,22 @@ import {
   ScheduleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
-import { Link, Routes, Route } from "react-router-dom";
-import StudentHomePage from "../../StudentHome/StudentHome";
-import StudentSubjects from "../../StudentSubject/StudentSubject";
-import StudentProfile from "../StudentProfile";
-import ViewAttendance from "../../ViewAttendence/ViewAttendence";
-import StudentComplain from "../../StudentComplain/StudentComplain";
-import StudentLogout from "../../StudentLogout/StudentLogout";
 import { useSelector } from "react-redux";
-import { StudentDetail } from "../../../../types/types.student";
-import ClassMaterials from "../../ClassMaterial/ClassMaterial";
-const StudentDashboard = () => {
-  const currentStudent: StudentDetail = useSelector(
-    (state: any) => state.student.student
-  );
+import { TeacherInfo } from "../../../types/types.teacher";
+import ClassDetail from "../ClassDetail/TeacherClassDetail";
+import TeacherAttendencePage from "../TeacherAttendence/TeacherAttendence";
+import TeacherComplain from "../TeacherComplain/TeacherComplain";
+import TeacherHome from "../TeacherHome/TeacherHome";
+import TeacherLogout from "../TeacherLogout";
+import TeacherProfile from "../TeacherProfilePage/TeacherProfile";
+import ViewStudent from "../ViewStudent/ViewStudent";
 
+const TeacherDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+  const teacherName: TeacherInfo = useSelector(
+    (state: any) => state.teacher.teacher
+  );
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -32,52 +34,49 @@ const StudentDashboard = () => {
     <div className="flex h-screen">
       {/* Sidebar */}
       <nav
-        className={`bg-indigo-800 text-white w-64 p-4 min-h-screen ${
+        className={`bg-gray-800 text-white w-64 p-4 min-h-screen ${
           isSidebarOpen ? "block" : "hidden"
         }`}
       >
         <div className="text-center mb-8">
-          <span className="text-3xl font-bold">School Dashboard</span>
+          <span className="text-3xl font-bold">Teacher Dashboard</span>
         </div>
         <ul>
           <li className="mb-4">
             <Link
-              to="/StudentDashboard"
+              to="/TeacherDashboard"
               className="text-white hover:text-gray-300"
             >
               <HomeOutlined /> Dashboard
             </Link>
           </li>
           <li className="mb-4">
-            <Link to="Sprofile" className="text-white hover:text-gray-300">
+            <Link to="Tprofile" className="text-white hover:text-gray-300">
               <UserOutlined /> Profile
             </Link>
           </li>
           <li className="mb-4">
-            <Link to="Ssubjects" className="text-white hover:text-gray-300">
-              <BookOutlined /> Subjects
+            <Link to="TViewStudent" className="text-white hover:text-gray-300">
+              <BookOutlined /> View Student
             </Link>
           </li>
           <li className="mb-4">
-            <Link
-              to="SViewAttendence"
-              className="text-white hover:text-gray-300"
-            >
+            <Link to="TClassDetail" className="text-white hover:text-gray-300">
+              <BookOutlined /> ClassDetail
+            </Link>
+          </li>
+          <li className="mb-4">
+            <Link to="TAttendence" className="text-white hover:text-gray-300">
               <ScheduleOutlined /> Attendance
             </Link>
           </li>
           <li className="mb-4">
-            <Link to="SComplain" className="text-white hover:text-gray-300">
+            <Link to="TComplain" className="text-white hover:text-gray-300">
               <ExclamationCircleOutlined /> Complain
             </Link>
           </li>
           <li className="mb-4">
-            <Link to="ClassMaterial" className="text-white hover:text-gray-300">
-            <BookOutlined /> Class Material
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link to="SLogout" className="text-white hover:text-gray-300">
+            <Link to="Tlogout" className="text-white hover:text-gray-300">
               <LogoutOutlined /> Logout
             </Link>
           </li>
@@ -86,7 +85,7 @@ const StudentDashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-indigo-800 text-white py-2">
+        <header className="bg-gray-800 text-white py-2">
           <div className="flex items-center justify-between p-4">
             <button
               onClick={toggleSidebar}
@@ -109,20 +108,23 @@ const StudentDashboard = () => {
             </button>
             <div className="flex items-center">
               <span className="text-gray-300 mr-2">
-                Welcome, {currentStudent.studentName}!
+                Welcome, {teacherName.teacherName}
               </span>
             </div>
           </div>
         </header>
         <main>
           <Routes>
-            <Route path="/" element={<StudentHomePage />} />
-            <Route path="Sprofile" element={<StudentProfile />} />
-            <Route path="Ssubjects" element={<StudentSubjects />} />
-            <Route path="SViewAttendence" element={<ViewAttendance />} />
-            <Route path="SComplain" element={<StudentComplain />} />
-            <Route path="SLogout" element={<StudentLogout />}></Route>
-            <Route path="ClassMaterial" element={<ClassMaterials />}></Route>
+            <Route path="/" element={<TeacherHome />} />
+            <Route path="Tprofile" element={<TeacherProfile />} />
+            <Route path="TClassDetail" element={<ClassDetail />}></Route>
+            <Route path="TViewStudent" element={<ViewStudent />}></Route>
+            <Route
+              path="TAttendence"
+              element={<TeacherAttendencePage />}
+            ></Route>
+            <Route path="TComplain" element={<TeacherComplain />}></Route>
+            <Route path="Tlogout" element={<TeacherLogout />}></Route>
           </Routes>
         </main>
       </div>
@@ -130,4 +132,4 @@ const StudentDashboard = () => {
   );
 };
 
-export default StudentDashboard;
+export default TeacherDashboard;

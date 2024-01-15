@@ -14,11 +14,12 @@ import { db } from "../db/firebase";
 import { ClassRoom } from "../types/types.class";
 const useClassRoom = () => {
   const dispatch = useDispatch();
-  const addClassToDb = async (className: string) => {
+  const addClassToDb = async (className: string, schoolid: string) => {
     try {
       const docRef = await addDoc(collection(db, "classes"), {
         timestamp: serverTimestamp(),
         className,
+        schoolid,
       });
       await updateDoc(docRef, { id: docRef.id });
     } catch (error) {

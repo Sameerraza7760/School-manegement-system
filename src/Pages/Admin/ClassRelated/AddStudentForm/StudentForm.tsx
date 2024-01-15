@@ -1,13 +1,16 @@
 import { Button, CircularProgress, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStudent from "../../../../hooks/useStudent";
 import { StudentDetail } from "../../../../types/types.student";
 import Header from "../../../components/Header/Header";
+import { useNavigate } from "react-router-dom";
 
 const AddStudentForm = () => {
+  const navigate = useNavigate();
+  const formRef = useRef<HTMLFormElement | null>(null);
   const { classRoomid } = useParams();
   const [nameError, setNameError] = useState<boolean>();
   const [studentRollNoError, setRollNumberError] = useState<boolean>();
@@ -48,7 +51,11 @@ const AddStudentForm = () => {
     if (classRoomid) {
       try {
         await addStudentDetail(StudentDetail, classRoomid);
+        formRef.current?.reset();
         toast.success("Student Add");
+        setTimeout(() => {
+          navigate(-1);
+        }, 2000);
       } catch (error) {
         console.log(error);
       }
@@ -63,6 +70,7 @@ const AddStudentForm = () => {
         // onSubmit={handleEnrollStudent}
         className="container mx-auto pt-9 mt-10"
         onSubmit={handleEnrollStudent}
+        ref={formRef}
         noValidate
       >
         <div className="w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">

@@ -11,6 +11,7 @@ export interface AdminCredentials {
   email: string;
   password: string;
   role: UserRole.Admin;
+  schoolid:string,
 }
 
 export interface TeacherCredentials {

@@ -8,4 +8,5 @@ export interface ClassRoom {
   subjects?: string[];
   timestamp: any;
   role?: string;
+  schoolid?:string
 }

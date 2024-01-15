@@ -14,28 +14,30 @@ import {
   Paper,
   TextField,
   Typography,
-  styled,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { setStudent } from "../../Config/store/slice/CurrentStudentSlice";
 import bgpic from "../../assets/designlogin.jpg";
-import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { AdminCredentials } from "../../types/types.auth";
 import { StudentDetail } from "../../types/types.student";
-import { setStudent } from "../../Config/store/slice/CurrentStudentSlice";
+import { TeacherInfo } from "../../types/types.teacher";
+import { setTeacher } from "../../Config/store/slice/CurrentTeacherSlice";
 
 function Login() {
   const dispatch = useDispatch();
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
-  console.log(enrolledStudents);
+
+  const enrolledTeachers: TeacherInfo[] = useSelector(
+    (state: any) => state.teachers.enrolledTeachers
+  );
+  console.log(enrolledTeachers);
 
   const { Role } = useParams();
 
@@ -77,6 +79,35 @@ function Login() {
       }, 2000);
     }
 
+    if (Role === "Teacher") {
+      const target = event.target as any;
+      const email = target.email.value;
+      const password = target.password.value;
+      if (!email || !password) {
+        if (!email) setEmailError(true);
+        if (!password) setPasswordError(true);
+        return;
+      }
+      setLoader(true);
+
+      const cheakTeacher = enrolledTeachers.find(
+        (item) => item.email === email && item.password === password
+      );
+      if (cheakTeacher) {
+        toast.success("Teacher Signin");
+        setTimeout(() => {
+          dispatch(setTeacher(cheakTeacher));
+          navigate("/TeacherDashboard");
+        }, 2000);
+        setLoader(false);
+        return;
+      }
+
+      toast.warn("Wrong Email or Password");
+      setLoader(false);
+      return;
+    }
+
     const target = event.target as any;
     const email = target.email.value;
     const password = target.password.value;
@@ -86,6 +117,7 @@ function Login() {
       return;
     }
     setLoader(true);
+
     const fields: AdminCredentials = { email, password };
     console.log(fields);
     await signin(fields);

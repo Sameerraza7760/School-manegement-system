@@ -25,6 +25,15 @@ import StudentProfile from "../../Pages/Student/StudentProfile/StudentProfile";
 import StudentSubjects from "../../Pages/Student/StudentSubject/StudentSubject";
 import ViewAttendance from "../../Pages/Student/ViewAttendence/ViewAttendence";
 import StudentLogout from "../../Pages/Student/StudentLogout/StudentLogout";
+import TeacherDashboard from "../../Pages/Teacher/TeacherDashboard/TeacherDashboard";
+import TeacherProfile from "../../Pages/Teacher/TeacherProfilePage/TeacherProfile";
+
+import TClassDetail from "../../Pages/Teacher/ClassDetail/TeacherClassDetail";
+import ViewStudent from "../../Pages/Teacher/ViewStudent/ViewStudent";
+import TeacherAttendance from "../../Pages/Teacher/TeacherAttendence/TeacherAttendence";
+import TeacherComplain from "../../Pages/Teacher/TeacherComplain/TeacherComplain";
+import TeacherLogout from "../../Pages/Teacher/TeacherLogout";
+import ClassMaterials from "../../Pages/Student/ClassMaterial/ClassMaterial";
 const AppRouter: React.FC = () => {
   return (
     <Routes>
@@ -58,7 +67,17 @@ const AppRouter: React.FC = () => {
         <Route path="Ssubjects" element={<StudentSubjects />} />
         <Route path="SViewAttendence" element={<ViewAttendance />} />
         <Route path="SComplain" element={<StudentComplain />} />
-        <Route path="SLogout" element={<StudentLogout/>} ></Route>
+        <Route path="SLogout" element={<StudentLogout />}></Route>
+        <Route path="ClassMaterial" element={<ClassMaterials />}></Route>
+      </Route>
+
+      <Route path="/TeacherDashboard" element={<TeacherDashboard />}>
+        <Route path="Tprofile" element={<TeacherProfile />}></Route>
+        <Route path="TClassDetail" element={<TClassDetail />}></Route>
+        <Route path="TViewStudent" element={<ViewStudent />}></Route>
+        <Route path="TAttendence" element={<TeacherAttendance />}></Route>
+        <Route path="TComplain" element={<TeacherComplain />}></Route>
+        <Route path="Tlogout" element={<TeacherLogout />}></Route>
       </Route>
     </Routes>
   );

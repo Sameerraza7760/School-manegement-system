@@ -24,7 +24,7 @@ const useAuth = () => {
         password
       );
       await addAdminToDb(userinfo, userCredential.user.uid);
-      dispatch(signupAdmin(userinfo));
+      dispatch(signupAdmin({ ...userinfo, schoolid: userCredential.user.uid }));
 
       setSuccessMessage("Registered successfully");
       return userCredential;
