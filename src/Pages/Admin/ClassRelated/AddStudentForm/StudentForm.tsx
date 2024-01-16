@@ -7,6 +7,7 @@ import useStudent from "../../../../hooks/useStudent";
 import { StudentDetail } from "../../../../types/types.student";
 import Header from "../../../components/Header/Header";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const AddStudentForm = () => {
   const navigate = useNavigate();
@@ -15,15 +16,14 @@ const AddStudentForm = () => {
   const [nameError, setNameError] = useState<boolean>();
   const [studentRollNoError, setRollNumberError] = useState<boolean>();
   const [classError, setClassError] = useState<boolean>(false);
-  const [subjectError, setSubjectError] = useState<boolean>(false);
+
   const [loader, setLoader] = useState(false);
   const { addStudentDetail } = useStudent();
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+    const { name } = event.target;
     if (name === "studentName") setNameError(false);
     if (name === "studentRollNo") setRollNumberError(false);
     if (name === "className") setClassError(false);
-    if (name === "subject") setSubjectError(false);
   };
 
   const handleEnrollStudent = async (event: React.FormEvent) => {
@@ -32,13 +32,12 @@ const AddStudentForm = () => {
     const studentName = target.studentName.value;
     const studentRollNum = target.studentRollNo.value;
     const studentClass = target.className.value;
-    const studentSubject = target.subject.value;
 
-    if (!studentName || !studentRollNum || !studentClass || !studentSubject) {
+    if (!studentName || !studentRollNum || !studentClass) {
       if (!studentName) setNameError(true);
       if (!studentRollNum) setRollNumberError(true);
       if (!studentClass) setClassError(true);
-      if (!studentSubject) setSubjectError(true);
+
       return;
     }
     setLoader(true);
@@ -46,7 +45,6 @@ const AddStudentForm = () => {
       studentName,
       studentRollNum,
       studentClass,
-      studentSubject,
     };
     if (classRoomid) {
       try {
@@ -128,31 +126,7 @@ const AddStudentForm = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="studentSubjects"
-              className="text-gray-600 mb-2 block"
-            >
-              Subjects:
-            </label>
-            <div className="flex items-center space-x-2">
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="subject"
-                label="Enter a Subject"
-                name="subject"
-                autoComplete="off"
-                error={subjectError}
-                helperText={subjectError && "Subject is required"}
-                onChange={handleInputChange}
-              />
-            </div>
-            <ul className="list-disc pl-5 mt-2">
-              {/* Display added subjects */}
-            </ul>
-          </div>
+
           <Button
             // onClick={handleEnrollStudent}
             style={{ backgroundColor: "purple" }}

@@ -1,14 +1,16 @@
-import Header from "../../components/Header/Header";
-import { useSelector } from "react-redux";
-const AdminProfile = () => {
-  const adminProfile=useSelector((state:any)=>state.auth.users)
 
+import { useSelector } from "react-redux";
+import Header from "../../components/Header/Header";
+const AdminProfile = () => {
+  const adminProfile=useSelector((state:any)=>state.admin.admin)
+  console.log(adminProfile);
   
+
   return (
     <>
       <Header />
       <main className="col-span-9 bg-gray-100 mt-[40px] p-9 h-screen max-h-screen">
-      <div className="max-w-3xl mx-auto text-center mb-8 mt-8">
+        <div className="max-w-3xl mx-auto text-center mb-8 mt-8">
         <div className="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-purple-500 cursor-pointer">
           <img
             src="admin-avatar.jpg"
@@ -35,7 +37,7 @@ const AdminProfile = () => {
           <p className="text-gray-600">Joined: January 1, 2023</p>
         </div>
       </div>
-    </main>
+      </main>
     </>
   );
 };

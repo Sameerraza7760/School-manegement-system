@@ -41,7 +41,7 @@ function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" style={{ backgroundColor: "#001529" }}>
         <Toolbar>
           <Button type="text" icon={<MenuOutlined />} onClick={showDrawer} />
           <Sidebar visible={drawerVisible} onClosed={closeDrawer} />

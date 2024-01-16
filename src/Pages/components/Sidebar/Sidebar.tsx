@@ -1,9 +1,6 @@
 import { Drawer, Menu } from "antd";
 
 import React, { useState } from "react";
-// import { toast } from "react-toastify";
-// import useAuth from "./../../../hooks/useAuth";
-// import "./style.css";
 import {
   BookOutlined,
   HomeOutlined,
@@ -16,7 +13,6 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-// import { useNavigate } from "react-router-dom";
 interface SidebarProps {
   visible: boolean;
   onClosed: () => void;
@@ -24,15 +20,72 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
   const navigate = useNavigate();
-  const { SubMenu } = Menu;
-  const [collapsed, setCollapsed] = useState(false);
+
   const [defaultSelectedKey, setDefaultSelectedKey] = useState<string | null>(
     null
   );
+
   const Route = (key: string) => {
     setDefaultSelectedKey(key);
     navigate(`/${key}`);
   };
+
+  const menuItems = [
+    {
+      key: "AdminDashboard",
+      label: "Home",
+      icon: <HomeOutlined />,
+      onClick: () => Route("adminHome"),
+    },
+    {
+      key: "CreateOrder",
+      label: "Classes",
+      icon: <BookOutlined />,
+      onClick: () => Route("classAdd"),
+    },
+    {
+      key: "Subjects",
+      label: "Subjects",
+      icon: <ReadOutlined />,
+      onClick: () => Route("addSubject"),
+    },
+    {
+      key: "ClassList",
+      label: "Teachers",
+      icon: <UserOutlined />,
+      onClick: () => Route("ClassList"),
+    },
+    {
+      key: "AllStudent",
+      label: "Students",
+      icon: <TeamOutlined />,
+      onClick: () => Route("AllStudent"),
+    },
+    {
+      key: "noticeAdmin",
+      label: "Notices",
+      icon: <NotificationOutlined />,
+      onClick: () => Route("noticeAdmin"),
+    },
+    {
+      key: "Complain",
+      label: "Complain",
+      icon: <MehOutlined />,
+      onClick: () => Route("Complain"),
+    },
+    {
+      key: "AdminProfile",
+      label: "Profile",
+      icon: <UserOutlined />,
+      onClick: () => Route("AdminProfile"),
+    },
+    {
+      key: "6",
+      label: "Logout",
+      icon: <LogoutOutlined />,
+      onClick: () => navigate("/logout"),
+    },
+  ];
 
   return (
     <Drawer
@@ -40,92 +93,16 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
       placement="left"
       onClose={onClosed}
       className="custom-drawer"
-      open={visible}
+      open={visible} // Use the visible prop instead of open
       style={{ backgroundColor: "#001529", color: "white" }}
     >
       <Menu
         selectedKeys={defaultSelectedKey ? [defaultSelectedKey] : []}
-        defaultOpenKeys={defaultSelectedKey ? [defaultSelectedKey] : []}
         mode="inline"
         theme="dark"
-        inlineCollapsed={collapsed}
         style={{ height: "100%" }}
-      >
-        <Menu.Item
-          key="AdminDashboard"
-          onClick={() => Route("adminHome")}
-          icon={<HomeOutlined />}
-          style={{ fontSize: "20px" }}
-        >
-          Home
-        </Menu.Item>
-        <Menu.Item
-          key="CreateOrder"
-          onClick={() => Route("classAdd")}
-          style={{ fontSize: "20px" }}
-          icon={<BookOutlined />}
-        >
-          Classes
-        </Menu.Item>
-        <Menu.Item
-          key="Subjects"
-          onClick={() => Route("addSubject")}
-          icon={<ReadOutlined />}
-          style={{ fontSize: "20px" }}
-        >
-          Subjects
-        </Menu.Item>
-        <Menu.Item
-          key="ClassList"
-          onClick={() => Route("ClassList")}
-          icon={<UserOutlined />}
-          style={{ fontSize: "20px" }}
-        >
-          Teachers
-        </Menu.Item>
-
-        <Menu.Item
-          key="AllStudent"
-          onClick={() => Route("AllStudent")}
-          icon={<TeamOutlined />}
-          style={{ fontSize: "20px" }}
-        >
-          Students
-        </Menu.Item>
-
-        <Menu.Item
-          key="noticeAdmin"
-          onClick={() => Route("noticeAdmin")}
-          icon={<NotificationOutlined />}
-          style={{ fontSize: "20px" }}
-        >
-          Notices
-        </Menu.Item>
-        <Menu.Item
-          key="Complain"
-          onClick={() => Route("Complain")}
-          icon={<MehOutlined />}
-          style={{ fontSize: "20px" }}
-        >
-          Complain
-        </Menu.Item>
-        <Menu.Item
-          key="AdminProfile"
-          onClick={() => Route("AdminProfile")}
-          icon={<UserOutlined />}
-          style={{ fontSize: "20px" }}
-        >
-          Profile
-        </Menu.Item>
-        <Menu.Item
-          key="6"
-          icon={<LogoutOutlined />}
-          style={{ fontSize: "20px" }}
-          onClick={() => navigate("/logout")}
-        >
-          Logout
-        </Menu.Item>
-      </Menu>
+        items={menuItems}
+      />
     </Drawer>
   );
 };

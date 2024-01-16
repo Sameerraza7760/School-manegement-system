@@ -1,19 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import studentsReducer from "./slice/StudentSlice";
-
-import { PersistConfig, persistReducer, persistStore } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import classReducer from "./../store/slice/ClassSlice";
-import authReducer, { AuthState } from "./slice/AuthSlice";
 import studentReducer from "./slice/CurrentStudentSlice";
-import teachersReducer from "./slice/TeachersSlice";
 import teacherReducer from "./slice/CurrentTeacherSlice";
-
-const authPersistConfig: PersistConfig<AuthState> = {
-  key: "auth",
-  storage: storage,
-  whitelist: ["users"],
-};
+import teachersReducer from "./slice/TeachersSlice";
+import adminReducer from "./slice/CurrentAdmin";
 
 const studentsPersistConfig = {
   key: "students",
@@ -45,13 +38,18 @@ const teacherPersistConfig = {
   whitelist: ["teacher"],
 };
 
+const adminPersistConfig = {
+  key: "admin",
+  storage: storage,
+  whitelist: ["admin"],
+};
 const rootReducer = {
   students: persistReducer(studentsPersistConfig, studentsReducer),
-  auth: persistReducer(authPersistConfig, authReducer),
   class: persistReducer(classPersistConfig, classReducer),
   student: persistReducer(studentPersistConfig, studentReducer),
   teachers: persistReducer(teachersPersistConfig, teachersReducer),
   teacher: persistReducer(teacherPersistConfig, teacherReducer),
+  admin: persistReducer(adminPersistConfig, adminReducer),
 };
 const store = configureStore({
   reducer: rootReducer,

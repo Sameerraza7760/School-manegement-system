@@ -1,49 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useClassRoom from "../../../hooks/useClassRoom";
-import Header from "../../components/Header/Header";
-import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useClassRoom from "../../../hooks/useClassRoom";
 import { ClassRoom } from "../../../types/types.class";
+import Header from "../../components/Header/Header";
 
 const ClassAdd = () => {
   const { addClassToDb, deleteClassFromDb, getClassesFromDb } = useClassRoom();
-  const schoolId: string = useSelector(
-    (state: any) => state.auth.users.schoolid
-  );
-  console.log(schoolId);
-  
-
-  const [className, setClassName] = useState("");
-  const [classList, setClassList] = useState<any[]>([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const schoolId: string = useSelector(
+    (state: any) => state.admin.admin.schoolid
+  );
+  const classes = useSelector((state: any) => state.class.classes);
+  const [className, setClassName] = useState("");
   const navigate = useNavigate();
 
   const handleAddClass = async () => {
     if (className.trim() !== "") {
       await addClassToDb(className, schoolId);
-      toast.success("Class Added");
-      setShowSuccessMessage(true);
       setClassName("");
+      toast.success("Class Add");
+      setShowSuccessMessage(true);
     }
   };
-
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    if (showSuccessMessage) {
-      timeoutId = setTimeout(() => {
-        setShowSuccessMessage(false);
-      }, 2000);
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [showSuccessMessage, setShowSuccessMessage]);
 
   const deleteClass = async (id: string) => {
     await deleteClassFromDb(id);
@@ -52,15 +34,13 @@ const ClassAdd = () => {
   };
 
   useEffect(() => {
-    const getClass = async () => {
-      const classes: ClassRoom[] = await getClassesFromDb();
-      const filterClasses: ClassRoom[] = classes.filter(
-        (item) => item.schoolid === schoolId
-      );
-      setClassList(filterClasses);
-    };
-    getClass();
+    getClassesFromDb();
+    setShowSuccessMessage(false);
   }, [showSuccessMessage]);
+
+  const filterClasses: ClassRoom[] = classes.filter(
+    (item: ClassRoom) => item.schoolid === schoolId
+  );
 
   return (
     <>
@@ -98,7 +78,7 @@ const ClassAdd = () => {
                 Class List
               </h3>
               <ul className="space-y-4">
-                {classList.map((item) => (
+                {filterClasses.map((item) => (
                   <li
                     key={item.id}
                     className="bg-gray-100 p-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"

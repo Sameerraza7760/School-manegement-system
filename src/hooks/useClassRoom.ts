@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setClass } from "../Config/store/slice/ClassSlice";
 import { db } from "../db/firebase";
 import { ClassRoom } from "../types/types.class";
+import { useEffect } from "react";
 const useClassRoom = () => {
   const dispatch = useDispatch();
   const addClassToDb = async (className: string, schoolid: string) => {
@@ -41,7 +42,6 @@ const useClassRoom = () => {
       return [];
     }
   };
-
   const deleteClassFromDb = async (id: string) => {
     try {
       const classDocRef = doc(db, "classes", id);

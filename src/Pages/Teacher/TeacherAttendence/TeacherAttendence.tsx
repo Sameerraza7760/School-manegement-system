@@ -1,6 +1,5 @@
-// src/components/TeacherAttendance.js
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const TeacherAttendance = () => {
   const [attendanceData, setAttendanceData] = useState([

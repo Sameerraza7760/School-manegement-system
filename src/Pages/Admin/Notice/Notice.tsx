@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
+import { useSelector } from "react-redux";
+import useAuth from "../../../hooks/useAuth";
+import { ToastContainer, toast } from "react-toastify";
+import { notics } from "../../../types/type.notics";
 const AdminNoticePage = () => {
-  const [notice, setNotice] = useState("");
+  const { addNoticeinDb, getNoticeFromDb } = useAuth();
+  const [noticeText, setNotice] = useState("");
+  const schoolId = useSelector((state: any) => state.admin.admin.schoolid);
 
-  const handleNoticeChange = (e: any) => {
-    setNotice(e.target.value);
-  };
-
-  const handleCreateNotice = () => {
-    console.log("Notice created:", notice);
-    setNotice("");
+  const handleCreateNotice = async () => {
+    if (noticeText.trim() !== "") {
+      const notice: notics = { schoolid: schoolId, noticeContent: noticeText };
+      try {
+        await addNoticeinDb(notice);
+        toast.success("Notics Add");
+        setNotice("");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -23,8 +33,8 @@ const AdminNoticePage = () => {
           <textarea
             className="w-full h-40 p-2 mb-4 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
             placeholder="Type your notice here..."
-            value={notice}
-            onChange={handleNoticeChange}
+            value={noticeText}
+            onChange={(e) => setNotice(e.target.value)}
           ></textarea>
           <button
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none"
@@ -33,6 +43,7 @@ const AdminNoticePage = () => {
             Create Notice
           </button>
         </div>
+        <ToastContainer />
       </div>
     </>
   );

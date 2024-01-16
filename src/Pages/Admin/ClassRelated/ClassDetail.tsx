@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import useClassRoom from "../../../hooks/useClassRoom";
 import useStudent from "../../../hooks/useStudent";
-import { ClassRoom } from "../../../types/types.class";
-import Header from "../../components/Header/Header";
 import useTeacher from "../../../hooks/useTeacher";
+import { ClassRoom } from "../../../types/types.class";
 import { StudentDetail } from "../../../types/types.student";
-import { useSelector } from "react-redux";
+import Header from "../../components/Header/Header";
 
 const ClassDetail = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const ClassDetail = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, []);
 
   const filterStudent: StudentDetail[] = enrolledStudents?.filter(
     (item) => item.studentid?.slice(0, 20) === id

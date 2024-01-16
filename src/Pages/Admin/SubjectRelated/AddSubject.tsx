@@ -5,7 +5,6 @@ import Header from "./../../components/Header/Header";
 
 function AddSubject() {
   const { classRoomid } = useParams();
-
   const { addSubjectinClass } = useSubject();
   const [subjectName, setSubjectName] = useState("");
 

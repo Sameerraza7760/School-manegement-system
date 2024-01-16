@@ -2,19 +2,26 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AdminCredentials } from "../types/types.auth";
 import { auth, db } from "./../db/firebase";
-import { signupAdmin } from "../Config/store/slice/AuthSlice";
-// import { setAuth,Logout } from "../Config/store/slice/AuthSlice";
+import { setAdmin } from "../Config/store/slice/CurrentAdmin";
+import { notics } from "../types/type.notics";
 
 const useAuth = () => {
   const dispatch = useDispatch();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  // SIGNUP USER
+
   const signup = async (userinfo: AdminCredentials) => {
     const { email, password } = userinfo;
     try {
@@ -24,7 +31,6 @@ const useAuth = () => {
         password
       );
       await addAdminToDb(userinfo, userCredential.user.uid);
-      dispatch(signupAdmin({ ...userinfo, schoolid: userCredential.user.uid }));
 
       setSuccessMessage("Registered successfully");
       return userCredential;
@@ -34,10 +40,13 @@ const useAuth = () => {
   };
 
   // ADD USER IN DATABASE
-  const addAdminToDb = async (userProfile: AdminCredentials, uid: string) => {
-    let { email, username, schoolName } = userProfile;
-    let adminData = { schoolName, email, username, uid };
-    return setDoc(doc(db, "Admin", uid), adminData);
+  const addAdminToDb = async (
+    userProfile: AdminCredentials,
+    schoolid: string
+  ) => {
+    let { email, username, schoolName, role } = userProfile;
+    let adminData = { schoolName, email, username, schoolid, role };
+    return setDoc(doc(db, "Admin", schoolid), adminData);
   };
 
   // const getAdminByid = async (uid: string) => {
@@ -72,14 +81,26 @@ const useAuth = () => {
   const signin = async (userinfo: AdminCredentials) => {
     try {
       const { email, password } = userinfo;
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const schoolid = userCredential.user.uid;
+      const adminData = await fetchAdminDataFromDatabase(schoolid);
+      const loggedInAdmin: AdminCredentials = {
+        email: userCredential.user.email,
+        ...adminData,
+      };
+      console.log(loggedInAdmin);
+      dispatch(setAdmin(loggedInAdmin));
       setSuccessMessage("Signin Succsessfully");
     } catch (e: any) {
       setError(e.message);
     }
   };
 
-  // LOGOUT THE CURRENT USER
+  // LOGOUT  CURRENT USER
   async function logout() {
     try {
       await auth.signOut();
@@ -90,13 +111,63 @@ const useAuth = () => {
     }
   }
 
+  const fetchAdminDataFromDatabase = async (id: string) => {
+    try {
+      const adminDocRef = doc(db, "Admin", id);
+      const adminSnapShot = await getDoc(adminDocRef);
+      if (adminSnapShot.exists()) {
+        const adminData = adminSnapShot.data() as AdminCredentials;
+        console.log("admin details:", adminData);
+
+        return adminData;
+      } else {
+        console.log("admin not found");
+        return null;
+      }
+    } catch (error: any) {
+      console.error("Error fetching admin details:", error.message);
+      throw error;
+    }
+  };
+
+  const addNoticeinDb = async (notice: notics) => {
+    const { schoolid, noticeContent } = notice;
+
+    try {
+      setDoc(doc(db, "notics", schoolid), {
+        content: noticeContent,
+        timestamp: serverTimestamp(),
+      });
+    } catch (error) {
+      console.error("Error adding notice to the database:", error);
+    }
+  };
+
+  const getNoticeFromDb = async (schoolid: string) => {
+    try {
+      const noticeDocRef = doc(db, "notics", schoolid);
+      const noticeSnapshot = await getDoc(noticeDocRef);
+
+      if (noticeSnapshot.exists()) {
+        return noticeSnapshot.data() as notics;
+      } else {
+        console.log("Notice not found");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error getting notice from the database:", error);
+      return null;
+    }
+  };
+
   return {
     signup,
     logout,
     signin,
     successMessage,
     error,
-    // getAdminByid,
+    addNoticeinDb,
+    getNoticeFromDb,
   };
 };
 

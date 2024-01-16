@@ -7,7 +7,7 @@ import Header from "./../../components/Header/Header";
 function SubjectList() {
   const classes = useSelector((state: any) => state?.class?.classes);
   const navigate = useNavigate();
-  const [selectedSubjects, setSelectedSubjects] = useState<any[]>([]);
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
   const location = useLocation();
   const selectedClass: number[] = location.state.selectedClasses;
 console.log(selectedClass);

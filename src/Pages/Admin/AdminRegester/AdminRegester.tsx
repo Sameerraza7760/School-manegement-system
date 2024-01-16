@@ -16,12 +16,11 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import useAuth from "../../../hooks/useAuth";
-import { useState, useEffect } from "react";
-import bgpic from "./../../../assets/designlogin.jpg";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import bgpic from "./../../../assets/designlogin.jpg";
 
-import { AdminCredentials, UserRole } from "./../../../types/types.auth";
 
 function AdminRegester() {
   const { signup, successMessage, error } = useAuth();
@@ -52,17 +51,15 @@ function AdminRegester() {
       return;
     }
     setLoader(true);
-    const fields: AdminCredentials = {
+    const fields = {
       username,
       email,
       password,
       schoolName,
-      role: UserRole.Admin,
+      role: role,
     };
     await signup(fields);
     setLoader(false);
-    // dispatch(registerUser(fields, role))
-    // console.log(adminData);
   };
   const handleInputChange = (event: any) => {
     const { name } = event.target;
@@ -226,7 +223,6 @@ function AdminRegester() {
         />
       </Grid>
       <ToastContainer />
-      {/* <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} /> */}
     </div>
   );
 }

@@ -12,8 +12,6 @@ function ShowSubject() {
   const { classRoomid } = useParams();
 
   const handleAddSubject = () => {
-    // Add logic to handle adding a new subject to the list
-    // For now, let's just close the modal
     setModalOpen(false);
   };
 

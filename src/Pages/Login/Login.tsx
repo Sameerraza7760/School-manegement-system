@@ -37,7 +37,7 @@ function Login() {
   const enrolledTeachers: TeacherInfo[] = useSelector(
     (state: any) => state.teachers.enrolledTeachers
   );
-  console.log(enrolledTeachers);
+  console.log(enrolledStudents);
 
   const { Role } = useParams();
 
