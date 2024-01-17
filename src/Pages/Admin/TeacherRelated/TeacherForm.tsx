@@ -7,29 +7,30 @@ import { TeacherInfo } from "../../../types/types.teacher";
 import Header from "./../../components/Header/Header";
 import { useDispatch } from "react-redux";
 import { enrolledTeachers } from "../../../Config/store/slice/TeachersSlice";
+import { useSelector } from "react-redux";
 const TeacherForm = () => {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { addTeacherInDB } = useTeacher();
-  const [formData, setFormData] = useState<TeacherInfo>({
-    teacherName: "",
-    className: [],
-    subject: [],
-    password: "",
-    email: "",
-    phoneNumber: 0, // Change the initial value to null
-  });
-
   const location = useLocation();
   const selectedClass = location.state;
-  const allClasses = selectedClass.selectedSubjects;
+  const teacherDetail = selectedClass.teacherDetail;
+  const { addTeacherInDB } = useTeacher();
+  const classId = useSelector((state: any) => state.class.classes);
+  console.log(classId);
+
+  const [formData, setFormData] = useState<TeacherInfo>({
+    teacherName: "",
+    password: "",
+    email: "",
+    phoneNumber: 0,
+    ...teacherDetail,
+  });
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-      className: allClasses,
     }));
   };
 
@@ -44,14 +45,14 @@ const TeacherForm = () => {
     }
     try {
       await addTeacherInDB(formData);
-      
+
       console.log("Form Submitted:", formData);
       toast.success("teacher Add");
-      
-    setTimeout(() => {
-      dispatch(enrolledTeachers(formData))
-      navigate("/classAdd");
-    }, 2000);
+
+      setTimeout(() => {
+        dispatch(enrolledTeachers(formData));
+        navigate("/classAdd");
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -125,7 +126,7 @@ const TeacherForm = () => {
               </label>
               <div className="flex flex-wrap gap-2">
                 {/* Replace 'availableClasses' with your actual list of classes */}
-                {selectedClass.selectedSubjects.map(
+                {/* {selectedClass.selectedSubjects.map(
                   (classItem: TeacherInfo) => (
                     <button
                       key={classItem.classId}
@@ -135,7 +136,7 @@ const TeacherForm = () => {
                       {classItem.className}
                     </button>
                   )
-                )}
+                )} */}
               </div>
             </div>
             <button

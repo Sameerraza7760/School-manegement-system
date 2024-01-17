@@ -40,17 +40,15 @@ const TeacherProfile = () => {
         </div>
         <div className="mb-4">
           <label className="text-gray-600 font-semibold">Subject</label>
-          <p className="text-gray-800">{teacherProfile.className[0].subject}</p>
+          <p className="text-gray-800">{teacherProfile.selectedSubject}</p>
         </div>
         <div className="mb-4">
           <label className="text-gray-600 font-semibold">ClassName</label>
-          <p className="text-gray-800">
-            {teacherProfile.className[0].className}
-          </p>
+          <p className="text-gray-800">{teacherProfile.ClassName}</p>
         </div>
         <div className="mb-4">
           <label className="text-gray-600 font-semibold">ClassName ID</label>
-          <p className="text-gray-800">{teacherProfile.className[0].classId}</p>
+          <p className="text-gray-800">{teacherProfile.classId}</p>
         </div>
       </div>
       <div className="mt-6">

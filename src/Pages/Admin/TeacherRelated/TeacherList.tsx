@@ -6,18 +6,13 @@ import Header from "../../components/Header/Header";
 import { useParams } from "react-router-dom";
 
 const TeacherDetailsPage = () => {
-  const {id} = useParams()
-
-  console.log(id);
-  
   const navigate = useNavigate();
+  const [isAddingTeacher, setIsAddingTeacher] = useState(false);
+  const { id } = useParams();
   const teacherName: TeacherInfo[] = useSelector(
     (state: any) => state.teachers.enrolledTeachers
   );
-  console.log(teacherName);
-
-  const [isAddingTeacher, setIsAddingTeacher] = useState(false);
-
+  const filterTeacher = teacherName.filter((item) => item.classId === id);
   return (
     <>
       <Header />
@@ -27,31 +22,24 @@ const TeacherDetailsPage = () => {
           Teacher Details
         </h2>
 
-        {teacherName
-  .filter((item) =>
-    item.className.some((classItem) => classItem.classId === id)
-  )
-  .map((teacher, index) => (
-    <div key={index} className="bg-white p-6 rounded-md shadow-md mb-8">
-      <h2 className="text-lg font-semibold mb-4">
-        {teacher.teacherName}
-      </h2>
-      <div className="mb-4">
-        <span className="font-medium text-gray-600">Subjects:</span>
-        <ul className="list-disc pl-5">
-          {teacher.className.map((classItem, classIndex) => (
-            <li key={classIndex} className="text-gray-700">
-              {classItem.subject}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <span className="font-medium text-gray-600">Contact Number:</span>
-        <p className="text-gray-700">{teacher.phoneNumber}</p>
-      </div>
-    </div>
-  ))}
+        {filterTeacher?.map((teacher, index) => (
+          <div key={index} className="bg-white p-6 rounded-md shadow-md mb-8">
+            <h2 className="text-lg font-semibold mb-4">
+              {teacher.teacherName}
+            </h2>
+            <div className="mb-4">
+              <span className="font-medium text-gray-600">Subjects:</span>
+              <ol className="list-disc pl-5">
+                <li className="text-gray-700">{teacher.selectedSubject}</li>
+              </ol>
+            </div>
+            <div>
+              <span className="font-medium text-gray-600">Contact Number:</span>
+              <p className="text-gray-700">{teacher.phoneNumber}</p>
+            </div>
+          </div>
+        ))}
+
         <button
           onClick={() => setIsAddingTeacher(true)}
           className="bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 focus:outline-none"

@@ -5,7 +5,7 @@ import { notics } from "../../../types/type.notics";
 
 function Notice() {
   const schoolId = useSelector((state: any) => state.admin.admin.schoolid);
-  console.log(schoolId);
+
 
   const { getNoticeFromDb } = useAuth();
   const [noticeText, setNotice] = useState<notics | null>();
@@ -13,9 +13,8 @@ function Notice() {
     const getNotics = async () => {
       const noticsTxt: notics | null = await getNoticeFromDb(schoolId);
       console.log("hi==>", noticsTxt);
-  
       if (noticsTxt) {
-        setNotice(noticsTxt); // Fix the variable name here
+        setNotice(noticsTxt); 
       }
     };
     getNotics();
@@ -27,7 +26,7 @@ function Notice() {
           <h2 className="text-2xl font-bold">Important Notice</h2>
           {/* <p className="text-gray-500">{noticeText?.timestamp}</p> */}
         </div>
-        <p className="text-gray-700 mb-4">{noticeText?.content}</p>
+        <p className="text-gray-700 mb-4">{noticeText?.noticeContent}</p>
 
         <div className="mt-6">
           <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none">

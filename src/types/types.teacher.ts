@@ -1,9 +1,9 @@
 export interface TeacherInfo {
   teacherName: string;
-    password:string
-  className: any[]; 
+  password: string;
   classId?: string;
-  subject: string[];
   email: string;
   phoneNumber: number | string;
+  ClassName: string;
+  selectedSubject: string;
 }

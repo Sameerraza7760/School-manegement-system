@@ -25,8 +25,22 @@ const useTeacher = () => {
 
   // ADD teacher IN DATABASE
   const addTeacherintoDb = async (teacherInfo: TeacherInfo, uid: string) => {
-    let { email, phoneNumber, className, subject, teacherName } = teacherInfo;
-    let teacherData = { email, phoneNumber, className, subject, teacherName };
+    let {
+      email,
+      phoneNumber,
+      classId,
+      teacherName,
+      selectedSubject,
+      ClassName,
+    } = teacherInfo;
+    let teacherData = {
+      email,
+      phoneNumber,
+      classId,
+      teacherName,
+      selectedSubject,
+      ClassName,
+    };
     return setDoc(doc(db, "Teachers", uid), teacherData);
   };
 
@@ -50,7 +64,7 @@ const useTeacher = () => {
   };
   return {
     addTeacherInDB,
-    getAllTeacher
+    getAllTeacher,
   };
 };
 

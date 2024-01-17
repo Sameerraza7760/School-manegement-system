@@ -34,6 +34,8 @@ import TeacherAttendance from "../../Pages/Teacher/TeacherAttendence/TeacherAtte
 import TeacherComplain from "../../Pages/Teacher/TeacherComplain/TeacherComplain";
 import TeacherLogout from "../../Pages/Teacher/TeacherLogout";
 import ClassMaterials from "../../Pages/Student/ClassMaterial/ClassMaterial";
+import ManegeAssinment from "../../Pages/Teacher/ManegeAssinment/ManegeAssinment";
+import ViewCompletedAssignments from "../../Pages/Teacher/ManegeAssinment/ViewCompleteAssignment";
 const AppRouter: React.FC = () => {
   return (
     <Routes>
@@ -78,7 +80,10 @@ const AppRouter: React.FC = () => {
         <Route path="TAttendence" element={<TeacherAttendance />}></Route>
         <Route path="TComplain" element={<TeacherComplain />}></Route>
         <Route path="Tlogout" element={<TeacherLogout />}></Route>
+       
       </Route>
+      <Route path="/TmanegeAssignment" element={<ManegeAssinment/>} ></Route>
+      <Route path="/ViewAssignment" element={<ViewCompletedAssignments/>} ></Route>
     </Routes>
   );
 };

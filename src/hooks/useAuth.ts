@@ -3,19 +3,17 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import {
-  addDoc,
-  collection,
   doc,
   getDoc,
   serverTimestamp,
-  setDoc,
+  setDoc
 } from "firebase/firestore";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { AdminCredentials } from "../types/types.auth";
-import { auth, db } from "./../db/firebase";
 import { setAdmin } from "../Config/store/slice/CurrentAdmin";
 import { notics } from "../types/type.notics";
+import { AdminCredentials } from "../types/types.auth";
+import { auth, db } from "./../db/firebase";
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -135,8 +133,9 @@ const useAuth = () => {
 
     try {
       setDoc(doc(db, "notics", schoolid), {
-        content: noticeContent,
+        noticeContent: noticeContent,
         timestamp: serverTimestamp(),
+        schoolid: schoolid,
       });
     } catch (error) {
       console.error("Error adding notice to the database:", error);

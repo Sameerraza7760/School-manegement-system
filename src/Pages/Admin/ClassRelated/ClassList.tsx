@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ClassRoom } from "../../../types/types.class";
@@ -9,35 +9,32 @@ function ClassList() {
   const navigate = useNavigate();
   const classes = useSelector((state: any) => state?.class?.classes);
   const { getClassesFromDb } = useClassRoom();
-  console.log(classes);
-  const [selectedClasses, setSelectedClasses] = useState<number[]>([]);
 
-  const handleCheckboxChange = (className: number) => {
-    const updatedSelectedClasses = [...selectedClasses];
-    const index = updatedSelectedClasses.indexOf(className);
+  const [selectedClass, setSelectedClass] = useState<ClassRoom | null>(null);
 
-    if (index === -1) {
-      updatedSelectedClasses.push(className);
-    } else {
-      updatedSelectedClasses.splice(index, 1);
-    }
-
-    setSelectedClasses(updatedSelectedClasses);
+  const handleCheckboxChange = (classItem: ClassRoom) => {
+    setSelectedClass(classItem);
   };
 
   const handleSelectAll = () => {
-    const allClassNames = classes.map(
-      (classItem: ClassRoom) => classItem.className
-    );
-    setSelectedClasses(allClassNames);
+    setSelectedClass(null);
   };
 
   const handleNextClick = () => {
-    navigate("/SubjectList", { state: { selectedClasses } });
+    if (selectedClass) {
+      console.log(selectedClass);
+      
+      navigate("/SubjectList", { state: { selectedClass } });
+    } else {
+      // Handle the case where no class is selected
+      console.error("Please select a class.");
+    }
   };
+
   useEffect(() => {
     getClassesFromDb();
   }, []);
+
   return (
     <>
       <Header />
@@ -50,7 +47,7 @@ function ClassList() {
             <label className="text-gray-600 mb-2 block">
               <input
                 type="checkbox"
-                checked={selectedClasses.length === classes.length}
+                checked={!selectedClass}
                 onChange={handleSelectAll}
                 className="mr-2"
               />
@@ -66,8 +63,8 @@ function ClassList() {
                 <li key={classItem.id} className="flex items-center">
                   <input
                     type="checkbox"
-                    checked={selectedClasses.includes(classItem.className)}
-                    onChange={() => handleCheckboxChange(classItem.className)}
+                    checked={selectedClass === classItem}
+                    onChange={() => handleCheckboxChange(classItem)}
                     className="mr-2"
                   />
                   <span className="text-gray-800">
@@ -79,15 +76,15 @@ function ClassList() {
           </div>
           <div>
             <h3 className="text-xl font-bold mb-2 text-purple-800">
-              Selected Classes
+              Selected Class
             </h3>
-            <ul className="space-y-2">
-              {selectedClasses.map((className) => (
-                <li key={className} className="flex items-center">
-                  <span className="text-blue-800"> Class {className}</span>
-                </li>
-              ))}
-            </ul>
+            {selectedClass && (
+              <div className="flex items-center">
+                <span className="text-blue-800">
+                  Class {selectedClass.className}
+                </span>
+              </div>
+            )}
           </div>
           <div className="mt-6">
             <button

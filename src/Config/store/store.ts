@@ -7,6 +7,7 @@ import studentReducer from "./slice/CurrentStudentSlice";
 import teacherReducer from "./slice/CurrentTeacherSlice";
 import teachersReducer from "./slice/TeachersSlice";
 import adminReducer from "./slice/CurrentAdmin";
+import currentClassReducer from "./slice/CurrentClassSlice";
 
 const studentsPersistConfig = {
   key: "students",
@@ -43,6 +44,12 @@ const adminPersistConfig = {
   storage: storage,
   whitelist: ["admin"],
 };
+
+const ActiveClassConfig = {
+  key: "currentClass",
+  storage: storage,
+  whitelist: ["currentClass"],
+};
 const rootReducer = {
   students: persistReducer(studentsPersistConfig, studentsReducer),
   class: persistReducer(classPersistConfig, classReducer),
@@ -50,6 +57,7 @@ const rootReducer = {
   teachers: persistReducer(teachersPersistConfig, teachersReducer),
   teacher: persistReducer(teacherPersistConfig, teacherReducer),
   admin: persistReducer(adminPersistConfig, adminReducer),
+  currentClass: persistReducer(ActiveClassConfig, currentClassReducer),
 };
 const store = configureStore({
   reducer: rootReducer,
