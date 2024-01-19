@@ -55,7 +55,7 @@ function SubjectList() {
             <span className="ml-1">
               Class {location.state.selectedClass.className}
             </span>
-            {ClassSubject.subjects.map((subject: string, index: number) => (
+            {ClassSubject?.subjects?.map((subject: string, index: number) => (
               <div key={index} className="mb-6">
                 <ul className="space-y-2">
                   <li key={index} className="flex items-center">

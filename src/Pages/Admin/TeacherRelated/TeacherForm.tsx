@@ -5,18 +5,14 @@ import "react-toastify/dist/ReactToastify.css";
 import useTeacher from "../../../hooks/useTeacher";
 import { TeacherInfo } from "../../../types/types.teacher";
 import Header from "./../../components/Header/Header";
-import { useDispatch } from "react-redux";
-import { enrolledTeachers } from "../../../Config/store/slice/TeachersSlice";
-import { useSelector } from "react-redux";
 const TeacherForm = () => {
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const location = useLocation();
   const selectedClass = location.state;
   const teacherDetail = selectedClass.teacherDetail;
   const { addTeacherInDB } = useTeacher();
-  const classId = useSelector((state: any) => state.class.classes);
-  console.log(classId);
+  
 
   const [formData, setFormData] = useState<TeacherInfo>({
     teacherName: "",
@@ -45,12 +41,9 @@ const TeacherForm = () => {
     }
     try {
       await addTeacherInDB(formData);
-
       console.log("Form Submitted:", formData);
       toast.success("teacher Add");
-
       setTimeout(() => {
-        dispatch(enrolledTeachers(formData));
         navigate("/classAdd");
       }, 2000);
     } catch (error) {

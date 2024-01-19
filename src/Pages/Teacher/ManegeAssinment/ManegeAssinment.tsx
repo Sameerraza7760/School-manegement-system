@@ -44,7 +44,7 @@ const ManageAssignment: React.FC = () => {
       <div className="bg-gray-100 p-6 rounded-md w-full ">
         {currentView === "create" && (
           <div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">
+            <h2 className="text-3xl font-bold  mb-6 text-blue-600">
               Create Assignment
             </h2>
             <AssignmentForm />
@@ -54,7 +54,7 @@ const ManageAssignment: React.FC = () => {
 
         {currentView === "view" && (
           <div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">
+            <h2 className="text-3xl font-bold mb-6 text-blue-600">
               View Assignments
             </h2>
             <ViewAssignments />

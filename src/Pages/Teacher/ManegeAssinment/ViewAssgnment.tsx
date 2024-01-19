@@ -6,7 +6,7 @@ import { TeacherInfo } from "../../../types/types.teacher";
 import { Assignment } from "../../../types/types.assignment";
 
 const ViewAssignments: React.FC = () => {
-  const [assinment, setAssignment] = useState<Assignment | null>(null);
+  const [assignments, setAssignments] = useState<Assignment[] | null>([]);
   const { getAssignmentByClassId } = useAssignment();
   const navigate = useNavigate();
   const teacherDetail: TeacherInfo = useSelector(
@@ -14,30 +14,40 @@ const ViewAssignments: React.FC = () => {
   );
 
   useEffect(() => {
-    const getAssinment = async () => {
+    const getAssignments = async () => {
       const classId = teacherDetail.classId;
       if (classId) {
-        const data: Assignment | null = await getAssignmentByClassId(classId);
-        console.log(data);
-        setAssignment(data);
+        const data: Assignment[] | null = await getAssignmentByClassId(classId);
+        setAssignments(data);
       }
     };
-    getAssinment();
+    getAssignments();
   }, []);
+
   return (
-    <div className=" mx-auto p-4">
-      {/* <h2 className="text-3xl font-bold mb-4">View Assignments</h2> */}
-      <p>No assignments available.</p>
-      <div>
-        <div
-          onClick={() => navigate("/ViewAssignment")}
-          className="bg-white p-6 rounded-md shadow-md mb-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer "
-        >
-          <h3 className="text-xl font-bold mb-2">{assinment?.title}</h3>
-          <p className="text-gray-600 mb-2">{assinment?.description}</p>
-          <p className="text-gray-600">Due Date: {assinment?.dueDate}</p>
+    <div className="mx-auto p-4">
+      <h2 className="text-3xl font-bold mb-4 text-blue-600 ">
+        View Assignments
+      </h2>
+      {assignments && assignments.length > 0 ? (
+        <div>
+          {assignments.map((assignment) => (
+            <div
+              key={assignment.classId}
+              onClick={() =>
+                navigate(`/ViewAssignment/${assignment.assignmentId}`)
+              }
+              className="bg-white p-6 rounded-md shadow-md mb-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer "
+            >
+              <h3 className="text-xl font-bold mb-2">{assignment.title}</h3>
+              <p className="text-gray-600 mb-2">{assignment.description}</p>
+              <p className="text-gray-600">Due Date: {assignment.dueDate}</p>
+            </div>
+          ))}
         </div>
-      </div>
+      ) : (
+        <p>No assignments available.</p>
+      )}
     </div>
   );
 };

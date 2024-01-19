@@ -12,6 +12,8 @@ const ViewStudent = () => {
   const getStudents: StudentDetail[] = useSelector(
     (state: any) => state.students.enrolledStudents
   );
+  console.log(getStudents);
+  
   const classDetail: TeacherInfo = useSelector(
     (state: any) => state.teacher.teacher
   );
@@ -22,7 +24,9 @@ const ViewStudent = () => {
     const findStudent = getStudents.filter(
       (item) => item.studentid?.slice(0, 20) === teacherid
     );
-    setStudents(findStudent || []);
+    console.log(findStudent);
+    
+    setStudents(findStudent);
   }, []);
 
   const showModal = (student: StudentDetail) => {

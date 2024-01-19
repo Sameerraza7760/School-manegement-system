@@ -10,7 +10,7 @@ const ViewAttendance = () => {
 
     return (
         <div className="container mx-auto mt-8">
-            <h1 className="text-3xl font-semibold mb-4">View Attendance</h1>
+            <h1 className="text-3xl font-semibold mb-4 ml-3">View Attendance</h1>
             <div className="bg-white shadow-md rounded-md overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">

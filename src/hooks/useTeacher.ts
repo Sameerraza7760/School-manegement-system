@@ -2,8 +2,11 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { auth, db } from "../db/firebase";
 import { TeacherInfo } from "../types/types.teacher";
+import { enrolledTeachers } from "../Config/store/slice/TeachersSlice";
+import { useDispatch } from "react-redux";
 
 const useTeacher = () => {
+  const dispatch = useDispatch();
   const addTeacherInDB = async (teacherInfo: TeacherInfo) => {
     const { email, password } = teacherInfo;
 
@@ -17,7 +20,6 @@ const useTeacher = () => {
 
       return userCredential;
     } catch (e: any) {
-      // Handle error
       console.log(e);
       console.log(e);
     }
@@ -46,7 +48,7 @@ const useTeacher = () => {
 
   const getAllTeacher = async (): Promise<TeacherInfo[]> => {
     try {
-      const querySnapshot = await getDocs(collection(db, "students"));
+      const querySnapshot = await getDocs(collection(db, "Teachers"));
       const teachers: TeacherInfo[] = [];
 
       querySnapshot.forEach((doc) => {
@@ -55,7 +57,8 @@ const useTeacher = () => {
           ...doc.data(),
         } as TeacherInfo);
       });
-      // dispatch(enrollStudent(students));
+      dispatch(enrolledTeachers(teachers));
+
       return teachers;
     } catch (error: any) {
       console.error("Error getting teachers in classroom:", error.message);

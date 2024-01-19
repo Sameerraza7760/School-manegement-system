@@ -1,13 +1,12 @@
 import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
-import { Assignment } from "../../../types/types.assignment";
 import { useSelector } from "react-redux";
-import { TeacherInfo } from "../../../types/types.teacher";
+import { ToastContainer, toast } from "react-toastify";
 import useAssignment from "../../../hooks/useAssignment";
-import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
+import { Assignment } from "../../../types/types.assignment";
+import { TeacherInfo } from "../../../types/types.teacher";
 
-const AssignmentForm: React.FC = ({}) => {
+const AssignmentForm: React.FC = () => {
   const { addAssignmentInClass } = useAssignment();
   const teacherDetail: TeacherInfo = useSelector(
     (state: any) => state.teacher.teacher
@@ -33,6 +32,7 @@ const AssignmentForm: React.FC = ({}) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoader(true)
     try {
       await addAssignmentInClass(assignment);
       toast.success("Add Assinment is your Class");
@@ -42,7 +42,7 @@ const AssignmentForm: React.FC = ({}) => {
         dueDate: "",
         classId: teacherDetail.classId,
       });
-      
+      setLoader(false)
     } catch (error) {
       console.log(error);
     }
@@ -104,7 +104,7 @@ const AssignmentForm: React.FC = ({}) => {
         type="submit"
         className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none"
       >
-        {loader ? <CircularProgress size={24} color="inherit" /> : "Register"}
+        {loader ? <CircularProgress size={24} color="inherit" /> : "Add"}
       </button>
       <ToastContainer />
     </form>

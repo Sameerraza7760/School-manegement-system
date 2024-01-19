@@ -33,11 +33,13 @@ function Login() {
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
+  console.log(enrolledStudents);
+  
 
   const enrolledTeachers: TeacherInfo[] = useSelector(
     (state: any) => state.teachers.enrolledTeachers
   );
-  console.log(enrolledStudents);
+  console.log("hi==>",enrolledTeachers);
 
   const { Role } = useParams();
 
@@ -91,7 +93,7 @@ function Login() {
       setLoader(true);
 
       const cheakTeacher = enrolledTeachers.find(
-        (item) => item.email === email && item.password === password
+        (item) => item.email === email 
       );
       if (cheakTeacher) {
         toast.success("Teacher Signin");

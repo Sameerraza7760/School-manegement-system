@@ -17,6 +17,7 @@ import StudentLogout from "../../StudentLogout/StudentLogout";
 import { useSelector } from "react-redux";
 import { StudentDetail } from "../../../../types/types.student";
 import ClassMaterials from "../../ClassMaterial/ClassMaterial";
+import StudentViewAssignment from "../../ClassMaterial/StudentAssignment";
 const StudentDashboard = () => {
   const currentStudent: StudentDetail = useSelector(
     (state: any) => state.student.student
@@ -73,7 +74,13 @@ const StudentDashboard = () => {
           </li>
           <li className="mb-4">
             <Link to="ClassMaterial" className="text-white hover:text-gray-300">
-            <BookOutlined /> Class Material
+              <BookOutlined /> Class Material
+            </Link>
+          </li>
+
+          <li className="mb-4">
+            <Link to="Sassignment" className="text-white hover:text-gray-300">
+              <BookOutlined /> Assignment
             </Link>
           </li>
           <li className="mb-4">
@@ -123,6 +130,10 @@ const StudentDashboard = () => {
             <Route path="SComplain" element={<StudentComplain />} />
             <Route path="SLogout" element={<StudentLogout />}></Route>
             <Route path="ClassMaterial" element={<ClassMaterials />}></Route>
+            <Route
+              path="Sassignment"
+              element={<StudentViewAssignment />}
+            ></Route>
           </Routes>
         </main>
       </div>

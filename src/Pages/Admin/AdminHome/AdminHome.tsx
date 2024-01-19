@@ -4,8 +4,17 @@ import Teachers from "./../../../assets/img3.png";
 import Fees from "./../../../assets/img4.png";
 import Header from "../../components/Header/Header";
 import SeeNotice from "../../components/SeeNotice/Notice";
+import { useSelector } from "react-redux";
 
 function AdminHome() {
+  const totalTeachers = useSelector(
+    (state: any) => state.teachers.enrolledTeachers
+  );
+  const totalStudents = useSelector(
+    (state: any) => state.students.enrolledStudents
+  );
+  const totatClasses = useSelector((state: any) => state.class.classes);
+
   return (
     <>
       <Header />
@@ -16,7 +25,9 @@ function AdminHome() {
             <img src={Students} alt="Students" className="w-16 h-16 mb-2" />
             <h2 className="text-lg font-semibold">Total Students</h2>
             {/* Replace Data component with your logic */}
-            <span className="text-2xl font-bold text-green-500">13</span>
+            <span className="text-2xl font-bold text-green-500">
+              {totalStudents.length}
+            </span>
           </div>
 
           {/* Total Classes */}
@@ -24,7 +35,9 @@ function AdminHome() {
             <img src={Classes} alt="Classes" className="w-16 h-16 mb-2" />
             <h2 className="text-lg font-semibold">Total Classes</h2>
             {/* Replace Data component with your logic */}
-            <span className="text-2xl font-bold text-green-500">12</span>
+            <span className="text-2xl font-bold text-green-500">
+              {totatClasses.length}
+            </span>
           </div>
 
           {/* Total Teachers */}
@@ -32,7 +45,9 @@ function AdminHome() {
             <img src={Teachers} alt="Teachers" className="w-16 h-16 mb-2" />
             <h2 className="text-lg font-semibold">Total Teachers</h2>
             {/* Replace Data component with your logic */}
-            <span className="text-2xl font-bold text-green-500">0</span>
+            <span className="text-2xl font-bold text-green-500">
+              {totalTeachers.length}
+            </span>
           </div>
 
           {/* Fees Collection */}

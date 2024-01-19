@@ -13,8 +13,8 @@ const TeacherSlice = createSlice({
   name: "teachers",
   initialState,
   reducers: {
-    enrolledTeachers: (state, action: PayloadAction<TeacherInfo>) => {
-      state.enrolledTeachers?.push(action.payload);
+    enrolledTeachers: (state, action: PayloadAction<TeacherInfo[]>) => {
+      state.enrolledTeachers = action.payload;
     },
   },
 });
