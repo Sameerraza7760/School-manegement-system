@@ -10,18 +10,18 @@ import Typography from "@mui/material/Typography";
 import { Button } from "antd";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Sidebar from "../Sidebar/Sidebar";
+import { AdminCredentials } from "../../../types/types.auth";
 
 function Header() {
   const navigate = useNavigate();
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [drawerVisible, setDrawerVisible] = React.useState(false);
+ const adminDetail:AdminCredentials=useSelector((state:any)=>state.admin.admin)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
-  };
-
+ 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,11 +43,11 @@ function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" style={{ backgroundColor: "#001529" }}>
         <Toolbar>
-          <Button type="text" icon={<MenuOutlined />} onClick={showDrawer} />
+          <Button type="text" className="text-white" icon={<MenuOutlined />} onClick={showDrawer} />
           <Sidebar visible={drawerVisible} onClosed={closeDrawer} />
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Photos
+            {adminDetail?.schoolName}
           </Typography>
           {auth && (
             <div>

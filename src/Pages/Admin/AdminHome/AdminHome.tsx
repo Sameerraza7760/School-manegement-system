@@ -26,7 +26,7 @@ function AdminHome() {
             <h2 className="text-lg font-semibold">Total Students</h2>
             {/* Replace Data component with your logic */}
             <span className="text-2xl font-bold text-green-500">
-              {totalStudents.length}
+              {totalStudents?.length}
             </span>
           </div>
 
@@ -36,7 +36,7 @@ function AdminHome() {
             <h2 className="text-lg font-semibold">Total Classes</h2>
             {/* Replace Data component with your logic */}
             <span className="text-2xl font-bold text-green-500">
-              {totatClasses.length}
+              {totatClasses?.length}
             </span>
           </div>
 
@@ -46,7 +46,7 @@ function AdminHome() {
             <h2 className="text-lg font-semibold">Total Teachers</h2>
             {/* Replace Data component with your logic */}
             <span className="text-2xl font-bold text-green-500">
-              {totalTeachers.length}
+              {totalTeachers?.length}
             </span>
           </div>
 

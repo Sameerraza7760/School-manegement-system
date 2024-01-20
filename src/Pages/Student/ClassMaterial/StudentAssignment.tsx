@@ -10,21 +10,16 @@ const { TextArea } = Input;
 
 const StudentViewAssignment: React.FC = () => {
   const [assignments, setAssignments] = useState<Assignment[] | null>();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAssignment, setSelectedAssignment] = useState<
-    string | undefined
-  >();
+  const [selectedAssignmentId, setSelectedAssignment] = useState<string | undefined>();
   const [file, setFile] = useState<File | null>(null);
-
   const [submissionText, setSubmissionText] = useState("");
-  const { getAssignmentByClassId, submitAssignment, uploadImage } =
-    useAssignment();
-  const studentDetail: StudentDetail = useSelector(
-    (state: any) => state.student.student
-  );
-  console.log(studentDetail);
 
+
+  const { getAssignmentByClassId, submitAssignment, uploadImage } = useAssignment();
+  const studentDetail: StudentDetail = useSelector((state: any) => state.student.student);
+ 
+ 
   useEffect(() => {
     const getAssignment = async () => {
       const classId = studentDetail.studentid?.slice(0, 20);
@@ -35,6 +30,9 @@ const StudentViewAssignment: React.FC = () => {
     };
     getAssignment();
   }, [studentDetail]);
+
+
+
 
   const handleAssignmentSubmit = (assignmentId: string | undefined) => {
     setSelectedAssignment(assignmentId);
@@ -50,21 +48,20 @@ const StudentViewAssignment: React.FC = () => {
 
   const confirmSubmit = async () => {
     const url = await uploadImage(file);
-    if (selectedAssignment) {
+    if (selectedAssignmentId) {
       const completeAssignment: completeAssignment = {
         studentName: studentDetail.studentName,
         studentRollNum: studentDetail.studentRollNum,
         studentClass: studentDetail.studentClass,
         studentAssinment: url,
         submissionText: submissionText,
-        assignmentId: selectedAssignment,
+        assignmentId: selectedAssignmentId,
       };
     try {
       await submitAssignment(completeAssignment);
       toast.success("Assignment Submit")
     } catch (error) {
-      console.log(error);
-      
+      console.log(error);      
     }
     }
   };
@@ -77,6 +74,8 @@ const StudentViewAssignment: React.FC = () => {
       setFile(selectedFile);
     }
   };
+
+
 
   return (
     <div className="mx-auto p-4">

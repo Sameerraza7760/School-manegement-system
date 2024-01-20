@@ -1,31 +1,18 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { StudentDetail } from "../../../../types/types.student";
 import Header from "../../../components/Header/Header";
 
 const AdminStudentPage = () => {
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      rollNumber: "ST123",
-      grade: "10",
-      address: "123 Main St",
-      image: "john.jpg",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      rollNumber: "ST456",
-      grade: "11",
-      address: "456 Oak St",
-      image: "jane.jpg",
-    },
-    // Add more student data as needed
-  ]);
+  const enrolledStudents: StudentDetail[] = useSelector(
+    (state: any) => state.students.enrolledStudents
+  );
+  console.log(enrolledStudents);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredStudents = students.filter((student) =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredStudents = enrolledStudents.filter((student) =>
+    student.studentName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -51,7 +38,7 @@ const AdminStudentPage = () => {
             }}
           >
             Add Student
-          </button>
+          </button> 
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border rounded-md overflow-hidden shadow-md">
@@ -80,28 +67,31 @@ const AdminStudentPage = () => {
             </thead>
             <tbody>
               {filteredStudents.map((student) => (
-                <tr key={student.id} className="hover:bg-indigo-100">
+                <tr
+                  key={student.studentRollNum}
+                  className="hover:bg-indigo-100 cursor-pointer"
+                >
                   <td className="py-3 px-4 md:py-4 md:px-6 lg:px-8 xl:px-10">
-                    {student.id}
+                    {student.studentid?.slice(25,30)}
                   </td>
                   <td className="py-3 px-4 md:py-4 md:px-6 lg:px-8 xl:px-10">
                     <img
-                      src={student.image}
-                      alt={student.name}
+                      // src={student.image}
+                      alt={student.studentName}
                       className="w-10 h-10 rounded-full"
                     />
                   </td>
                   <td className="py-3 px-4 md:py-4 md:px-6 lg:px-8 xl:px-10">
-                    {student.name}
+                    {student.studentName}
                   </td>
                   <td className="py-3 px-4 md:py-4 md:px-6 lg:px-8 xl:px-10">
-                    {student.rollNumber}
+                    {student.studentRollNum}
                   </td>
                   <td className="py-3 px-4 md:py-4 md:px-6 lg:px-8 xl:px-10">
-                    {student.grade}
+                    {student.studentClass}
                   </td>
                   <td className="py-3 px-4 md:py-4 md:px-6 lg:px-8 xl:px-10">
-                    {student.address}
+                    {student.studentid}
                   </td>
                   {/* Add more columns as needed */}
                 </tr>

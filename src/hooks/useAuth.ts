@@ -3,17 +3,20 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import {
+  collection,
   doc,
   getDoc,
   serverTimestamp,
-  setDoc
+  setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAdmin } from "../Config/store/slice/CurrentAdmin";
 import { notics } from "../types/type.notics";
-import { AdminCredentials } from "../types/types.auth";
+import { AdminCredentials, updateAdminCred } from "../types/types.auth";
 import { auth, db } from "./../db/firebase";
+import { message } from "antd";
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -29,7 +32,6 @@ const useAuth = () => {
         password
       );
       await addAdminToDb(userinfo, userCredential.user.uid);
-
       setSuccessMessage("Registered successfully");
       return userCredential;
     } catch (e: any) {
@@ -85,13 +87,7 @@ const useAuth = () => {
         password
       );
       const schoolid = userCredential.user.uid;
-      const adminData = await fetchAdminDataFromDatabase(schoolid);
-      const loggedInAdmin: AdminCredentials = {
-        email: userCredential.user.email,
-        ...adminData,
-      };
-      console.log(loggedInAdmin);
-      dispatch(setAdmin(loggedInAdmin));
+      await fetchAdminDataFromDatabase(schoolid); 
       setSuccessMessage("Signin Succsessfully");
     } catch (e: any) {
       setError(e.message);
@@ -116,7 +112,7 @@ const useAuth = () => {
       if (adminSnapShot.exists()) {
         const adminData = adminSnapShot.data() as AdminCredentials;
         console.log("admin details:", adminData);
-
+        dispatch(setAdmin(adminData));
         return adminData;
       } else {
         console.log("admin not found");
@@ -159,6 +155,21 @@ const useAuth = () => {
     }
   };
 
+  const updateProfile = async (profile: updateAdminCred, id: string) => {
+    const userDocRef = doc(collection(db, "Admin"), id);
+    const updatedFields: any = {};
+    if (profile.username) updatedFields.username = profile.username;
+    if (profile.phoneNumber) updatedFields.phoneNumber = profile.phoneNumber;
+    if (profile.image) updatedFields.image = profile.image;
+
+    await updateDoc(userDocRef, updatedFields);
+    message.success("Profile Update successfully!");
+
+    console.log("User updated successfully");
+    try {
+    } catch (error) {}
+  };
+
   return {
     signup,
     logout,
@@ -167,6 +178,8 @@ const useAuth = () => {
     error,
     addNoticeinDb,
     getNoticeFromDb,
+    updateProfile,
+    fetchAdminDataFromDatabase,
   };
 };
 

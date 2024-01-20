@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from "react";
 
 interface Material {
   id: number;

@@ -1,6 +1,7 @@
+import { Button, Col, Row } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useClassRoom from "../../../hooks/useClassRoom";
 import useStudent from "../../../hooks/useStudent";
 import useTeacher from "../../../hooks/useTeacher";
@@ -15,8 +16,9 @@ const ClassDetail = () => {
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
-  console.log(enrolledStudents);
-  
+
+ 
+
   const { getClassDetailById } = useClassRoom();
   const { id } = useParams();
   const { getAllTeacher } = useTeacher();
@@ -40,7 +42,6 @@ const ClassDetail = () => {
         console.error("Error fetching teachers:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -51,66 +52,69 @@ const ClassDetail = () => {
   return (
     <>
       <Header />
-      <div className="container mx-auto mt-[80px]">
-      <div className="max-w-2xl mx-auto bg-white p-8 rounded-md shadow-lg border">
-        <h2 className="text-3xl font-bold mb-6 text-indigo-800">Class Detail</h2>
+      <div className="container mx-auto mt-[90px] w-full">
+      <div className="mx-auto bg-white p-8 rounded-md shadow-lg">
+        <h1 className="mb-6 text-indigo-800 text-2xl font-bold">Class Details</h1>
+
+        <Row gutter={[16, 16]}>
+          <Col span={12}>
+            <p className="text-gray-800 text-lg font-semibold">Current Date:</p>
+            <p className="text-indigo-800">17 Feb 2023</p>
+          </Col>
+          <Col span={12}>
+            <p className="text-gray-800 text-lg font-semibold">Class Name:</p>
+            <p className="text-indigo-800">{classDetail?.className}</p>
+          </Col>
+        </Row>
 
         <div className="mb-6">
-          <p className="text-gray-600 text-lg font-semibold">Current Date:</p>
-          <p className="text-indigo-800 text-lg">17 Feb 2023</p>
-        </div>
-
-        <div className="mb-6">
-          <p className="text-gray-600 text-lg font-semibold">Class Name:</p>
-          <p className="text-indigo-800 text-lg">{classDetail?.className}</p>
-        </div>
-
-        <div className="mb-6">
-          <p className="text-gray-600 text-lg font-semibold">No Of Teacher:</p>
-          <p className="text-indigo-800 text-lg">None</p>
-          <button
-            onClick={() => navigate(`/TeacherDetail/${id || ""}`)}
-            className="text-indigo-800 hover:underline focus:outline-none"
+          <p className="text-gray-800 text-lg font-semibold">Number of Teachers:</p>
+          <p className="text-indigo-800">None</p>
+          <Link
+            to={`/TeacherDetail/${id || ""}`}
+            className="text-indigo-800 hover:underline focus:outline-none block"
           >
-            Teachers Detail
-          </button>
+            View Teachers
+          </Link>
         </div>
 
         <div className="mb-6">
-          <p className="text-gray-600 text-lg font-semibold">No Of Students:</p>
-          <p className="text-indigo-800 text-lg">{filterStudent.length}</p>
-          <button
-            onClick={() => navigate(`/studentList/${id || ""}`)}
-            className="text-indigo-800 hover:underline focus:outline-none"
+          <p className="text-gray-800 text-lg font-semibold">Number of Students:</p>
+          <p className="text-indigo-800">{filterStudent.length}</p>
+          <Link
+            to={`/studentList/${id || ""}`}
+            className="text-indigo-800 hover:underline focus:outline-none block"
           >
-            Students Detail
-          </button>
+            View Students
+          </Link>
         </div>
 
         <div className="mb-6">
-          <p className="text-gray-600 text-lg font-semibold">No Of Subjects:</p>
-          <p className="text-indigo-800 text-lg">{classDetail?.subjects?.length}</p>
-          <button
-            onClick={() => navigate(`/subjectDetail/${id || ""}`)}
-            className="text-indigo-800 hover:underline focus:outline-none"
+          <p className="text-gray-800 text-lg font-semibold">Number of Subjects:</p>
+          <p className="text-indigo-800">{classDetail?.subjects?.length}</p>
+          <Link
+            to={`/subjectDetail/${id || ""}`}
+            className="text-indigo-800 hover:underline focus:outline-none block"
           >
-            Subject Detail
-          </button>
+            View Subjects
+          </Link>
         </div>
 
-        <div className="flex space-x-4">
-          <button
-            className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none"
+        <div className="flex justify-end space-x-4">
+          <Button
+            type="primary"
+            className="bg-blue-600"
             onClick={() => navigate(`/StudentForm/${id || ""}`)}
           >
             Enroll Students
-          </button>
-          <button
-            className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none"
+          </Button>
+          <Button
+            className="bg-blue-600"
+            type="primary"
             onClick={() => navigate(`/addSubject/${id || ""}`)}
           >
             Add Subject
-          </button>
+          </Button>
         </div>
       </div>
     </div>
