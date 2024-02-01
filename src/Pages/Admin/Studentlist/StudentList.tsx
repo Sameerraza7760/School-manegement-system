@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useStudent from "../../../hooks/useStudent";
@@ -7,7 +9,7 @@ import Header from "../../components/Header/Header";
 
 const StudentList = () => {
   const { classRoomid } = useParams();
-  const { getAllStudentsInClassroom } = useStudent();
+  const { takeStudentAttendence, getAllStudentsInClassroom } = useStudent();
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
@@ -19,6 +21,10 @@ const StudentList = () => {
   }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [isCalendarOpen, setCalendarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [id, setId] = useState<string | undefined>("");
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -26,22 +32,52 @@ const StudentList = () => {
   const filterStudent: StudentDetail[] = enrolledStudents?.filter(
     (item) =>
       item.studentid?.slice(0, 20) === classRoomid &&
-      (item.studentRollNum.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.studentRollNum
+        .toString()
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
         item.studentName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleDelete = (id: string | undefined) => {
-    // Handle delete logic
+    if (id) {
+      setId(id);
+    }
+  };
+
+  const handleAttendance = (id: string | undefined) => {
+    setCalendarOpen(true);
+    setId(id);
+  };
+
+  const handleCalendarChange = async (date: Date) => {
+    setSelectedDate(date);
+    setCalendarOpen(false);
+
+    try {
+      if (id) {
+        const studentAttendance = { selectedDate, id };
+        await takeStudentAttendence(studentAttendance);
+        console.log(
+          "After takeStudentAttendance - Successfully taken attendance"
+        );
+      } else {
+        console.error("Error: Student ID is undefined.");
+      }
+    } catch (error) {
+      console.error("Error in takeStudentAttendance:", error);
+    }
   };
 
   return (
-   <>
-   <Header/>
-   <div className="container mx-auto mt-[100px]">
-      <div className="max-w-2xl mx-auto bg-white p-8 rounded-md shadow-lg">
-        <h2 className="text-3xl font-bold mb-6 text-indigo-800">Student List</h2>
+    <div className="flex flex-col items-center">
+      <Header />
+      <div className="w-full max-w-screen-lg mt-[10%] p-4 bg-white rounded-md shadow-lg">
+        <h2 className="text-3xl font-bold mb-4 text-indigo-800">
+          Student List
+        </h2>
 
-        <div className="mb-4">
+        <div className="mb-4 w-full md:w-1/2">
           <input
             type="text"
             placeholder="Search by Roll Number or Name"
@@ -57,13 +93,24 @@ const StudentList = () => {
               <th className="py-2 px-4 border-b font-semibold">Roll Number</th>
               <th className="py-2 px-4 border-b font-semibold">Name</th>
               <th className="py-2 px-4 border-b font-semibold">Actions</th>
+              <th className="py-2 px-4 border-b font-semibold">
+                Attendance
+              </th>{" "}
+              {/* New column for attendance */}
             </tr>
           </thead>
           <tbody>
             {filterStudent.map((student) => (
-              <tr key={student.studentid} className="hover:bg-gray-50 transition duration-300">
-                <td className="py-3 px-4 border-b text-indigo-800">{student.studentRollNum}</td>
-                <td className="py-3 px-4 border-b text-indigo-800">{student.studentName}</td>
+              <tr
+                key={student.studentid}
+                className="hover:bg-gray-100 transition duration-300"
+              >
+                <td className="py-3 px-4 border-b text-indigo-800">
+                  {student.studentRollNum}
+                </td>
+                <td className="py-3 px-4 border-b text-indigo-800">
+                  {student.studentName}
+                </td>
                 <td className="py-3 px-4 border-b">
                   <button
                     onClick={() => handleDelete(student.studentid)}
@@ -72,13 +119,27 @@ const StudentList = () => {
                     Delete
                   </button>
                 </td>
+                <td className="py-3 px-4 border-b">
+                  <button
+                    onClick={() => handleAttendance(student.studentid)}
+                    className="text-green-500 hover:text-green-700 focus:outline-none"
+                  >
+                    Mark Attendance
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {isCalendarOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 rounded-md shadow-lg">
+            <Calendar onChange={handleCalendarChange} value={selectedDate} />
+          </div>
+        </div>
+      )}
     </div>
-</>
   );
 };
 

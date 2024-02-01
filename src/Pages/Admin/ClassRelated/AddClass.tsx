@@ -12,7 +12,7 @@ const ClassAdd = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const schoolId: string = useSelector(
-    (state: any) => state.admin.admin.schoolid
+    (state: any) => state?.admin?.admin?.schoolid
   );
   const classes = useSelector((state: any) => state.class.classes);
   const [className, setClassName] = useState("");
@@ -38,7 +38,7 @@ const ClassAdd = () => {
     setShowSuccessMessage(false);
   }, [showSuccessMessage]);
 
-  const filterClasses: ClassRoom[] = classes.filter(
+  const filterClasses: ClassRoom[] = classes?.filter(
     (item: ClassRoom) => item.schoolid === schoolId
   );
 
@@ -78,7 +78,7 @@ const ClassAdd = () => {
                 Class List
               </h3>
               <ul className="space-y-4">
-                {filterClasses.map((item) => (
+                {filterClasses?.map((item) => (
                   <li
                     key={item.id}
                     className="bg-gray-100 p-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
