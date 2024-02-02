@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Header from "../components/Header/Header";
 import "react-toastify/dist/ReactToastify.css";
+import { UseSelector, useSelector } from "react-redux";
 
 function Logout() {
+  const {admin}=useSelector((state:any)=>state.admin)
   const { logout, successMessage, error } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
@@ -25,7 +27,7 @@ function Logout() {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-md">
         <h1 className="text-4xl font-extrabold mb-4 text-gray-800">
-          Hello, [User Name]
+          Hello, [{admin.schoolName}]
         </h1>
         <p className="text-lg mb-8 text-gray-600">
           Are you sure you want to log out?

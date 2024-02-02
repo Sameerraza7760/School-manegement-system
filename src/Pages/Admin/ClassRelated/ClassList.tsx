@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import useClassRoom from "../../../hooks/useClassRoom";
 import { ClassRoom } from "../../../types/types.class";
 import Header from "../../components/Header/Header";
-import useClassRoom from "../../../hooks/useClassRoom";
 
 function ClassList() {
   const navigate = useNavigate();
@@ -23,10 +23,9 @@ function ClassList() {
   const handleNextClick = () => {
     if (selectedClass) {
       console.log(selectedClass);
-      
+
       navigate("/SubjectList", { state: { selectedClass } });
     } else {
-      // Handle the case where no class is selected
       console.error("Please select a class.");
     }
   };

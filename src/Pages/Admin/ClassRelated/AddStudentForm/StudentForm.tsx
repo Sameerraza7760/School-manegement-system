@@ -1,13 +1,12 @@
 import { Button, CircularProgress, TextField, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useStudent from "../../../../hooks/useStudent";
 import { StudentDetail } from "../../../../types/types.student";
 import Header from "../../../components/Header/Header";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const AddStudentForm = () => {
   const navigate = useNavigate();
@@ -16,7 +15,8 @@ const AddStudentForm = () => {
   const [nameError, setNameError] = useState<boolean>();
   const [studentRollNoError, setRollNumberError] = useState<boolean>();
   const [classError, setClassError] = useState<boolean>(false);
-
+  const schoolId:string = useSelector((state:any) => state?.admin?.admin?.schoolid);
+  
   const [loader, setLoader] = useState(false);
   const { addStudentDetail } = useStudent();
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +45,7 @@ const AddStudentForm = () => {
       studentName,
       studentRollNum,
       studentClass,
+      schoolId
     };
     if (classRoomid) {
       try {

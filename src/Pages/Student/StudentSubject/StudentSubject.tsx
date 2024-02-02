@@ -1,10 +1,10 @@
 // StudentSubjects.js
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ClassRoom } from "../../../types/types.class";
-
 const StudentSubjects = () => {
   const [sutbjectList, setSubjectList] = useState<string[] | undefined>([]);
+
   const classDetail: ClassRoom[] = useSelector(
     (state: any) => state.class.classes
   );

@@ -7,18 +7,19 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
-import { Link, Routes, Route } from "react-router-dom";
-import StudentHomePage from "../../StudentHome/StudentHome";
-import StudentSubjects from "../../StudentSubject/StudentSubject";
-import StudentProfile from "../StudentProfile";
-import ViewAttendance from "../../ViewAttendence/ViewAttendence";
-import StudentComplain from "../../StudentComplain/StudentComplain";
-import StudentLogout from "../../StudentLogout/StudentLogout";
 import { useSelector } from "react-redux";
+import { Link, Route, Routes } from "react-router-dom";
 import { StudentDetail } from "../../../../types/types.student";
 import ClassMaterials from "../../ClassMaterial/ClassMaterial";
 import StudentViewAssignment from "../../ClassMaterial/StudentAssignment";
+import StudentComplain from "../../StudentComplain/StudentComplain";
+import StudentHomePage from "../../StudentHome/StudentHome";
+import StudentLogout from "../../StudentLogout/StudentLogout";
+import StudentSubjects from "../../StudentSubject/StudentSubject";
+import ViewAttendance from "../../ViewAttendence/ViewAttendence";
+import StudentProfile from "../StudentProfile";
 const StudentDashboard = () => {
+ 
   const currentStudent: StudentDetail = useSelector(
     (state: any) => state.student.student
   );

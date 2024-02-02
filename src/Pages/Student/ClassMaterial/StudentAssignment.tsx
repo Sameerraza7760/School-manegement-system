@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import useAssignment from "../../../hooks/useAssignment";
-import { Assignment, completeAssignment } from "../../../types/types.assignment";
+import {
+  Assignment,
+  completeAssignment,
+} from "../../../types/types.assignment";
 import { StudentDetail } from "../../../types/types.student";
 
 const { TextArea } = Input;
@@ -11,28 +14,28 @@ const { TextArea } = Input;
 const StudentViewAssignment: React.FC = () => {
   const [assignments, setAssignments] = useState<Assignment[] | null>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAssignmentId, setSelectedAssignment] = useState<string | undefined>();
+  const [selectedAssignmentId, setSelectedAssignment] = useState<
+    string | undefined
+  >();
   const [file, setFile] = useState<File | null>(null);
   const [submissionText, setSubmissionText] = useState("");
 
+  const { getAssignmentByClassId, submitAssignment, uploadImage } =
+    useAssignment();
+  const studentDetail: StudentDetail = useSelector(
+    (state: any) => state.student.student
+  );
 
-  const { getAssignmentByClassId, submitAssignment, uploadImage } = useAssignment();
-  const studentDetail: StudentDetail = useSelector((state: any) => state.student.student);
- 
- 
   useEffect(() => {
     const getAssignment = async () => {
-      const classId = studentDetail.studentid?.slice(0, 20);
+      const classId = studentDetail?.studentid?.slice(0, 20);
       const assignment: Assignment[] | null = await getAssignmentByClassId(
-        classId
+        classId as string
       );
       setAssignments(assignment);
     };
     getAssignment();
   }, [studentDetail]);
-
-
-
 
   const handleAssignmentSubmit = (assignmentId: string | undefined) => {
     setSelectedAssignment(assignmentId);
@@ -57,12 +60,13 @@ const StudentViewAssignment: React.FC = () => {
         submissionText: submissionText,
         assignmentId: selectedAssignmentId,
       };
-    try {
-      await submitAssignment(completeAssignment);
-      toast.success("Assignment Submit")
-    } catch (error) {
-      console.log(error);      
-    }
+      try {
+        await submitAssignment(completeAssignment);
+        toast.success("Assignment Submit");
+        setIsModalOpen(false);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -74,8 +78,6 @@ const StudentViewAssignment: React.FC = () => {
       setFile(selectedFile);
     }
   };
-
-
 
   return (
     <div className="mx-auto p-4">
@@ -109,7 +111,7 @@ const StudentViewAssignment: React.FC = () => {
                   Submit Assignment
                 </button>
               </div>
-              <ToastContainer/>
+              <ToastContainer />
             </div>
           ))}
         </div>
@@ -120,6 +122,7 @@ const StudentViewAssignment: React.FC = () => {
         visible={isModalOpen}
         onOk={confirmSubmit}
         onCancel={closeModal}
+        okButtonProps={{ style: { backgroundColor: "darkblue" } }}
       >
         <Input type="file" onChange={handleFileChange}></Input>
         <TextArea

@@ -8,7 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 import { enrollStudent } from "../Config/store/slice/StudentSlice";
 import { db } from "../db/firebase";
-import { StudentDetail } from "../types/types.student";
+import { StudentAttendance, StudentDetail } from "../types/types.student";
 
 const useStudent = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,9 @@ const useStudent = () => {
     }
   };
 
-  const takeStudentAttendence = async (studentAttendance) => {
+  const takeStudentAttendance = async (
+    studentAttendance: StudentAttendance
+  ) => {
     try {
       const { id } = studentAttendance;
       const studentsCollection = collection(db, "students");
@@ -63,7 +65,7 @@ const useStudent = () => {
   return {
     addStudentDetail,
     getAllStudentsInClassroom,
-    takeStudentAttendence,
+    takeStudentAttendance,
   };
 };
 
