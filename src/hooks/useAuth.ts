@@ -128,7 +128,9 @@ const useAuth = () => {
 
     console.log("User updated successfully");
     try {
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleLogout = async () => {

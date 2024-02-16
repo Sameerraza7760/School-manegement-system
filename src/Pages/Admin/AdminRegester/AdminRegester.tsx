@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import bgpic from "./../../../assets/designlogin.jpg";
 
-
 function AdminRegester() {
   const { signup, successMessage, error } = useAuth();
   const navigate = useNavigate();
@@ -59,8 +58,18 @@ function AdminRegester() {
       role: role,
     };
     await signup(fields);
-    setLoader(false);
+    toast.success("Admin Regestered ");
+    setTimeout(() => {
+      navigate(`/login/${"Admin"}`);
+    }, 2000);
+    return;
   };
+  setLoader(false);
+  if (error) {
+    toast.warning(error);
+    //   }
+    setLoader(false);
+  }
   const handleInputChange = (event: any) => {
     const { name } = event.target;
     if (name === "email") setEmailError(false);
@@ -69,18 +78,18 @@ function AdminRegester() {
     if (name === "schoolName") setSchoolNameError(false);
   };
 
-  useEffect(() => {
-    if (successMessage) {
-      toast.success(successMessage);
-      setTimeout(() => {
-        navigate(`/login/${"Admin"}`);
-      }, 2000);
-      return;
-    }
-    if (error) {
-      toast.warning(error);
-    }
-  }, [successMessage, error]);
+  // useEffect(() => {
+  //   if (successMessage) {
+  //     toast.success(successMessage);
+  //     setTimeout(() => {
+  //       navigate(`/login/${"Admin"}`);
+  //     }, 2000);
+  //     return;
+  //   }
+  //   if (error) {
+  //     toast.warning(error);
+  //   }
+  // }, [successMessage, error]);
   return (
     <div>
       <Grid container component="main" sx={{ height: "100vh" }}>
