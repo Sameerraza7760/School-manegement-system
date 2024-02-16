@@ -1,0 +1,9 @@
+.StdProfile {
+  content: url(./../../../assets/profile.webp);
+  height: 80px;
+  margin-top: 5%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid orange;
+  cursor: pointer;
+}

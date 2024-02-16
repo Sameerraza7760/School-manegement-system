@@ -1,0 +1,25 @@
+@media (max-width: 600px) {
+  .assBtn {
+    display: flex;
+    flex-direction: column;
+  }
+  .assBtn button {
+width: 120px;
+height: 40px;
+font-size: 11px;
+padding: 0
+
+  }
+  .heading {
+    font-size: 30px !important;
+  }
+}
+
+
+@media (max-width: 390px) {
+    
+    .heading {
+      font-size: 20px !important;
+    }
+  }
+  
