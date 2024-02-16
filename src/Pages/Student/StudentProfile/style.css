@@ -7,3 +7,9 @@
   border: 2px solid orange;
   cursor: pointer;
 }
+
+@media (max-width: 670px) {
+  .SidebarS {
+    display: hidden !important;
+  }
+}

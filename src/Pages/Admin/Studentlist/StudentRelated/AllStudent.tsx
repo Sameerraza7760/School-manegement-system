@@ -11,8 +11,8 @@ const AdminStudentPage = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredStudents = enrolledStudents.filter((student) =>
-    student.studentName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredStudents = enrolledStudents?.filter((student) =>
+    student?.studentName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

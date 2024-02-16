@@ -6,7 +6,7 @@ import {
   ScheduleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Route, Routes } from "react-router-dom";
 import { StudentDetail } from "../../../../types/types.student";
@@ -18,10 +18,10 @@ import StudentLogout from "../../StudentLogout/StudentLogout";
 import StudentSubjects from "../../StudentSubject/StudentSubject";
 import ViewAttendance from "../../ViewAttendence/ViewAttendence";
 import StudentProfile from "../StudentProfile";
+import "./../style.css";
 const StudentDashboard = () => {
- 
-  const currentStudent: StudentDetail = useSelector(
-    (state: any) => state.student.student
+  const { studentName }: StudentDetail = useSelector(
+    (state: any) => state.student.student || {}
   );
 
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -29,12 +29,26 @@ const StudentDashboard = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 600px)");
 
+    const handleMediaQueryChange = (event: any) => {
+      setSidebarOpen(!event.matches);
+    };
+
+    handleMediaQueryChange(mediaQuery);
+
+    mediaQuery.addListener(handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
       <nav
-        className={`bg-indigo-800 text-white w-64 p-4 min-h-screen ${
+        className={`SidebarS bg-indigo-800 text-white w-64 p-4 min-h-screen ${
           isSidebarOpen ? "block" : "hidden"
         }`}
       >
@@ -117,7 +131,7 @@ const StudentDashboard = () => {
             </button>
             <div className="flex items-center">
               <span className="text-gray-300 mr-2">
-                Welcome, {currentStudent.studentName}!
+                Welcome, {studentName}!
               </span>
             </div>
           </div>

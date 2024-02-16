@@ -17,10 +17,14 @@ import { notics } from "../types/type.notics";
 import { AdminCredentials, updateAdminCred } from "../types/types.auth";
 import { auth, db } from "./../db/firebase";
 import { message } from "antd";
-
+import { removeTeacher } from "../Config/store/slice/CurrentTeacherSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { removeStudent } from "../Config/store/slice/CurrentStudentSlice";
 const useAuth = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   const [error, setError] = useState<string | null>(null);
 
   const signup = async (userinfo: AdminCredentials) => {
@@ -32,7 +36,6 @@ const useAuth = () => {
         password
       );
       await addAdminToDb(userinfo, userCredential.user.uid);
-      setSuccessMessage("Registered successfully");
       return userCredential;
     } catch (e: any) {
       setError(e.message);
@@ -49,34 +52,6 @@ const useAuth = () => {
     return setDoc(doc(db, "Admin", schoolid), adminData);
   };
 
-  // const getAdminByid = async (uid: string) => {
-  //   try {
-  //     const adminDoc = await getDoc(doc(db, "Admin", uid));
-
-  //     if (adminDoc.exists()) {
-  //       const adminData = adminDoc.data() as AdminCredentials;
-  //       // dispatch(setAuth(adminData));
-  //       return adminData;
-  //     } else {
-  //       console.log("Admin not found");
-  //       return null;
-  //     }
-  //   } catch (error: any) {
-  //     console.error("Error getting admin by UID:", error.message);
-  //     return null;
-  //   }
-  // };
-
-  // // Example usage:
-  // const uid = "your_admin_uid";
-  // const adminData = await getAdminByUid(uid);
-
-  // // Check if adminData is not null before using it
-  // if (adminData) {
-  //   // Use adminData as needed
-  //   console.log("Admin Data:", adminData);
-  // }
-
   // SIGNIN THE USER
   const signin = async (userinfo: AdminCredentials) => {
     try {
@@ -87,23 +62,11 @@ const useAuth = () => {
         password
       );
       const schoolid = userCredential.user.uid;
-      await fetchAdminDataFromDatabase(schoolid); 
-      setSuccessMessage("Signin Succsessfully");
+      await fetchAdminDataFromDatabase(schoolid);
     } catch (e: any) {
       setError(e.message);
     }
   };
-
-  // LOGOUT  CURRENT USER
-  async function logout() {
-    try {
-      await auth.signOut();
-      setSuccessMessage("Logout");
-      // dispatch(Logout());
-    } catch (e: any) {
-      setError(e.message);
-    }
-  }
 
   const fetchAdminDataFromDatabase = async (id: string) => {
     try {
@@ -126,7 +89,6 @@ const useAuth = () => {
 
   const addNoticeinDb = async (notice: notics) => {
     const { schoolid, noticeContent } = notice;
-
     try {
       setDoc(doc(db, "notics", schoolid), {
         noticeContent: noticeContent,
@@ -161,7 +123,6 @@ const useAuth = () => {
     if (profile.username) updatedFields.username = profile.username;
     if (profile.phoneNumber) updatedFields.phoneNumber = profile.phoneNumber;
     if (profile.image) updatedFields.image = profile.image;
-
     await updateDoc(userDocRef, updatedFields);
     message.success("Profile Update successfully!");
 
@@ -170,16 +131,28 @@ const useAuth = () => {
     } catch (error) {}
   };
 
+  const handleLogout = async () => {
+    await auth.signOut();
+    toast.warning("Logout");
+    setTimeout(() => {
+      dispatch(removeTeacher());
+      dispatch(removeStudent());
+      navigate("/chooseUser");
+    }, 2000);
+  };
+
   return {
     signup,
-    logout,
+
     signin,
-    successMessage,
+
     error,
     addNoticeinDb,
     getNoticeFromDb,
     updateProfile,
     fetchAdminDataFromDatabase,
+    handleLogout,
+    addAdminToDb,
   };
 };
 

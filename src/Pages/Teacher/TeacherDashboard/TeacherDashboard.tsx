@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
 import {
@@ -10,7 +10,6 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { TeacherInfo } from "../../../types/types.teacher";
 import ClassDetail from "../ClassDetail/TeacherClassDetail";
 import TeacherAttendencePage from "../TeacherAttendence/TeacherAttendence";
 import TeacherComplain from "../TeacherComplain/TeacherComplain";
@@ -22,14 +21,21 @@ import ViewStudent from "../ViewStudent/ViewStudent";
 const TeacherDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-  const teacherName: TeacherInfo = useSelector(
-    (state: any) => state.teacher.teacher
-  );
-
+  const { teacherName } = useSelector((state: any) => state?.teacher?.teacher || {});
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 600px)");
+    const handleMediaQueryChange = (event: any) => {
+      setSidebarOpen(!event.matches);
+    };
+    handleMediaQueryChange(mediaQuery);
+    mediaQuery.addListener(handleMediaQueryChange);
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -107,9 +113,7 @@ const TeacherDashboard = () => {
               </svg>
             </button>
             <div className="flex items-center">
-              <span className="text-gray-300 mr-2">
-                Welcome, {teacherName.teacherName}
-              </span>
+              <span className="text-gray-300 mr-2">Welcome, {teacherName}</span>
             </div>
           </div>
         </header>

@@ -1,4 +1,5 @@
 import {
+  addDoc,
   arrayUnion,
   collection,
   doc,
@@ -8,7 +9,9 @@ import {
 import { useDispatch } from "react-redux";
 import { enrollStudent } from "../Config/store/slice/StudentSlice";
 import { db } from "../db/firebase";
-import { StudentAttendance, StudentDetail } from "../types/types.student";
+import { StudentDetail } from "../types/types.student";
+import { Attendance } from "../types/type.attendence";
+import { Complain } from "../types/type.complain";
 
 const useStudent = () => {
   const dispatch = useDispatch();
@@ -42,9 +45,7 @@ const useStudent = () => {
     }
   };
 
-  const takeStudentAttendance = async (
-    studentAttendance: StudentAttendance
-  ) => {
+  const takeStudentAttendance = async (studentAttendance: Attendance) => {
     try {
       const { id } = studentAttendance;
       const studentsCollection = collection(db, "students");
@@ -61,11 +62,41 @@ const useStudent = () => {
       console.error("Error recording attendance:", error);
     }
   };
+  const submitComplain = async (complain: any) => {
+    try {
+      const docRef = await addDoc(collection(db, "Complain"), complain);
+      console.log("Document written with ID: ", docRef.id);
+      return docRef;
+    } catch (error) {
+      console.error("Error adding document:", error);
+      throw error;
+    }
+  };
+
+  const getComplaints = async () => {
+    try {
+      // Querying all documents from the "students" collection
+      const querySnapshot = await getDocs(collection(db, "Complain"));
+
+      // Extracting data from the query snapshot
+      const complaints = querySnapshot.docs.map((doc) => doc.data());
+
+      console.log("Complaints:", complaints);
+      return complaints as Complain[];
+    } catch (error) {
+      console.error("Error getting documents:", error);
+      throw error;
+    }
+  };
+
+  // Example usage
 
   return {
     addStudentDetail,
     getAllStudentsInClassroom,
     takeStudentAttendance,
+    submitComplain,
+    getComplaints,
   };
 };
 

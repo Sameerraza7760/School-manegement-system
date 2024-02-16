@@ -1,15 +1,21 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 import { auth, db } from "../db/firebase";
 import { TeacherInfo } from "../types/types.teacher";
 import { enrolledTeachers } from "../Config/store/slice/TeachersSlice";
 import { useDispatch } from "react-redux";
+import { Attendance } from "../types/type.attendence";
 
 const useTeacher = () => {
   const dispatch = useDispatch();
   const addTeacherInDB = async (teacherInfo: TeacherInfo) => {
     const { email, password } = teacherInfo;
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -17,17 +23,36 @@ const useTeacher = () => {
         password
       );
       await addTeacherintoDb(teacherInfo, userCredential.user.uid);
-
       return userCredential;
     } catch (e: any) {
-      console.log(e);
       console.log(e);
     }
   };
 
+  const takeTeacherAttendence = async (teacherAttendance: Attendance) => {
+    try {
+      const { id } = teacherAttendance;
+      const teachersCollection = collection(db, "Teachers");
+      const teacherDoc = doc(teachersCollection, id);
+
+      await setDoc(
+        teacherDoc,
+        { attendance: arrayUnion(teacherAttendance) },
+        { merge: true }
+      );
+
+      console.log("Attendance recorded:", teacherAttendance);
+    } catch (error) {
+      console.error("Error recording attendance:", error);
+    }
+  };
+
   // ADD teacher IN DATABASE
-  const addTeacherintoDb = async (teacherInfo: TeacherInfo, uid: string) => {
-    let {
+  const addTeacherintoDb = async (
+    teacherInfo: TeacherInfo,
+    teacherId: string
+  ) => {
+    const {
       email,
       phoneNumber,
       classId,
@@ -35,15 +60,18 @@ const useTeacher = () => {
       selectedSubject,
       ClassName,
     } = teacherInfo;
-    let teacherData = {
+
+    const teacherData = {
       email,
       phoneNumber,
       classId,
       teacherName,
       selectedSubject,
       ClassName,
+      teacherId,
     };
-    return setDoc(doc(db, "Teachers", uid), teacherData);
+
+    return setDoc(doc(db, "Teachers", teacherId), teacherData);
   };
 
   const getAllTeacher = async (): Promise<TeacherInfo[]> => {
@@ -68,6 +96,8 @@ const useTeacher = () => {
   return {
     addTeacherInDB,
     getAllTeacher,
+
+    takeTeacherAttendence,
   };
 };
 

@@ -1,51 +1,73 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import useStudent from "../../../hooks/useStudent";
+import { Complain } from "../../../types/type.complain";
+const ComplainsPage = () => {
+  const { submitComplain } = useStudent();
+  const { student } = useSelector((state: any) => state.student);
 
-const StudentComplain = () => {
-  const [complainText, setComplainText] = useState("");
+  const [studentComplaint, setStudentComplaint] = useState<Complain>({
+    complaintsName: student.studentName,
+    complainContent: "",
+    number: student.studentRollNum,
+    complaintsClass: student.studentClass,
+    Role: "Student",
+  });
 
-  const handleComplainSubmit = (e: any) => {
-    e.preventDefault();
-    // Add logic to handle complaint submission
-    console.log("Complaint Submitted:", complainText);
-    // You can send the complaint to the server or handle it as needed
+  const handleComplainSubmit = async () => {
+    if (!studentComplaint.complainContent.trim()) {
+      alert("Please enter a complaint before submitting.");
+      return;
+    }
+
+    await submitComplain(studentComplaint);
+    // studentComplaint.complainContent("");
   };
 
   return (
-    <div className="container mx-auto mt-8 ml-3">
-      <h1 className="text-3xl font-semibold mb-4">Submit a Complaint</h1>
-      <form
-        onSubmit={handleComplainSubmit}
-        className="max-w-md mx-auto bg-white p-6 rounded-md shadow-md"
-      >
-        <div className="mb-4">
-          <label
-            htmlFor="complainText"
-            className="block text-gray-700 text-sm font-medium mb-2"
-          >
-            Your Complaint
+    <>
+      <div className="container mx-auto mt-[5%]">
+        <h1 className="text-3xl font-semibold mb-6">Complaints</h1>
+
+        <div className="bg-white p-6 rounded-md shadow-md mb-6">
+          <label htmlFor="complainText" className="text-lg font-semibold mb-2">
+            Enter Complaint:
           </label>
           <textarea
             id="complainText"
-            name="complainText"
-            // rows="4"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-            placeholder="Enter your complaint here"
-            value={complainText}
-            onChange={(e) => setComplainText(e.target.value)}
-            required
+            value={studentComplaint.complainContent}
+            onChange={(e) =>
+              setStudentComplaint({
+                ...studentComplaint,
+                complainContent: e.target.value,
+              })
+            }
+            className="w-full p-2 border rounded-md"
           ></textarea>
-        </div>
-        <div className="flex justify-end">
           <button
-            type="submit"
-            className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+            onClick={handleComplainSubmit}
+            className="mt-4 bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 focus:outline-none"
           >
             Submit Complaint
           </button>
         </div>
-      </form>
-    </div>
+
+        {/* Display Student Complaint */}
+        {studentComplaint.complaintsName && (
+          <div className="bg-white p-6 rounded-md shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Student Complaint</h2>
+            <p>
+              <strong>Name:</strong> {studentComplaint.complaintsName}
+            </p>
+            <p>
+              <strong>Complaint Content:</strong>{" "}
+              {studentComplaint.complainContent}
+            </p>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
-export default StudentComplain;
+export default ComplainsPage;

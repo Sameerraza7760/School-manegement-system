@@ -5,8 +5,3 @@ export interface StudentDetail {
   studentid?: string;
   schoolId: string;
 }
-export interface StudentAttendance {
-  date: string; // Assuming 'date' is a string in ISO format
-  id: string;
-  status: string;
-}

@@ -6,4 +6,5 @@ export interface TeacherInfo {
   phoneNumber: number | string;
   ClassName: string;
   selectedSubject: string;
+  teacherId:string
 }

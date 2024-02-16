@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import useStudent from "../../../hooks/useStudent";
 import { StudentDetail } from "../../../types/types.student";
 import Header from "../../components/Header/Header";
-import { StudentAttendance } from "../../../types/types.student";
+import { Attendance } from "../../../types/type.attendence";
 import { message } from "antd";
 
 const StudentList = () => {
@@ -60,7 +60,7 @@ const StudentList = () => {
 
     try {
       if (id) {
-        const studentAttendance: StudentAttendance = {
+        const studentAttendance: Attendance = {
           date: date.toISOString(),
           id,
           status,

@@ -37,6 +37,7 @@ import ClassMaterials from "../../Pages/Student/ClassMaterial/ClassMaterial";
 import ManegeAssinment from "../../Pages/Teacher/ManegeAssinment/ManegeAssinment";
 import ViewCompletedAssignments from "../../Pages/Teacher/ManegeAssinment/ViewCompleteAssignment";
 import StudentViewAssignment from "../../Pages/Student/ClassMaterial/StudentAssignment";
+import ComplainsPage from "../../Pages/Admin/AdminHome/Complain";
 const AppRouter: React.FC = () => {
   return (
     <Routes>
@@ -54,6 +55,7 @@ const AppRouter: React.FC = () => {
       </Route>
       <Route path="/studentList/:classRoomid" element={<StudentList />}></Route>
       <Route path="/addSubject/:classRoomid" element={<AddSubject />}></Route>
+      <Route path="/complainsPage" element={<ComplainsPage/>} ></Route>
       <Route
         path="/subjectDetail/:classRoomid"
         element={<ShowSubject />}

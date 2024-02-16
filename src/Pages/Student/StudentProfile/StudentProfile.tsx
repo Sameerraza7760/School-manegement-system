@@ -59,7 +59,7 @@ const StudentProfile = () => {
           </Button>
           <Modal
             title="Edit Name"
-            visible={isModalOpen}
+            open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
             footer={[

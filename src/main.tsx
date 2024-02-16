@@ -16,8 +16,6 @@ if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
 
   root.render(
-    // ThemeProvider
-
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Router>

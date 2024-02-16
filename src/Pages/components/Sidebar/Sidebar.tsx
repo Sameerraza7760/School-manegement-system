@@ -71,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({ visible, onClosed }) => {
       key: "Complain",
       label: "Complain",
       icon: <MehOutlined />,
-      onClick: () => Route("Complain"),
+      onClick: () => Route("complainsPage"),
     },
     {
       key: "AdminProfile",

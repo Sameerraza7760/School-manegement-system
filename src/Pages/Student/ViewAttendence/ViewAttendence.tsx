@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { StudentAttendance } from "../../../types/types.student";
-import PieChartAttendence from "./AttendenceChart";
 
-const calculateAttendancePercentage = (attendanceData: StudentAttendance[]) => {
+import PieChartAttendence from "../../components/AttendenceChart/AttendenceChart";
+import { Attendance } from "../../../types/type.attendence";
+
+const calculateAttendancePercentage = (attendanceData: Attendance[]) => {
   const totalEntries = attendanceData.length;
 
   const presentCount = attendanceData.filter(
@@ -75,7 +76,7 @@ const ViewAttendance = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {studentAttendance?.map(
-              (entry: StudentAttendance, index: number) => (
+              (entry: Attendance, index: number) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">{entry.date}</td>
                   <td className="px-6 py-4 whitespace-nowrap">

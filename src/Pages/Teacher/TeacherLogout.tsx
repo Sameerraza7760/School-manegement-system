@@ -1,20 +1,7 @@
-
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import { removeTeacher } from "../../Config/store/slice/CurrentTeacherSlice";
-
+import { ToastContainer } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
 const TeacherLogout = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleLogout=()=>{
-   toast.warning("Logout")
-   setTimeout(() => {
-    dispatch(removeTeacher())
-    navigate('/chooseUser')
-   }, 2000);
-  }
+  const { handleLogout } = useAuth();
   return (
     <div className="flex items-center justify-center mt-9">
       <div className="bg-white p-8 rounded shadow-md">

@@ -1,20 +1,9 @@
 // import { useHistory } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { removeStudent } from "../../../Config/store/slice/CurrentStudentSlice";
-// import {remove}
+import { ToastContainer } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
 
 const StudentLogout = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const handleLogout = () => {
-    toast.warning("Logout");
-    setTimeout(() => {
-      navigate("/chooseUser");
-      dispatch(removeStudent());
-    }, 2000);
-  };
+  const {handleLogout} = useAuth()
 
   return (
     <div className="flex items-center justify-center mt-9">

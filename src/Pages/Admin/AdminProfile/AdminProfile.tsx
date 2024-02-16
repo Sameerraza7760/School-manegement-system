@@ -1,7 +1,7 @@
 import { Button, Input, Modal } from "antd";
 import { useReducer, useState } from "react";
 import { useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import useAssignment from "../../../hooks/useAssignment";
 import useAuth from "../../../hooks/useAuth";
 import { initialState, reducer } from "../../../reducers/profilesReducer";
@@ -89,7 +89,7 @@ const AdminProfile = () => {
           </Button>
           <Modal
             title="Update Profile"
-            visible={isModalVisible}
+            open={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
           >

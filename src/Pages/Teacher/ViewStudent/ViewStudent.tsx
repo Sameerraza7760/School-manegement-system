@@ -12,8 +12,7 @@ const ViewStudent = () => {
   const getStudents: StudentDetail[] = useSelector(
     (state: any) => state.students.enrolledStudents
   );
-  console.log(getStudents);
-  
+
   const classDetail: TeacherInfo = useSelector(
     (state: any) => state.teacher.teacher
   );
@@ -24,8 +23,7 @@ const ViewStudent = () => {
     const findStudent = getStudents.filter(
       (item) => item.studentid?.slice(0, 20) === teacherid
     );
-    console.log(findStudent);
-    
+
     setStudents(findStudent);
   }, []);
 
@@ -87,8 +85,6 @@ const ViewStudent = () => {
                 className="StdProfile  mb-4 rounded-md"
                 style={{ maxWidth: "100%", maxHeight: "200px" }}
               />
-              {/* )} */}
-              {/* Add other student details as needed */}
             </>
           )}
         </Modal>
