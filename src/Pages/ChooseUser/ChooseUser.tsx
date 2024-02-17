@@ -9,14 +9,18 @@ import { useNavigate } from "react-router-dom";
 const ChooseUser = () => {
   const navigate = useNavigate();
   return (
-    <StyledContainer>
+   <div>
+     <StyledContainer>
       <Container>
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={6} md={4}>
             <div>
               <StyledPaper
                 elevation={3}
-                onClick={() => navigate("/adminSignup")}
+                onClick={() => {
+                  console.log("Clicked on Admin");
+                  navigate("/adminSignup");
+                }}
               >
                 <Box mb={2}>
                   <AccountCircle fontSize="large" />
@@ -28,9 +32,10 @@ const ChooseUser = () => {
             </div>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <StyledPaper
+         <div>
+         <StyledPaper
               elevation={3}
-              onClick={() => navigate(`/Login/${"Student"}`)}
+              onClick={() => { console.log("StudentClick");   navigate(`/Login/Student`)}}
             >
               <div>
                 <Box mb={2}>
@@ -40,9 +45,12 @@ const ChooseUser = () => {
                 Login as a student to explore course materials and assignments.
               </div>
             </StyledPaper>
+         </div>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-          <StyledPaper elevation={3} onClick={() => navigate(`/Login/${"Teacher"}`)}>
+        <div>
+        <StyledPaper elevation={3} onClick={() => { console.log('teacherClick');
+            navigate(`/Login/Teacher`)}}>
               <div>
                 <Box mb={2}>
                   <Group fontSize="large" />
@@ -52,10 +60,12 @@ const ChooseUser = () => {
                 student progress.
               </div>
             </StyledPaper>
+        </div>
           </Grid>
         </Grid>
       </Container>
     </StyledContainer>
+   </div>
   );
 };
 

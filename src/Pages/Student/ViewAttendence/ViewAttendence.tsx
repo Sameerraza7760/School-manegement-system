@@ -5,12 +5,12 @@ import PieChartAttendence from "../../components/AttendenceChart/AttendenceChart
 import { Attendance } from "../../../types/type.attendence";
 
 const calculateAttendancePercentage = (attendanceData: Attendance[]) => {
-  const totalEntries = attendanceData.length;
+  const totalEntries = attendanceData?.length;
 
-  const presentCount = attendanceData.filter(
+  const presentCount = attendanceData?.filter(
     (entry) => entry.status.toLowerCase() === "present"
   ).length;
-  const absentCount = attendanceData.filter(
+  const absentCount = attendanceData?.filter(
     (entry) => entry.status.toLowerCase() === "absent"
   ).length;
 
@@ -22,7 +22,7 @@ const calculateAttendancePercentage = (attendanceData: Attendance[]) => {
 
 const ViewAttendance = () => {
   const studentAttendance = useSelector(
-    (state: any) => state.student.student.attendance
+    (state: any) => state?.student?.student?.attendance
   );
 
   const { presentPercentage, absentPercentage } =

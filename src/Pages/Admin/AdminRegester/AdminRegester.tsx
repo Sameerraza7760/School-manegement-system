@@ -13,16 +13,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import bgpic from "./../../../assets/designlogin.jpg";
 
 function AdminRegester() {
-  const { signup, successMessage, error } = useAuth();
+  const { signup, error } = useAuth();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -58,18 +58,9 @@ function AdminRegester() {
       role: role,
     };
     await signup(fields);
-    toast.success("Admin Regestered ");
-    setTimeout(() => {
-      navigate(`/login/${"Admin"}`);
-    }, 2000);
-    return;
-  };
-  setLoader(false);
-  if (error) {
-    toast.warning(error);
-    //   }
+  
     setLoader(false);
-  }
+  };
   const handleInputChange = (event: any) => {
     const { name } = event.target;
     if (name === "email") setEmailError(false);
@@ -79,17 +70,15 @@ function AdminRegester() {
   };
 
   // useEffect(() => {
-  //   if (successMessage) {
-  //     toast.success(successMessage);
-  //     setTimeout(() => {
-  //       navigate(`/login/${"Admin"}`);
-  //     }, 2000);
-  //     return;
-  //   }
+  //   setTimeout(() => {
+  //     navigate(`/login/${"Admin"}`);
+  //   }, 2000);
+  //   return;
+
   //   if (error) {
   //     toast.warning(error);
   //   }
-  // }, [successMessage, error]);
+  // }, [error]);
   return (
     <div>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -137,7 +126,7 @@ function AdminRegester() {
                 required
                 fullWidth
                 id="schoolName"
-                label="Create your school name"
+                label="Enter Your School Name"
                 name="schoolName"
                 autoComplete="off"
                 error={schoolNameError}
@@ -161,7 +150,7 @@ function AdminRegester() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Enter Your Password"
                 type={toggle ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"

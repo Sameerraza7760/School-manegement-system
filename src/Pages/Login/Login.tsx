@@ -31,7 +31,7 @@ import { TeacherInfo } from "../../types/types.teacher";
 function Login() {
   const dispatch = useDispatch();
   const { getAllTeacher } = useTeacher();
-  const [whereToNavigate, setWhereToNavigate] = useState("");
+  // const [whereToNavigate, setWhereToNavigate] = useState("");
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
@@ -73,10 +73,13 @@ function Login() {
         toast.warn("Wrong Name or Rollnumber");
         return;
       }
-      console.log(findStudent); // is an object of finded student
+      console.log(findStudent);
       dispatch(setStudent(findStudent));
       toast.success(`Signin ${Role}`);
-      setWhereToNavigate("/StudentDashboard");
+      setTimeout(() => {
+        navigate("/StudentDashboard");
+      }, 2000);
+
       return;
     }
 
@@ -88,52 +91,41 @@ function Login() {
       if (!password) setPasswordError(true);
       return;
     }
-    const fields: AdminCredentials = { email, password };
+    const fields: AdminCredentials = { email, password, Role };
     const isTeacher = enrolledTeachers.find((item) => item.email === email);
     if (Role === "Teacher") {
       setLoader(true);
-
       if (isTeacher) {
         await signin(fields);
-        toast.success(`Signin ${Role}`);
-
         dispatch(setTeacher(isTeacher));
-
-        setWhereToNavigate("/TeacherDashboard");
-
         setLoader(false);
         return;
       }
-
       toast.warn("Wrong Email or Password");
       setLoader(false);
       return;
     }
-
     if (Role === "Admin" && !isTeacher) {
       setLoader(true);
-
       await signin(fields);
       setLoader(false);
 
-      setWhereToNavigate("/adminHome");
-      toast.success(`Signin ${Role}`);
-
-      return;
-    }
-
-    toast.warning("Wrong email or password");
+      // setWhereToNavigate("/adminHome");
+      // toast.success(`Signin ${Role}`);
+    }  
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      navigate(whereToNavigate);
-    }, 2000);
+  // useEffect(() => {
+  //   if (whereToNavigate) {
+  //     setTimeout(() => {
+  //       navigate(whereToNavigate);
+  //     }, 2000);
+  //   }
 
-    if (error) {
-      toast.warning(error);
-    }
-  }, [whereToNavigate, error]);
+  //   if (error) {
+  //     toast.warning(error);
+  //   }
+  // }, [whereToNavigate, error]);
 
   useEffect(() => {
     getAllTeacher();
@@ -200,7 +192,7 @@ function Login() {
                   />
                 </>
               ) : (
-                // for teacher and admin 
+                // for teacher and admin
                 <>
                   <TextField
                     margin="normal"

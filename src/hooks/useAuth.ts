@@ -26,7 +26,7 @@ const useAuth = () => {
   const dispatch = useDispatch();
 
   const [error, setError] = useState<string | null>(null);
-
+  const [whereToNavigate, setWhereToNavigate] = useState();
   const signup = async (userinfo: AdminCredentials) => {
     const { email, password } = userinfo;
     try {
@@ -36,9 +36,13 @@ const useAuth = () => {
         password
       );
       await addAdminToDb(userinfo, userCredential.user.uid);
+      toast.success("Regestered Sucsessfully");
+      setTimeout(() => {
+        navigate(`/login/${"Admin"}`);
+      }, 2000);
       return userCredential;
     } catch (e: any) {
-      setError(e.message);
+      toast.warning(e.message);
     }
   };
 
@@ -55,16 +59,27 @@ const useAuth = () => {
   // SIGNIN THE USER
   const signin = async (userinfo: AdminCredentials) => {
     try {
-      const { email, password } = userinfo;
+      const { email, password, Role } = userinfo;
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const schoolid = userCredential.user.uid;
-      await fetchAdminDataFromDatabase(schoolid);
+
+      toast.success(`Signin ${Role}`);
+      if (Role === "Admin") {
+        const schoolid = userCredential.user.uid;
+        await fetchAdminDataFromDatabase(schoolid);
+        setTimeout(() => {
+          navigate("/adminHome");
+        }, 2000);
+        return;
+      }
+      setTimeout(() => {
+        navigate("/TeacherDashboard");
+      }, 2000);
     } catch (e: any) {
-      setError(e.message);
+      toast.warning(e.message);
     }
   };
 
