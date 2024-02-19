@@ -15,6 +15,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -25,13 +26,13 @@ import { setTeacher } from "../../Config/store/slice/CurrentTeacherSlice";
 import bgpic from "../../assets/designlogin.jpg";
 import useAuth from "../../hooks/useAuth";
 import useTeacher from "../../hooks/useTeacher";
-import { AdminCredentials } from "../../types/types.auth";
+import { User } from "../../types/types.auth";
 import { StudentDetail } from "../../types/types.student";
 import { TeacherInfo } from "../../types/types.teacher";
+
 function Login() {
   const dispatch = useDispatch();
   const { getAllTeacher } = useTeacher();
-  // const [whereToNavigate, setWhereToNavigate] = useState("");
   const enrolledStudents: StudentDetail[] = useSelector(
     (state?: any) => state.students.enrolledStudents
   );
@@ -44,7 +45,7 @@ function Login() {
 
   const { Role } = useParams();
 
-  const { signin, error } = useAuth();
+  const { signin } = useAuth();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -52,9 +53,46 @@ function Login() {
   const [loader, setLoader] = useState(false);
   const [rollNumberError, setRollNumberError] = useState(false);
   const [studentNameError, setStudentNameError] = useState(false);
+
+  const handleStudentLogin = (rollNum: number, studentName: string) => {
+    const findStudent = enrolledStudents.find(
+      (std) => std.studentName === studentName && std.studentRollNum === rollNum
+    );
+    if (!findStudent) {
+      toast.warn("Wrong Name or Rollnumber");
+      return;
+    }
+    console.log(findStudent);
+    dispatch(setStudent(findStudent));
+    toast.success(`Signin ${Role}`);
+    setTimeout(() => {
+      navigate("/StudentDashboard");
+    }, 2000);
+  };
+
+  const handleTeacherLogin = async (email: string, password: string) => {
+    const fields: User = { email, password, Role };
+    const isTeacher = enrolledTeachers?.find((item) => item.email === email);
+    setLoader(true);
+    if (isTeacher) {
+      await signin(fields);
+      dispatch(setTeacher(isTeacher));
+      setLoader(false);
+      return;
+    }
+    toast.warn("Wrong Email or Password");
+    setLoader(false);
+  };
+
+  const handleAdminLogin = async (email: string, password: string) => {
+    const fields: User = { email, password, Role };
+    setLoader(true);
+    await signin(fields);
+    setLoader(false);
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (Role === "Student") {
       const rollNum = event?.currentTarget?.rollNumber?.value;
       const studentName = event?.currentTarget?.studentName?.value;
@@ -64,69 +102,25 @@ function Login() {
         if (!studentName) setStudentNameError(true);
         return;
       }
-
-      const findStudent = enrolledStudents.find(
-        (std) =>
-          std.studentName === studentName && std.studentRollNum === rollNum
-      );
-      if (!findStudent) {
-        toast.warn("Wrong Name or Rollnumber");
-        return;
-      }
-      console.log(findStudent);
-      dispatch(setStudent(findStudent));
-      toast.success(`Signin ${Role}`);
-      setTimeout(() => {
-        navigate("/StudentDashboard");
-      }, 2000);
-
+      handleStudentLogin(rollNum, studentName);
       return;
     }
 
     // now this is for admin and teacher because both need email and password
-    const email = event?.currentTarget?.email?.value;
-    const password = event?.currentTarget?.password?.value;
-    if (!email || !password) {
-      if (!email) setEmailError(true);
-      if (!password) setPasswordError(true);
-      return;
-    }
-    const fields: AdminCredentials = { email, password, Role };
-    const isTeacher = enrolledTeachers.find((item) => item.email === email);
-    if (Role === "Teacher") {
-      setLoader(true);
-      if (isTeacher) {
-        await signin(fields);
-        dispatch(setTeacher(isTeacher));
-        setLoader(false);
+    else {
+      const email = event?.currentTarget?.email?.value;
+      const password = event?.currentTarget?.password?.value;
+      if (!email || !password) {
+        // Handle validation errors
         return;
       }
-      toast.warn("Wrong Email or Password");
-      setLoader(false);
-      return;
+      if (Role === "Teacher") {
+        handleTeacherLogin(email, password);
+      } else if (Role === "Admin") {
+        handleAdminLogin(email, password);
+      }
     }
-    if (Role === "Admin" && !isTeacher) {
-      setLoader(true);
-      await signin(fields);
-      setLoader(false);
-
-      // setWhereToNavigate("/adminHome");
-      // toast.success(`Signin ${Role}`);
-    }  
   };
-
-  // useEffect(() => {
-  //   if (whereToNavigate) {
-  //     setTimeout(() => {
-  //       navigate(whereToNavigate);
-  //     }, 2000);
-  //   }
-
-  //   if (error) {
-  //     toast.warning(error);
-  //   }
-  // }, [whereToNavigate, error]);
-
   useEffect(() => {
     getAllTeacher();
   }, []);

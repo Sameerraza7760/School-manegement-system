@@ -1,3 +1,4 @@
+import { message } from "antd";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -10,23 +11,21 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { setAdmin } from "../Config/store/slice/CurrentAdmin";
+import { removeStudent } from "../Config/store/slice/CurrentStudentSlice";
+import { removeTeacher } from "../Config/store/slice/CurrentTeacherSlice";
 import { notics } from "../types/type.notics";
 import { AdminCredentials, updateAdminCred } from "../types/types.auth";
 import { auth, db } from "./../db/firebase";
-import { message } from "antd";
-import { removeTeacher } from "../Config/store/slice/CurrentTeacherSlice";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { removeStudent } from "../Config/store/slice/CurrentStudentSlice";
+import { User } from './../types/types.auth';
 const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [error, setError] = useState<string | null>(null);
-  const [whereToNavigate, setWhereToNavigate] = useState();
+  
   const signup = async (userinfo: AdminCredentials) => {
     const { email, password } = userinfo;
     try {
@@ -51,13 +50,13 @@ const useAuth = () => {
     userProfile: AdminCredentials,
     schoolid: string
   ) => {
-    let { email, username, schoolName, role } = userProfile;
-    let adminData = { schoolName, email, username, schoolid, role };
+    let { email, userName, schoolName, role } = userProfile;
+    let adminData = { schoolName, email, userName, schoolid, role };
     return setDoc(doc(db, "Admin", schoolid), adminData);
   };
 
   // SIGNIN THE USER
-  const signin = async (userinfo: AdminCredentials) => {
+  const signin = async (userinfo: User) => {
     try {
       const { email, password, Role } = userinfo;
       const userCredential = await signInWithEmailAndPassword(
@@ -163,7 +162,7 @@ const useAuth = () => {
 
     signin,
 
-    error,
+
     addNoticeinDb,
     getNoticeFromDb,
     updateProfile,

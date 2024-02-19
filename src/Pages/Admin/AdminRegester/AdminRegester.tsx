@@ -20,9 +20,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import bgpic from "./../../../assets/designlogin.jpg";
+import { AdminCredentials } from "../../../types/types.auth";
 
 function AdminRegester() {
-  const { signup, error } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -37,31 +38,31 @@ function AdminRegester() {
 
     const target = event.target as any;
 
-    const username = target.adminName.value;
+    const userName = target.adminName.value;
     const schoolName = target.schoolName.value;
     const email = target.email.value;
     const password = target.password.value;
 
-    if (!username || !schoolName || !email || !password) {
-      if (!username) setAdminNameError(true);
+    if (!userName || !schoolName || !email || !password) {
+      if (!userName) setAdminNameError(true);
       if (!schoolName) setSchoolNameError(true);
       if (!email) setEmailError(true);
       if (!password) setPasswordError(true);
       return;
     }
     setLoader(true);
-    const fields = {
-      username,
+    const fields: AdminCredentials = {
+      userName,
       email,
       password,
       schoolName,
       role: role,
     };
     await signup(fields);
-  
+
     setLoader(false);
   };
-  const handleInputChange = (event: any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = event.target;
     if (name === "email") setEmailError(false);
     if (name === "password") setPasswordError(false);
@@ -69,16 +70,6 @@ function AdminRegester() {
     if (name === "schoolName") setSchoolNameError(false);
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     navigate(`/login/${"Admin"}`);
-  //   }, 2000);
-  //   return;
-
-  //   if (error) {
-  //     toast.warning(error);
-  //   }
-  // }, [error]);
   return (
     <div>
       <Grid container component="main" sx={{ height: "100vh" }}>

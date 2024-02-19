@@ -11,8 +11,9 @@ import { TeacherInfo } from "../types/types.teacher";
 import { enrolledTeachers } from "../Config/store/slice/TeachersSlice";
 import { useDispatch } from "react-redux";
 import { Attendance } from "../types/type.attendence";
-
+import { useNavigate } from "react-router-dom";
 const useTeacher = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const addTeacherInDB = async (teacherInfo: TeacherInfo) => {
     const { email, password } = teacherInfo;
@@ -71,7 +72,11 @@ const useTeacher = () => {
       teacherId,
     };
 
-    return setDoc(doc(db, "Teachers", teacherId), teacherData);
+    await setDoc(doc(db, "Teachers", teacherId), teacherData);
+
+    setTimeout(() => {
+      navigate("/TeacherDashboard");
+    }, 2000);
   };
 
   const getAllTeacher = async (): Promise<TeacherInfo[]> => {

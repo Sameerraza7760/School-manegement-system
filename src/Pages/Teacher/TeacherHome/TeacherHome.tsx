@@ -1,6 +1,12 @@
 import { useNavigate } from "react-router-dom";
 const TeacherHome = () => {
+
   const navigate = useNavigate();
+  const handleCreateQuiz = () => {
+    // Navigate to the page where teachers can create quizzes
+    navigate("TcreateTest");
+  };
+
   return (
     <div className="container mx-auto mt-8 ml-2">
       <h2 className="text-4xl font-bold mb-6 text-gray-800">
@@ -33,6 +39,15 @@ const TeacherHome = () => {
         >
           <h3 className="text-xl font-bold mb-4 text-gray-800">Students</h3>
           <p className="text-gray-700">Access and manage student profiles.</p>
+        </div>
+
+        {/* Card 4: Create Quiz */}
+        <div
+          onClick={handleCreateQuiz}
+          className="bg-white p-8 rounded-md shadow-lg hover:bg-gray-100 transition duration-300 cursor-pointer"
+        >
+          <h3 className="text-xl font-bold mb-4 text-gray-800">Create Quiz</h3>
+          <p className="text-gray-700">Create online quizzes for your students.</p>
         </div>
       </div>
     </div>

@@ -36,7 +36,7 @@ const PieChartAttendence = ({
           position="center"
           fill="#333"
           fontSize={16}
-          dy={20} // Adjust the vertical position
+          dy={20} 
         />
       </Pie>
     </PieChart>

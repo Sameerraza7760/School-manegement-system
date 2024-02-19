@@ -38,6 +38,7 @@ import ManegeAssinment from "../../Pages/Teacher/ManegeAssinment/ManegeAssinment
 import ViewCompletedAssignments from "../../Pages/Teacher/ManegeAssinment/ViewCompleteAssignment";
 import StudentViewAssignment from "../../Pages/Student/ClassMaterial/StudentAssignment";
 import ComplainsPage from "../../Pages/Admin/AdminHome/Complain";
+import CreateQuiz from "../../Pages/Teacher/CreateTest/CreateTest";
 const AppRouter: React.FC = () => {
   return (
     <Routes>
@@ -55,7 +56,7 @@ const AppRouter: React.FC = () => {
       </Route>
       <Route path="/studentList/:classRoomid" element={<StudentList />}></Route>
       <Route path="/addSubject/:classRoomid" element={<AddSubject />}></Route>
-      <Route path="/complainsPage" element={<ComplainsPage/>} ></Route>
+      <Route path="/complainsPage" element={<ComplainsPage />}></Route>
       <Route
         path="/subjectDetail/:classRoomid"
         element={<ShowSubject />}
@@ -74,7 +75,7 @@ const AppRouter: React.FC = () => {
         <Route path="SComplain" element={<StudentComplain />} />
         <Route path="SLogout" element={<StudentLogout />}></Route>
         <Route path="ClassMaterial" element={<ClassMaterials />}></Route>
-        <Route path="Sassignment" element={<StudentViewAssignment/>} ></Route>
+        <Route path="Sassignment" element={<StudentViewAssignment />}></Route>
       </Route>
 
       <Route path="/TeacherDashboard" element={<TeacherDashboard />}>
@@ -83,11 +84,14 @@ const AppRouter: React.FC = () => {
         <Route path="TViewStudent" element={<ViewStudent />}></Route>
         <Route path="TAttendence" element={<TeacherAttendance />}></Route>
         <Route path="TComplain" element={<TeacherComplain />}></Route>
+        <Route path='TcreateTest' element={<CreateQuiz/>} ></Route>
         <Route path="Tlogout" element={<TeacherLogout />}></Route>
-       
       </Route>
-      <Route path="/TmanegeAssignment" element={<ManegeAssinment/>} ></Route>
-      <Route path="/ViewAssignment/:id" element={<ViewCompletedAssignments/>} ></Route>
+      <Route path="/TmanegeAssignment" element={<ManegeAssinment />}></Route>
+      <Route
+        path="/ViewAssignment/:id"
+        element={<ViewCompletedAssignments />}
+      ></Route>
     </Routes>
   );
 };

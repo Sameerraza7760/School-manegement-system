@@ -17,11 +17,14 @@ import TeacherHome from "../TeacherHome/TeacherHome";
 import TeacherLogout from "../TeacherLogout";
 import TeacherProfile from "../TeacherProfilePage/TeacherProfile";
 import ViewStudent from "../ViewStudent/ViewStudent";
+import CreateQuiz from "../CreateTest/CreateTest";
 
 const TeacherDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
 
-  const { teacherName } = useSelector((state: any) => state?.teacher?.teacher || {});
+  const { teacherName } = useSelector(
+    (state: any) => state?.teacher?.teacher || {}
+  );
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -37,10 +40,10 @@ const TeacherDashboard = () => {
     };
   }, []);
   return (
-    <div className="flex h-screen">
+    <div className="flex h-60vh">
       {/* Sidebar */}
       <nav
-        className={`bg-gray-800 text-white w-64 p-4 min-h-screen ${
+        className={`bg-gray-800 text-white w-64 p-4 min-h-screen h-auto ${
           isSidebarOpen ? "block" : "hidden"
         }`}
       >
@@ -90,7 +93,7 @@ const TeacherDashboard = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col  ">
         <header className="bg-gray-800 text-white py-2">
           <div className="flex items-center justify-between p-4">
             <button
@@ -122,7 +125,8 @@ const TeacherDashboard = () => {
             <Route path="/" element={<TeacherHome />} />
             <Route path="Tprofile" element={<TeacherProfile />} />
             <Route path="TClassDetail" element={<ClassDetail />}></Route>
-            <Route path="TViewStudent" element={<ViewStudent />}></Route>
+            <Route path="TViewStudent" element={<ViewStudent />}></Route>{" "}
+            <Route path="TcreateTest" element={<CreateQuiz />}></Route>
             <Route
               path="TAttendence"
               element={<TeacherAttendencePage />}
