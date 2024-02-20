@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import useStudent from "../../../hooks/useStudent";
 import { Complain } from "../../../types/type.complain";
+import { ToastContainer } from "react-toastify";
 const ComplainsPage = () => {
   const { submitComplain } = useStudent();
   const { student } = useSelector((state: any) => state.student);
@@ -21,7 +22,10 @@ const ComplainsPage = () => {
     }
 
     await submitComplain(studentComplaint);
-    // studentComplaint.complainContent("");
+    setStudentComplaint((prevComplaint) => ({
+      ...prevComplaint,
+      complainContent: "",
+    }));
   };
 
   return (
@@ -65,6 +69,7 @@ const ComplainsPage = () => {
             </p>
           </div>
         )}
+        <ToastContainer />
       </div>
     </>
   );

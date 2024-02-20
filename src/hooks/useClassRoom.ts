@@ -5,8 +5,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { setClass } from "../Config/store/slice/ClassSlice";
@@ -27,12 +29,16 @@ const useClassRoom = () => {
     }
   };
 
-  const getClassesFromDb = async (): Promise<ClassRoom[]> => {
+  const getClassesFromDb = async (schoolId: string): Promise<ClassRoom[]> => {
     try {
-      const querySnapshot = await getDocs(collection(db, "classes"));
+      const q = query(
+        collection(db, "classes"),
+        where("schoolid", "==", schoolId)
+      );
+      const querySnapshot = await getDocs(q);
       const classes: ClassRoom[] = [];
       querySnapshot.forEach((doc) => {
-        classes.push({ ...(doc.data() as ClassRoom) });
+        classes.push({ ...(doc.data() as ClassRoom), id: doc.id });
       });
       dispatch(setClass(classes));
       return classes;

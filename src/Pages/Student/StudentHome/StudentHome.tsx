@@ -1,28 +1,38 @@
 import { useEffect, useState } from "react";
-import { FaBell, FaCalendar, FaList, FaUser } from "react-icons/fa"; // Import Font Awesome icons
+import { FaBell, FaBook, FaCalendar, FaList, FaUser } from "react-icons/fa"; // Import Font Awesome icons
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { notics } from "../../../types/type.notics";
 import { StudentDetail } from "../../../types/types.student";
+import useQuiz from "../../../hooks/useQuiz";
 const StudentHomePage = () => {
- 
+  const { getQuizzesByClassId } = useQuiz();
   const studentDetail: StudentDetail = useSelector(
     (state: any) => state.student.student
   );
   const { getNoticeFromDb } = useAuth();
+  const [quizzes, setquiz] = useState<any[]>([]);
   const [notics, setNotics] = useState<notics>();
+  const getNotics = async () => {
+    const notics: notics | null = await getNoticeFromDb(studentDetail.schoolId);
+    console.log(notics);
+    if (notics) {
+      setNotics(notics);
+    }
+  };
+  const getQuizbyClassId = async () => {
+    const quizze = await getQuizzesByClassId(
+      studentDetail.studentid?.slice(0, 20)
+    );
+
+    if (quizze) {
+      setquiz(quizze);
+    }
+  };
   useEffect(() => {
-    const getNotics = async () => {
-      const notics: notics | null = await getNoticeFromDb(
-        studentDetail.schoolId
-      );
-      console.log(notics);
-      if (notics) {
-        setNotics(notics);
-      }
-    };
     getNotics();
+    getQuizbyClassId();
   }, []);
 
   return (
@@ -45,7 +55,6 @@ const StudentHomePage = () => {
             {studentDetail.studentClass}
           </p>
         </div>
-
         {/* Upcoming Events or Announcements */}
         <div className="bg-white p-6 rounded-md shadow-md transition duration-300 transform hover:scale-105 hover:bg-gray-100">
           <h2 className="text-lg font-semibold mb-4 text-blue-600 flex items-center">
@@ -57,7 +66,6 @@ const StudentHomePage = () => {
             <li>Event 3 on Date</li>
           </ul>
         </div>
-
         {/* Quick Links or Actions */}
         <div className="bg-white p-6 rounded-md shadow-md transition duration-300 transform hover:scale-105">
           <h2 className="text-lg font-semibold mb-4 text-blue-600 flex items-center">
@@ -84,7 +92,6 @@ const StudentHomePage = () => {
             </li>
           </ul>
         </div>
-
         {/* Notices Section */}
         <div className="bg-white p-6 rounded-md shadow-md transition duration-300 transform hover:scale-105">
           <h2 className="text-lg font-semibold mb-4 text-blue-600 flex items-center">
@@ -103,6 +110,24 @@ const StudentHomePage = () => {
               <p></p>
             </div>
           </div>
+        </div>{" "}
+        <div className="bg-white p-6 rounded-md shadow-md transition duration-300 transform hover:scale-105">
+          <h2 className="text-lg font-semibold mb-4 text-blue-600 flex items-center">
+            <FaBook className="mr-2" /> Quizzes
+          </h2>
+          {/* Add content related to quizzes here */}
+          <ul className="list-disc pl-5 text-gray-700">
+            {quizzes.map((quiz) => (
+              <li key={quiz.id}>
+                <Link
+                  to={`SQuizTest/${quiz.id}`}
+                  className="text-indigo-600 hover:underline"
+                >
+                  {quiz.quizTitle}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

@@ -1,46 +1,44 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useClassRoom from "../../../hooks/useClassRoom";
 import { ClassRoom } from "../../../types/types.class";
 import Header from "../../components/Header/Header";
 
 const ClassAdd = () => {
-  const { addClassToDb, deleteClassFromDb, getClassesFromDb } = useClassRoom();
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
   const schoolId: string = useSelector(
     (state: any) => state?.admin?.admin?.schoolid
   );
   const classes = useSelector((state: any) => state.class.classes);
+  const { addClassToDb, deleteClassFromDb, getClassesFromDb } = useClassRoom();
+
   const [className, setClassName] = useState("");
   const navigate = useNavigate();
 
   const handleAddClass = async () => {
     if (className.trim() !== "") {
       await addClassToDb(className, schoolId);
+      await getClassesFromDb(schoolId);
       setClassName("");
       toast.success("Class Add");
-      setShowSuccessMessage(true);
     }
   };
 
   const deleteClass = async (id: string) => {
     await deleteClassFromDb(id);
     toast.warn("Class Deleted");
-    setShowSuccessMessage(true);
+    getClassesFromDb(schoolId);
   };
 
   useEffect(() => {
-    getClassesFromDb();
-    setShowSuccessMessage(false);
-  }, [showSuccessMessage]);
+    getClassesFromDb(schoolId);
+  }, []);
 
-  const filterClasses: ClassRoom[] = classes?.filter(
-    (item: ClassRoom) => item.schoolid === schoolId
-  );
+  // const filterClasses: ClassRoom[] = classes?.filter(
+  //   (item: ClassRoom) => item.schoolid === schoolId
+  // );
 
   return (
     <>
@@ -78,7 +76,7 @@ const ClassAdd = () => {
                 Class List
               </h3>
               <ul className="space-y-4">
-                {filterClasses?.map((item) => (
+                {classes?.map((item:ClassRoom) => (
                   <li
                     key={item.id}
                     className="bg-gray-100 p-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
@@ -108,7 +106,8 @@ const ClassAdd = () => {
                 ))}
               </ul>
             </div>
-          </div>
+          </div>{" "}
+          <ToastContainer />
         </div>
       </div>
     </>

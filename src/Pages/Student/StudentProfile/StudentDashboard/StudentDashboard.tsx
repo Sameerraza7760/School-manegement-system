@@ -19,6 +19,8 @@ import StudentSubjects from "../../StudentSubject/StudentSubject";
 import ViewAttendance from "../../ViewAttendence/ViewAttendence";
 import StudentProfile from "../StudentProfile";
 import "./../style.css";
+import Quiz from "../../QuizTest/Quiz";
+
 const StudentDashboard = () => {
   const { studentName }: StudentDetail = useSelector(
     (state: any) => state.student.student || {}
@@ -144,7 +146,11 @@ const StudentDashboard = () => {
             <Route path="SViewAttendence" element={<ViewAttendance />} />
             <Route path="SComplain" element={<StudentComplain />} />
             <Route path="SLogout" element={<StudentLogout />}></Route>
-            <Route path="ClassMaterial" element={<ClassMaterials />}></Route>
+            <Route
+              path="ClassMaterial"
+              element={<ClassMaterials />}
+            ></Route>{" "}
+            <Route path="SQuizTest/:quizId" element={<Quiz />} />
             <Route
               path="Sassignment"
               element={<StudentViewAssignment />}

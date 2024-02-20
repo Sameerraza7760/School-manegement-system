@@ -12,6 +12,7 @@ import { db } from "../db/firebase";
 import { StudentDetail } from "../types/types.student";
 import { Attendance } from "../types/type.attendence";
 import { Complain } from "../types/type.complain";
+import { toast } from "react-toastify";
 
 const useStudent = () => {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ const useStudent = () => {
   const submitComplain = async (complain: any) => {
     try {
       const docRef = await addDoc(collection(db, "Complain"), complain);
+      toast.success("Complain Submited");
       console.log("Document written with ID: ", docRef.id);
       return docRef;
     } catch (error) {

@@ -21,6 +21,9 @@ function Header() {
   const [drawerVisible, setDrawerVisible] = React.useState(false);
  const adminDetail:AdminCredentials=useSelector((state:any)=>state.admin.admin)
 
+ React.useEffect(() => {
+
+ }, [])
  
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

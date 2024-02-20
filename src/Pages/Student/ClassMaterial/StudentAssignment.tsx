@@ -8,7 +8,7 @@ import {
   completeAssignment,
 } from "../../../types/types.assignment";
 import { StudentDetail } from "../../../types/types.student";
-
+import { uploadImage } from "../../../utills/uploadImage";
 const { TextArea } = Input;
 
 const StudentViewAssignment: React.FC = () => {
@@ -20,8 +20,7 @@ const StudentViewAssignment: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [submissionText, setSubmissionText] = useState("");
 
-  const { getAssignmentByClassId, submitAssignment, uploadImage } =
-    useAssignment();
+  const { getAssignmentByClassId, submitAssignment } = useAssignment();
   const studentDetail: StudentDetail = useSelector(
     (state: any) => state.student.student
   );

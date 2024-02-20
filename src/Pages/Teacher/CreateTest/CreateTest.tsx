@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Question } from "../../../types/type.quiz";
+import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import useQuiz from "../../../hooks/useQuiz";
+import { Question } from "../../../types/type.quiz";
 const CreateQuiz: React.FC = () => {
+  const { teacher: { classId } } = useSelector((state: any) => state.teacher);
+  console.log(classId);
+  
   const { submitQuizTest } = useQuiz();
   const [quizTitle, setQuizTitle] = useState<string>("");
   const [questions, setQuestions] = useState<Question[]>([
@@ -45,7 +49,7 @@ const CreateQuiz: React.FC = () => {
   const handleSubmit = async () => {
     // Add logic to submit the quiz to the backend
     console.log("Quiz Submitted:", { quizTitle, questions });
-    await submitQuizTest(quizTitle, questions);
+    await submitQuizTest(quizTitle, questions, classId);
   };
 
   return (

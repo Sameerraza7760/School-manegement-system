@@ -1,20 +1,15 @@
 import {
   addDoc,
   collection,
-  doc,
   getDocs,
   query,
-  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
-import { useDispatch } from "react-redux";
-import { db, storage } from "../db/firebase";
+import { db } from "../db/firebase";
 import { Assignment, completeAssignment } from "../types/types.assignment";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const useAssignment = () => {
-  const dispatch = useDispatch();
   const addAssignmentInClass = async (assignment: Assignment) => {
     const { classId } = assignment;
     try {
@@ -29,15 +24,6 @@ const useAssignment = () => {
     }
   };
 
-  const uploadImage = async (image: File | null) => {
-    if (image) {
-      const storageRef = ref(storage, `images/${image.name}`);
-      const snapshot = await uploadBytes(storageRef, image);
-      const url: string = await getDownloadURL(snapshot.ref);
-      return url;
-    }
-  };
-
   const submitAssignment = async (assignmentContent: completeAssignment) => {
     try {
       await addDoc(collection(db, "completeAssignments"), assignmentContent);
@@ -47,7 +33,7 @@ const useAssignment = () => {
     }
   };
 
-  const getCompleteAssignments = async (assignmentId:string) => {
+  const getCompleteAssignments = async (assignmentId: string) => {
     try {
       const completeAssignmentsRef = collection(db, "completeAssignments");
       const q = query(
@@ -55,7 +41,9 @@ const useAssignment = () => {
         where("assignmentId", "==", assignmentId)
       );
       const querySnapshot = await getDocs(q);
-      const completedAssignments = querySnapshot.docs.map((doc) => doc.data() as completeAssignment);
+      const completedAssignments = querySnapshot.docs.map(
+        (doc) => doc.data() as completeAssignment
+      );
       return completedAssignments;
     } catch (error) {
       console.error("Error getting completed assignments:", error);
@@ -90,7 +78,7 @@ const useAssignment = () => {
     addAssignmentInClass,
     getAssignmentByClassId,
     submitAssignment,
-    uploadImage,
+
     getCompleteAssignments,
   };
 };

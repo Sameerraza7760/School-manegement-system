@@ -2,18 +2,15 @@ import { Button, Input, Modal } from "antd";
 import { useReducer, useState } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import useAssignment from "../../../hooks/useAssignment";
 import useAuth from "../../../hooks/useAuth";
 import { initialState, reducer } from "../../../reducers/profilesReducer";
+import { uploadImage } from "../../../utills/uploadImage";
 import Header from "../../components/Header/Header";
-
 const AdminProfile = () => {
-  const { uploadImage } = useAssignment();
+  const adminProfile = useSelector((state: any) => state?.admin?.admin);
   const { updateProfile, fetchAdminDataFromDatabase } = useAuth();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [file, setFile] = useState<File | null>(null);
-  const adminProfile = useSelector((state: any) => state.admin.admin);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -39,10 +36,8 @@ const AdminProfile = () => {
   const submitProfile = async () => {
     const url = await uploadImage(file);
     dispatch({ type: "SET_IMAGE", payload: url });
-
     try {
       await updateProfile(state, adminProfile.schoolid);
-
       await fetchAdminDataFromDatabase(adminProfile.schoolid);
     } catch (error) {
       console.log(error);

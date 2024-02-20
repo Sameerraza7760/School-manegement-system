@@ -37,7 +37,6 @@ function AdminRegester() {
     event.preventDefault();
 
     const target = event.target as any;
-
     const userName = target.adminName.value;
     const schoolName = target.schoolName.value;
     const email = target.email.value;

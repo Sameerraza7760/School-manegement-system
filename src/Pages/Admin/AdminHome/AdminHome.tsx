@@ -8,12 +8,12 @@ import { useSelector } from "react-redux";
 
 function AdminHome() {
   const totalTeachers = useSelector(
-    (state: any) => state.teachers.enrolledTeachers
+    (state: any) => state?.teachers?.enrolledTeachers
   );
   const totalStudents = useSelector(
-    (state: any) => state.students.enrolledStudents
+    (state: any) => state?.students?.enrolledStudents
   );
-  const totatClasses = useSelector((state: any) => state.class.classes);
+  const totatClasses = useSelector((state: any) => state?.class?.classes);
 
   return (
     <>
