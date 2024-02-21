@@ -20,27 +20,27 @@ import Home from "../../Pages/Home/Home";
 import Login from "../../Pages/Login/Login";
 import Logout from "../../Pages/Logout/Logout";
 import StudentComplain from "../../Pages/Student/StudentComplain/StudentComplain";
+import StudentLogout from "../../Pages/Student/StudentLogout/StudentLogout";
 import StudentDashboard from "../../Pages/Student/StudentProfile/StudentDashboard/StudentDashboard";
 import StudentProfile from "../../Pages/Student/StudentProfile/StudentProfile";
 import StudentSubjects from "../../Pages/Student/StudentSubject/StudentSubject";
 import ViewAttendance from "../../Pages/Student/ViewAttendence/ViewAttendence";
-import StudentLogout from "../../Pages/Student/StudentLogout/StudentLogout";
 import TeacherDashboard from "../../Pages/Teacher/TeacherDashboard/TeacherDashboard";
 import TeacherProfile from "../../Pages/Teacher/TeacherProfilePage/TeacherProfile";
 
+import ComplainsPage from "../../Pages/Admin/AdminHome/Complain";
+import ClassMaterials from "../../Pages/Student/ClassMaterial/ClassMaterial";
+import StudentViewAssignment from "../../Pages/Student/ClassMaterial/StudentAssignment";
+import Quiz from "../../Pages/Student/QuizTest/Quiz";
 import TClassDetail from "../../Pages/Teacher/ClassDetail/TeacherClassDetail";
-import ViewStudent from "../../Pages/Teacher/ViewStudent/ViewStudent";
+import CreateQuiz from "../../Pages/Teacher/CreateTest/CreateTest";
+import QuizResult from "../../Pages/Teacher/QuizResult/QuizResult";
+import ManegeAssinment from "../../Pages/Teacher/ManegeAssinment/ManegeAssinment";
+import ViewCompletedAssignments from "../../Pages/Teacher/ManegeAssinment/ViewCompleteAssignment";
 import TeacherAttendance from "../../Pages/Teacher/TeacherAttendence/TeacherAttendence";
 import TeacherComplain from "../../Pages/Teacher/TeacherComplain/TeacherComplain";
 import TeacherLogout from "../../Pages/Teacher/TeacherLogout";
-import ClassMaterials from "../../Pages/Student/ClassMaterial/ClassMaterial";
-import ManegeAssinment from "../../Pages/Teacher/ManegeAssinment/ManegeAssinment";
-import ViewCompletedAssignments from "../../Pages/Teacher/ManegeAssinment/ViewCompleteAssignment";
-import StudentViewAssignment from "../../Pages/Student/ClassMaterial/StudentAssignment";
-import ComplainsPage from "../../Pages/Admin/AdminHome/Complain";
-import CreateQuiz from "../../Pages/Teacher/CreateTest/CreateTest";
-import Quiz from "../../Pages/Student/QuizTest/Quiz";
-
+import ViewStudent from "../../Pages/Teacher/ViewStudent/ViewStudent";
 const AppRouter: React.FC = () => {
   return (
     <Routes>
@@ -69,7 +69,6 @@ const AppRouter: React.FC = () => {
       <Route path="/noticeAdmin" element={<AdminNoticePage />}></Route>
       <Route path="/AllStudent" element={<AdminStudentPage />}></Route>
       <Route path="/TeacherDetail/:id" element={<TeacherDetailsPage />} />
-
       <Route path="/StudentDashboard" element={<StudentDashboard />}>
         <Route path="Sprofile" element={<StudentProfile />} />
         <Route path="Ssubjects" element={<StudentSubjects />} />
@@ -80,7 +79,6 @@ const AppRouter: React.FC = () => {
         <Route path="Sassignment" element={<StudentViewAssignment />}></Route>
         <Route path="SQuizTest/:quizId" element={<Quiz />} />
       </Route>
-
       <Route path="/TeacherDashboard" element={<TeacherDashboard />}>
         <Route path="Tprofile" element={<TeacherProfile />}></Route>
         <Route path="TClassDetail" element={<TClassDetail />}></Route>
@@ -88,8 +86,9 @@ const AppRouter: React.FC = () => {
         <Route path="TAttendence" element={<TeacherAttendance />}></Route>
         <Route path="TComplain" element={<TeacherComplain />}></Route>
         <Route path="TcreateTest" element={<CreateQuiz />}></Route>
-        <Route path="Tlogout" element={<TeacherLogout />}></Route>
-      </Route>
+        <Route path="Tlogout" element={<TeacherLogout />}></Route>{" "}
+      </Route>{" "}
+      <Route path="/TResult" element={<QuizResult />}></Route>
       <Route path="/TmanegeAssignment" element={<ManegeAssinment />}></Route>
       <Route
         path="/ViewAssignment/:id"

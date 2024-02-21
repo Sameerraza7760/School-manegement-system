@@ -18,6 +18,7 @@ import TeacherLogout from "../TeacherLogout";
 import TeacherProfile from "../TeacherProfilePage/TeacherProfile";
 import ViewStudent from "../ViewStudent/ViewStudent";
 import CreateQuiz from "../CreateTest/CreateTest";
+import QuizResult from "../QuizResult/QuizResult";
 
 const TeacherDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -126,7 +127,8 @@ const TeacherDashboard = () => {
             <Route path="Tprofile" element={<TeacherProfile />} />
             <Route path="TClassDetail" element={<ClassDetail />}></Route>
             <Route path="TViewStudent" element={<ViewStudent />}></Route>{" "}
-            <Route path="TcreateTest" element={<CreateQuiz />}></Route>
+            <Route path="TcreateTest" element={<CreateQuiz />}></Route>{" "}
+            {/* <Route path="TResult" element={<QuizResult />}></Route> */}
             <Route
               path="TAttendence"
               element={<TeacherAttendencePage />}

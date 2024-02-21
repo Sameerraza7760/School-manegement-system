@@ -3,12 +3,17 @@ import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import useQuiz from "../../../hooks/useQuiz";
 import { Question } from "../../../types/type.quiz";
+import { useNavigate } from "react-router-dom";
 const CreateQuiz: React.FC = () => {
-  const { teacher: { classId } } = useSelector((state: any) => state.teacher);
+  const navigate = useNavigate();
+  const {
+    teacher: { classId },
+  } = useSelector((state: any) => state.teacher);
   console.log(classId);
-  
+
   const { submitQuizTest } = useQuiz();
   const [quizTitle, setQuizTitle] = useState<string>("");
+  const [timeLimit, setTimeLimit] = useState<number>(10);
   const [questions, setQuestions] = useState<Question[]>([
     { question: "", options: ["", "", ""], correctAnswer: "" },
   ]);
@@ -49,7 +54,7 @@ const CreateQuiz: React.FC = () => {
   const handleSubmit = async () => {
     // Add logic to submit the quiz to the backend
     console.log("Quiz Submitted:", { quizTitle, questions });
-    await submitQuizTest(quizTitle, questions, classId);
+    await submitQuizTest(quizTitle, questions, classId, timeLimit);
   };
 
   return (
@@ -127,6 +132,12 @@ const CreateQuiz: React.FC = () => {
         >
           Submit Quiz
         </button>{" "}
+        <button
+          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+          onClick={() => navigate("/TResult")}
+        >
+          Show Result
+        </button>
         <ToastContainer />
       </div>
     </div>

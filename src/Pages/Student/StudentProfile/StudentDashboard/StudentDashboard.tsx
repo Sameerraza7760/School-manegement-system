@@ -18,7 +18,7 @@ import StudentLogout from "../../StudentLogout/StudentLogout";
 import StudentSubjects from "../../StudentSubject/StudentSubject";
 import ViewAttendance from "../../ViewAttendence/ViewAttendence";
 import StudentProfile from "../StudentProfile";
-import "./../style.css";
+// import "./../style.css";
 import Quiz from "../../QuizTest/Quiz";
 
 const StudentDashboard = () => {
@@ -47,10 +47,10 @@ const StudentDashboard = () => {
     };
   }, []);
   return (
-    <div className="flex h-screen">
+    <div className="flex h-60vh">
       {/* Sidebar */}
       <nav
-        className={`SidebarS bg-indigo-800 text-white w-64 p-4 min-h-screen ${
+        className={` bg-indigo-900 text-white sm:20 md:60 p-4 min-h-screen ${
           isSidebarOpen ? "block" : "hidden"
         }`}
       >
@@ -110,7 +110,7 @@ const StudentDashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-indigo-800 text-white py-2">
+        <header className="bg-indigo-900 text-white py-2">
           <div className="flex items-center justify-between p-4">
             <button
               onClick={toggleSidebar}

@@ -5,3 +5,9 @@ export interface StudentDetail {
   studentid?: string;
   schoolId: string;
 }
+export interface StudentResult {
+  studentName: string;
+  RollNumber: string;
+  quizResult: number;
+  classId: string;
+}

@@ -1,4 +1,5 @@
 import {
+  QuerySnapshot,
   addDoc,
   collection,
   doc,
@@ -6,22 +7,26 @@ import {
   getDocs,
   query,
   serverTimestamp,
+  setDoc,
   where,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { db } from "../db/firebase";
 import { Question } from "../types/type.quiz";
+import { StudentResult } from "../types/types.student";
 
 const useQuiz = () => {
   const submitQuizTest = async (
     quizTitle: string,
     questions: Question[],
-    classId: string
+    classId: string,
+    timeLimit: number
   ) => {
     try {
       const quizzesCollection = collection(db, "Quizzes");
       const docRef = await addDoc(quizzesCollection, {
         quizTitle,
+        timeLimit,
         questions,
         classId,
         createdAt: serverTimestamp(),
@@ -74,7 +79,43 @@ const useQuiz = () => {
     }
   };
 
-  return { submitQuizTest, getQuizzesByClassId, getQuizById };
+  const addResultofQuiz = async (stdData: StudentResult) => {
+    try {
+      const resultDocRef = doc(db, "results", stdData.RollNumber);
+      await setDoc(resultDocRef, stdData);
+    } catch (error) {
+      console.error("Error adding quiz result:", error);
+    }
+  };
+
+  const getResultsOfStd = async (classId: string): Promise<StudentResult[]> => {
+    try {
+      const resultsQuery = query(
+        collection(db, "results"),
+        where("classId", "==", classId)
+      );
+
+      const results: StudentResult[] = [];
+      const resultsSnapshot = await getDocs(resultsQuery);
+
+      resultsSnapshot.forEach((doc) => {
+        results.push({ ...(doc.data() as StudentResult), RollNumber: doc.id });
+      });
+
+      return results;
+    } catch (error) {
+      console.error("Error fetching results by classId:", error);
+
+      throw new Error("Failed to fetch results by classId");
+    }
+  };
+  return {
+    submitQuizTest,
+    getQuizzesByClassId,
+    getQuizById,
+    addResultofQuiz,
+    getResultsOfStd,
+  };
 };
 
 export default useQuiz;

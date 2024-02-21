@@ -1,49 +1,95 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import useQuiz from "../../../hooks/useQuiz";
 import { Question } from "../../../types/type.quiz";
-
-import { useParams } from "react-router-dom";
+import { StudentResult } from "../../../types/types.student";
+import { ToastContainer } from "react-toastify";
 const Quiz = () => {
+  const studentData = useSelector((state: any) => state.student.student);
   const { quizId } = useParams();
-  const { getQuizById } = useQuiz();
+  const { getQuizById, addResultofQuiz } = useQuiz();
+  console.log(studentData);
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);
   const [questions, setQuestion] = useState<Question[]>([]);
-
+  const [time, setTime] = useState(300);
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
   };
+
   const getQuizbyId = async () => {
     if (quizId) {
       const quiz = await getQuizById(quizId);
       if (quiz) {
         setQuestion(quiz.questions);
+        setTime(quiz.timeLimit * 60);
       }
       console.log(quiz);
     }
   };
+
   useEffect(() => {
     getQuizbyId();
   }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime((prevTime) => prevTime - 1);
+    }, 1000);
+
+    if (time <= 0) {
+      clearInterval(timer);
+      // Handle quiz timeout here
+      console.log("Quiz timed out!");
+    }
+
+    return () => clearInterval(timer);
+  }, [time]);
 
   const handleNextQuestion = () => {
     if (selectedOption === questions[currentQuestion].correctAnswer) {
       setScore(score + 1);
     }
-
     setSelectedOption("");
     setCurrentQuestion(currentQuestion + 1);
   };
 
   const handleFinishQuiz = () => {
-    // You can add logic here to submit the quiz or display the score
     console.log("Quiz finished. Score:", score);
   };
+  const calculatePercentage = (): number => {
+    return (score / questions.length) * 100;
+  };
+  useEffect(() => {
+    const addResultOfUser = async () => {
+      if (currentQuestion !== questions.length) return;
+      const stdData: StudentResult = {
+        studentName: studentData.studentName,
+        RollNumber: studentData.studentRollNum,
+        quizResult: calculatePercentage(),
+        classId: studentData.studentid.slice(0, 20),
+      };
+      await addResultofQuiz(stdData);
+      console.log(questions.length);
 
+      return;
+    };
+    console.log(currentQuestion);
+
+    addResultOfUser();
+  }, [currentQuestion]);
   return (
-    <div className="container mx-auto mt-8 p-8 bg-white rounded-md shadow-lg">
+    <div className="container mx-auto mt-8 p-8 bg-white rounded-md">
       <h1 className="text-3xl font-bold mb-8 text-center">Quiz Time!</h1>
+      <div className="mb-4 text-center">
+        <p className="text-gray-700">
+          Time Remaining: {Math.floor(time / 60)}:
+          {(time % 60).toString().padStart(2, "0")}
+        </p>
+      </div>
       {currentQuestion < questions.length ? (
         <>
           <div className="mb-8">
@@ -80,10 +126,9 @@ const Quiz = () => {
       ) : (
         <>
           <div className="mb-8">
-            <h2 className="text-xl font-semibold">Quiz Finished!</h2>
-            <p className="text-gray-700">
-              Your Score: {score} / {questions.length}
-            </p>
+            <h2 className="text-xl font-semibold">Quiz Finished!</h2>{" "}
+            <p className="text-xl font-semibold">Your Score is recorderd</p>
+            <p className="text-gray-700">Your Score: {calculatePercentage()}</p>
           </div>
           <div className="flex justify-end">
             <button
@@ -95,6 +140,7 @@ const Quiz = () => {
           </div>
         </>
       )}
+      <ToastContainer />
     </div>
   );
 };
