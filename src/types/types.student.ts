@@ -10,4 +10,7 @@ export interface StudentResult {
   RollNumber: string;
   quizResult: number;
   classId: string;
+  isStdCompleted?: boolean;
+  quizId?: string;
+  studentId: string;
 }

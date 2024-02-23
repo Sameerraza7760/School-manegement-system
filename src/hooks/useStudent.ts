@@ -13,15 +13,30 @@ import { StudentDetail } from "../types/types.student";
 import { Attendance } from "../types/type.attendence";
 import { Complain } from "../types/type.complain";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 const useStudent = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const addStudentDetail = async (
     studentData: StudentDetail,
     classroomId: string
   ): Promise<void> => {
     try {
-      return setDoc(doc(db, "students", classroomId + Date.now()), studentData);
+      const { studentRollNum } = studentData;
+      const students = await getAllStudentsInClassroom();
+      const isRollNumberSame = students.find(
+        (std) => std.studentRollNum === studentRollNum
+      );
+      if (isRollNumberSame) {
+        toast.warn("This rollnumber is already exist");
+        return;
+      }
+      await setDoc(doc(db, "students", classroomId + Date.now()), studentData);
+      toast.success("Student Add");
+      setTimeout(() => {
+        navigate(-1);
+      }, 2000);
     } catch (error: any) {
       console.error("Error adding document:", error.message);
     }

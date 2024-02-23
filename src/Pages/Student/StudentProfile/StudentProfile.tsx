@@ -40,10 +40,7 @@ const StudentProfile = () => {
           {Object.entries(currentStudent).map(([label, value]) => (
             <div key={label} className="mb-4">
               <label className="text-indigo-600 font-semibold">{label}:</label>
-              {/* <p className="text-gray-800">{value}</p> */}
-              {label === "attendance" ? (
-                <p className="text-gray-800">{null}</p>
-              ) : (
+              {label === "attendance" ? null : (
                 <p className="text-gray-800">{value}</p>
               )}
             </div>

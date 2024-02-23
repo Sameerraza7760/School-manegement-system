@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import useQuiz from "../../../hooks/useQuiz";
 import { Question } from "../../../types/type.quiz";
 import { StudentResult } from "../../../types/types.student";
-import { ToastContainer } from "react-toastify";
 const Quiz = () => {
   const studentData = useSelector((state: any) => state.student.student);
   const { quizId } = useParams();
@@ -42,7 +42,6 @@ const Quiz = () => {
 
     if (time <= 0) {
       clearInterval(timer);
-      // Handle quiz timeout here
       console.log("Quiz timed out!");
     }
 
@@ -71,6 +70,8 @@ const Quiz = () => {
         RollNumber: studentData.studentRollNum,
         quizResult: calculatePercentage(),
         classId: studentData.studentid.slice(0, 20),
+        studentId: studentData.studentid,
+        quizId: quizId,
       };
       await addResultofQuiz(stdData);
       console.log(questions.length);
@@ -78,7 +79,6 @@ const Quiz = () => {
       return;
     };
     console.log(currentQuestion);
-
     addResultOfUser();
   }, [currentQuestion]);
   return (

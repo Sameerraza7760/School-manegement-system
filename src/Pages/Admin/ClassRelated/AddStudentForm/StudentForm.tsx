@@ -15,8 +15,10 @@ const AddStudentForm = () => {
   const [nameError, setNameError] = useState<boolean>();
   const [studentRollNoError, setRollNumberError] = useState<boolean>();
   const [classError, setClassError] = useState<boolean>(false);
-  const schoolId:string = useSelector((state:any) => state?.admin?.admin?.schoolid);
-  
+  const schoolId: string = useSelector(
+    (state: any) => state?.admin?.admin?.schoolid
+  );
+
   const [loader, setLoader] = useState(false);
   const { addStudentDetail } = useStudent();
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,16 +47,12 @@ const AddStudentForm = () => {
       studentName,
       studentRollNum,
       studentClass,
-      schoolId
+      schoolId,
     };
     if (classRoomid) {
       try {
         await addStudentDetail(StudentDetail, classRoomid);
         formRef.current?.reset();
-        toast.success("Student Add");
-        setTimeout(() => {
-          navigate(-1);
-        }, 2000);
       } catch (error) {
         console.log(error);
       }

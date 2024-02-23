@@ -7,11 +7,14 @@ import { notics } from "../../../types/type.notics";
 import { StudentDetail } from "../../../types/types.student";
 import useQuiz from "../../../hooks/useQuiz";
 const StudentHomePage = () => {
-  const { getQuizzesByClassId } = useQuiz();
+  const [completedQuizzes, setCompletedQuizzes] = useState<
+    Record<string, boolean>
+  >({});
   const studentDetail: StudentDetail = useSelector(
     (state: any) => state.student.student
   );
   const { getNoticeFromDb } = useAuth();
+  const { getQuizzesByClassId, checkIfQuizCompletedForStudent } = useQuiz();
   const [quizzes, setquiz] = useState<any[]>([]);
   const [notics, setNotics] = useState<notics>();
   const getNotics = async () => {
@@ -30,11 +33,36 @@ const StudentHomePage = () => {
       setquiz(quizze);
     }
   };
+  const fetchQuizCompletionStatus = async (quizId: string) => {
+    try {
+      const isQuizCompleted = await checkIfQuizCompletedForStudent(
+        quizId,
+        studentDetail.studentid
+      );
+      return isQuizCompleted;
+    } catch (error: any) {
+      console.error("Error checking quiz completion status:", error.message);
+      return false;
+    }
+  };
+  const fetchCompletionStatus = async () => {
+    const statusMap: Record<string, boolean> = {};
+    await Promise.all(
+      quizzes.map(async (quiz) => {
+        const isCompleted = await fetchQuizCompletionStatus(quiz.id);
+        statusMap[quiz.id] = isCompleted;
+      })
+    );
+    setCompletedQuizzes(statusMap);
+  };
+
   useEffect(() => {
     getNotics();
     getQuizbyClassId();
   }, []);
-
+  useEffect(() => {
+    fetchCompletionStatus();
+  }, [quizzes]);
   return (
     <div className="container mx-auto mt-8 ml-3">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 cursor-pointer">
@@ -48,7 +76,7 @@ const StudentHomePage = () => {
           </p>
           <p className="text-gray-700 mb-2">
             <span className="font-medium text-gray-600">Roll Number:</span>{" "}
-            {studentDetail.studentRollNum}123456
+            {studentDetail.studentRollNum}
           </p>
           <p className="text-gray-700">
             <span className="font-medium text-gray-600">Class:</span>{" "}
@@ -117,16 +145,29 @@ const StudentHomePage = () => {
           </h2>
           {/* Add content related to quizzes here */}
           <ul className="list-disc pl-5 text-gray-700">
-            {quizzes.map((quiz) => (
-              <li key={quiz.id}>
-                <Link
-                  to={`SQuizTest/${quiz.id}`}
-                  className="text-indigo-600 hover:underline"
-                >
-                  {quiz.quizTitle}
-                </Link>
-              </li>
-            ))}
+            {quizzes.length > 0 ? (
+              <ul className="list-disc pl-5 text-gray-700">
+                {quizzes.map((quiz) => (
+                  <li key={quiz.id}>
+                    {completedQuizzes[quiz.id] ? (
+                      <span className="text-red-500">
+                        Completed: {quiz.quizTitle}{" "}
+                        {/* if you already submit the quiz*/}
+                      </span>
+                    ) : (
+                      <Link
+                        to={`SQuizTest/${quiz.id}`}
+                        className="text-indigo-600 hover:underline"
+                      >
+                        {quiz.quizTitle}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No quizzes available.</p>
+            )}
           </ul>
         </div>
       </div>

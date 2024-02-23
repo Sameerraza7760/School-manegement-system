@@ -1,5 +1,5 @@
 import {
-  QuerySnapshot,
+  DocumentData,
   addDoc,
   collection,
   doc,
@@ -24,7 +24,7 @@ const useQuiz = () => {
   ) => {
     try {
       const quizzesCollection = collection(db, "Quizzes");
-      const docRef = await addDoc(quizzesCollection, {
+      await addDoc(quizzesCollection, {
         quizTitle,
         timeLimit,
         questions,
@@ -36,9 +36,10 @@ const useQuiz = () => {
       toast.warn(error.message);
     }
   };
+
   const getQuizzesByClassId = async (
     classId: string | undefined
-  ): Promise<any[]> => {
+  ): Promise<DocumentData[]> => {
     try {
       const quizzesCollection = collection(db, "Quizzes");
       const querySnapshot = await getDocs(
@@ -61,13 +62,13 @@ const useQuiz = () => {
       return [];
     }
   };
-  const getQuizById = async (id: string) => {
+  const getQuizById = async (id: string): Promise<Question | null> => {
     try {
       const quizDocRef = doc(db, "Quizzes", id);
       const quizDocSnapshot = await getDoc(quizDocRef);
 
       if (quizDocSnapshot.exists()) {
-        const quizData = quizDocSnapshot.data();
+        const quizData = quizDocSnapshot.data() as Question;
         return quizData;
       } else {
         console.log("Quiz not found");
@@ -83,6 +84,9 @@ const useQuiz = () => {
     try {
       const resultDocRef = doc(db, "results", stdData.RollNumber);
       await setDoc(resultDocRef, stdData);
+      if (stdData.quizId) {
+        await markQuizAsCompletedForStudent(stdData.quizId, stdData.studentId);
+      }
     } catch (error) {
       console.error("Error adding quiz result:", error);
     }
@@ -109,12 +113,57 @@ const useQuiz = () => {
       throw new Error("Failed to fetch results by classId");
     }
   };
+
+  const markQuizAsCompletedForStudent = async (
+    quizId: string,
+    studentId: string
+  ) => {
+    try {
+      const completedQuizzesDocRef = doc(
+        db,
+        "completedQuizzes",
+        `${quizId}_${studentId}`
+      );
+      await setDoc(completedQuizzesDocRef, { completed: true });
+      console.log(
+        `Quiz ${quizId} marked as completed for student ${studentId}`
+      );
+    } catch (error: any) {
+      console.error("Error marking quiz as completed:", error.message);
+      throw new Error("Failed to mark quiz as completed");
+    }
+  };
+
+  const checkIfQuizCompletedForStudent = async (
+    quizId: string,
+    studentId: string | undefined
+  ): Promise<boolean> => {
+    try {
+      const completedQuizzesDocRef = doc(
+        db,
+        "completedQuizzes",
+        `${quizId}_${studentId}`
+      );
+      const completedQuizzesDocSnapshot = await getDoc(completedQuizzesDocRef);
+      if (completedQuizzesDocSnapshot.exists()) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error: any) {
+      console.error("Error checking quiz completion status:", error.message);
+      throw new Error("Failed to check quiz completion status");
+    }
+  };
+
+  
   return {
     submitQuizTest,
     getQuizzesByClassId,
     getQuizById,
     addResultofQuiz,
     getResultsOfStd,
+    checkIfQuizCompletedForStudent,
   };
 };
 

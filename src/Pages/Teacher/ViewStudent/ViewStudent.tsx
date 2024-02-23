@@ -66,6 +66,7 @@ const ViewStudent = () => {
           visible={isModalVisible}
           onCancel={handleCancel}
           footer={null}
+          style={{ maxWidth: "300px" }}
         >
           {selectedStudent && (
             <>

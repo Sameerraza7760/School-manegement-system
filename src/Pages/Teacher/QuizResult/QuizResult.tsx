@@ -6,7 +6,7 @@ const QuizResult = () => {
   const { getResultsOfStd } = useQuiz();
   const [results, setResults] = useState<StudentResult[] | null>(null);
   const classId = useSelector((state: any) => state?.teacher?.teacher.classId);
-console.log(classId);
+  console.log(classId);
 
   useEffect(() => {
     const getStudentsResult = async () => {
@@ -24,12 +24,15 @@ console.log(classId);
       {results?.map((result, index) => (
         <div key={index} className="bg-white p-8 rounded-md shadow-lg mb-4">
           <div className="flex items-center justify-center mb-4">
-            <span className="text-5xl font-bold text-blue-500">{result.quizResult}%</span>
+            <span className="text-5xl font-bold text-blue-500">
+              {result.quizResult}%
+            </span>
           </div>
-          <p className="text-gray-800">{result.studentName}'s Score: {result.quizResult}%</p>
+          <p className="text-gray-800">
+            {result.studentName}'s Score: {result.quizResult}%
+          </p>
           <p className="text-gray-800">Quiz Title: {result.studentName}</p>
           <div className="mt-4">
-            {/* You can add more details or styling as needed */}
             <p className="text-gray-600">
               Congratulations to {result.studentName} on completing the quiz!
             </p>
