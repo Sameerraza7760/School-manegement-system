@@ -8,7 +8,7 @@ const TeacherHome = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 ml-2">
+    <div className="mx-auto mt-8 w-full">
       <h2 className="text-4xl font-bold mb-6 text-gray-800">
         Welcome to Teacher Dashboard
       </h2>

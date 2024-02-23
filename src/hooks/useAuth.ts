@@ -20,12 +20,11 @@ import { removeTeacher } from "../Config/store/slice/CurrentTeacherSlice";
 import { notics } from "../types/type.notics";
 import { AdminCredentials, updateAdminCred } from "../types/types.auth";
 import { auth, db } from "./../db/firebase";
-import { User } from './../types/types.auth';
+import { User } from "./../types/types.auth";
 const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  
   const signup = async (userinfo: AdminCredentials) => {
     const { email, password } = userinfo;
     try {
@@ -149,7 +148,7 @@ const useAuth = () => {
 
   const handleLogout = async () => {
     await auth.signOut();
-    toast.warning("Logout");
+    toast.success("Logout");
     setTimeout(() => {
       dispatch(removeTeacher());
       dispatch(removeStudent());
@@ -161,8 +160,6 @@ const useAuth = () => {
     signup,
 
     signin,
-
-
     addNoticeinDb,
     getNoticeFromDb,
     updateProfile,

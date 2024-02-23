@@ -26,9 +26,7 @@ const ViewAssignments: React.FC = () => {
 
   return (
     <div className="mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-4 text-blue-600 ">
-        View Assignments
-      </h2>
+   
       {assignments && assignments.length > 0 ? (
         <div>
           {assignments.map((assignment) => (

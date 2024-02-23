@@ -37,9 +37,9 @@ const ViewStudent = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 ml-8 ">
+    <div className="container mx-auto mt-8">
       <h2 className="text-4xl font-bold mb-6 text-gray-800">Class Students</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 cursor-pointer">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 cursor-pointer ml-3">
         {students.map((student) => (
           <div
             key={student.studentid}

@@ -33,11 +33,11 @@ const TeacherAttendance = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 ml-3">
+    <div className="container mx-auto mt-8">
       <h1 className=" text-gray-800 text-4xl font-bold mb-4">My Attendance</h1>
       <div className="mt-4 w-full flex justify-center">
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mx-auto "
+          className="bg-blue-500 text-white px-4 py-2 rounded-md mx-auto"
           onClick={handleToggleChart}
         >
           {showChart ? "Hide Chart" : "Show Chart"}

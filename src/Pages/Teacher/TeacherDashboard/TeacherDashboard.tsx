@@ -11,14 +11,13 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import ClassDetail from "../ClassDetail/TeacherClassDetail";
+import CreateQuiz from "../CreateTest/CreateTest";
 import TeacherAttendencePage from "../TeacherAttendence/TeacherAttendence";
 import TeacherComplain from "../TeacherComplain/TeacherComplain";
 import TeacherHome from "../TeacherHome/TeacherHome";
 import TeacherLogout from "../TeacherLogout";
 import TeacherProfile from "../TeacherProfilePage/TeacherProfile";
 import ViewStudent from "../ViewStudent/ViewStudent";
-import CreateQuiz from "../CreateTest/CreateTest";
-import QuizResult from "../QuizResult/QuizResult";
 
 const TeacherDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -26,9 +25,13 @@ const TeacherDashboard = () => {
   const { teacherName } = useSelector(
     (state: any) => state?.teacher?.teacher || {}
   );
+
+  
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 600px)");
     const handleMediaQueryChange = (event: any) => {
@@ -40,16 +43,22 @@ const TeacherDashboard = () => {
       mediaQuery.removeListener(handleMediaQueryChange);
     };
   }, []);
+
+
   return (
     <div className="flex h-60vh">
       {/* Sidebar */}
       <nav
-        className={`bg-gray-800 text-white w-64 p-4 min-h-screen h-auto ${
-          isSidebarOpen ? "block" : "hidden"
+        className={`bg-gray-900 text-white sm:w-20 md:w-60 p-4 min-h-screen transition-width duration-300 ${
+          isSidebarOpen ? "w-60" : "w-10"
         }`}
       >
         <div className="text-center mb-8">
-          <span className="text-3xl font-bold">Teacher Dashboard</span>
+          <span
+            className={`sm:text-none ${isSidebarOpen ? "sm:inline" : "hidden"}`}
+          >
+            Teacher Dashboard
+          </span>
         </div>
         <ul>
           <li className="mb-4">
@@ -57,44 +66,93 @@ const TeacherDashboard = () => {
               to="/TeacherDashboard"
               className="text-white hover:text-gray-300"
             >
-              <HomeOutlined /> Dashboard
+              <HomeOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Dashboard
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="Tprofile" className="text-white hover:text-gray-300">
-              <UserOutlined /> Profile
+              <UserOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Profile
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="TViewStudent" className="text-white hover:text-gray-300">
-              <BookOutlined /> View Student
+              <BookOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                View Students
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="TClassDetail" className="text-white hover:text-gray-300">
-              <BookOutlined /> ClassDetail
+              <BookOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Class Detail
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="TAttendence" className="text-white hover:text-gray-300">
-              <ScheduleOutlined /> Attendance
+              <ScheduleOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Attendence
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="TComplain" className="text-white hover:text-gray-300">
-              <ExclamationCircleOutlined /> Complain
+              <ExclamationCircleOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Complain
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="Tlogout" className="text-white hover:text-gray-300">
-              <LogoutOutlined /> Logout
+              <LogoutOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Logout
+              </span>
             </Link>
           </li>
         </ul>
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col  ">
+      <div className="flex-1 flex flex-col w-full">
         <header className="bg-gray-800 text-white py-2">
           <div className="flex items-center justify-between p-4">
             <button

@@ -50,12 +50,14 @@ const StudentDashboard = () => {
     <div className="flex h-60vh">
       {/* Sidebar */}
       <nav
-        className={` bg-indigo-900 text-white sm:20 md:60 p-4 min-h-screen ${
-          isSidebarOpen ? "block" : "hidden"
+        className={`bg-indigo-900 text-white sm:w-20 md:w-60 p-4 min-h-screen transition-width duration-300 ${
+          isSidebarOpen ? "w-60" : "w-10"
         }`}
       >
         <div className="text-center mb-8">
-          <span className="text-3xl font-bold">School Dashboard</span>
+          <span className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}>Student Dashboard</span>
         </div>
         <ul>
           <li className="mb-4">
@@ -63,53 +65,109 @@ const StudentDashboard = () => {
               to="/StudentDashboard"
               className="text-white hover:text-gray-300"
             >
-              <HomeOutlined /> Dashboard
+              <HomeOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                {" "}
+                Dashboard{" "}
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="Sprofile" className="text-white hover:text-gray-300">
-              <UserOutlined /> Profile
+              <UserOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                {" "}
+                Profile{" "}
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="Ssubjects" className="text-white hover:text-gray-300">
-              <BookOutlined /> Subjects
+              <BookOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Subjects
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link
               to="SViewAttendence"
-              className="text-white hover:text-gray-300"
+              className="text-white hover:text-gray-300 flex gap-2"
             >
-              <ScheduleOutlined /> Attendance
+              <ScheduleOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Attendance
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="SComplain" className="text-white hover:text-gray-300">
-              <ExclamationCircleOutlined /> Complain
+              <ExclamationCircleOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Complain{" "}
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="ClassMaterial" className="text-white hover:text-gray-300">
-              <BookOutlined /> Class Material
+              <BookOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                {" "}
+                Class Material{" "}
+              </span>
             </Link>
           </li>
 
           <li className="mb-4">
             <Link to="Sassignment" className="text-white hover:text-gray-300">
-              <BookOutlined /> Assignment
+              <BookOutlined />{" "}
+              <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >
+                Assignment{" "}
+              </span>
             </Link>
           </li>
           <li className="mb-4">
             <Link to="SLogout" className="text-white hover:text-gray-300">
-              <LogoutOutlined /> Logout
+              <LogoutOutlined />  <span
+                className={`sm:text-none ${
+                  isSidebarOpen ? "sm:inline" : "hidden"
+                }`}
+              >  Logout </span>
             </Link>
           </li>
         </ul>
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden transition-all duration-300">
         <header className="bg-indigo-900 text-white py-2">
           <div className="flex items-center justify-between p-4">
             <button

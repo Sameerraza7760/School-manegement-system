@@ -132,10 +132,8 @@ const StudentHomePage = () => {
                 {notics?.noticeContent}
               </h3>
               <p className="text-gray-700">
-                {notics?.noticeContent ?? "There is no notice"}
+                {notics?.noticeContent ?? "Not Notics Available"}
               </p>
-
-              <p></p>
             </div>
           </div>
         </div>{" "}
