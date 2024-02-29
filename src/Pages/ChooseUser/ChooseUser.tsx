@@ -9,63 +9,72 @@ import { useNavigate } from "react-router-dom";
 const ChooseUser = () => {
   const navigate = useNavigate();
   return (
-   <div>
-     <StyledContainer>
-      <Container>
-        <Grid container spacing={2} justifyContent="center">
-          <Grid item xs={12} sm={6} md={4}>
-            <div>
-              <StyledPaper
-                elevation={3}
-                onClick={() => {
-                  console.log("Clicked on Admin");
-                  navigate("/adminSignup");
-                }}
-              >
-                <Box mb={2}>
-                  <AccountCircle fontSize="large" />
-                </Box>
-                <StyledTypography>Admin</StyledTypography>
-                Login as an administrator to access the dashboard to manage app
-                data.
-              </StyledPaper>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-         <div>
-         <StyledPaper
-              elevation={3}
-              onClick={() => { console.log("StudentClick");   navigate(`/Login/Student`)}}
-            >
+    <div>
+      <StyledContainer>
+        <Container>
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} sm={6} md={4}>
               <div>
-                <Box mb={2}>
-                  <School fontSize="large" />
-                </Box>
-                <StyledTypography>Student</StyledTypography>
-                Login as a student to explore course materials and assignments.
+                <StyledPaper
+                  elevation={3}
+                  onClick={() => {
+                    console.log("Clicked on Admin");
+                    navigate("/adminSignup");
+                  }}
+                >
+                  <Box mb={2}>
+                    <AccountCircle fontSize="large" />
+                  </Box>
+                  <StyledTypography>Admin</StyledTypography>
+                  Login as an administrator to access the dashboard to manage
+                  app data.
+                </StyledPaper>
               </div>
-            </StyledPaper>
-         </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-        <div>
-        <StyledPaper elevation={3} onClick={() => { console.log('teacherClick');
-            navigate(`/Login/Teacher`)}}>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
               <div>
-                <Box mb={2}>
-                  <Group fontSize="large" />
-                </Box>
-                <StyledTypography>Teacher</StyledTypography>
-                Login as a teacher to create courses, assignments, and track
-                student progress.
+                <StyledPaper
+                  elevation={3}
+                  onClick={() => {
+                    console.log("StudentClick");
+                    navigate(`/Login/Student`);
+                  }}
+                >
+                  <div>
+                    <Box mb={2}>
+                      <School fontSize="large" />
+                    </Box>
+                    <StyledTypography>Student</StyledTypography>
+                    Login as a student to explore course materials and
+                    assignments.
+                  </div>
+                </StyledPaper>
               </div>
-            </StyledPaper>
-        </div>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <div>
+                <StyledPaper
+                  elevation={3}
+                  onClick={() => {
+                    console.log("teacherClick");
+                    navigate(`/Login/Teacher`);
+                  }}
+                >
+                  <div>
+                    <Box mb={2}>
+                      <Group fontSize="large" />
+                    </Box>
+                    <StyledTypography>Teacher</StyledTypography>
+                    Login as a teacher to create courses, assignments, and track
+                    student progress.
+                  </div>
+                </StyledPaper>
+              </div>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-    </StyledContainer>
-   </div>
+        </Container>
+      </StyledContainer>
+    </div>
   );
 };
 

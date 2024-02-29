@@ -64,7 +64,7 @@ const ClassAdd = () => {
                 />
                 <button
                   onClick={handleAddClass}
-                  className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none"
+                  className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none w-[150px]"
                 >
                   Add Class
                 </button>

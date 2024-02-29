@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ClassRoom } from "../../../types/types.class";
 import Header from "./../../components/Header/Header";
 
 function SubjectList() {
-  const classes = useSelector((state: any) => state?.class?.classes);
   const navigate = useNavigate();
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const location = useLocation();
   const ClassSubject = location.state.selectedClass;
 
-  const handleCheckboxChange = (subject: string, className: string) => {
+  const handleCheckboxChange = (subject: string) => {
     setSelectedSubject(subject);
   };
 
@@ -27,7 +24,6 @@ function SubjectList() {
         classId: ClassSubject.id,
       };
       console.log(teacherDetail);
-           
       navigate("/TeacherForm", { state: { teacherDetail } });
     }
   };
@@ -35,44 +31,37 @@ function SubjectList() {
   return (
     <>
       <Header />
-      <div className="container mx-auto mt-[100px]">
+      <div className="container mx-auto mt-16">
         <div className="max-w-2xl mx-auto bg-white p-8 rounded-md shadow-md">
           <h2 className="text-3xl font-bold mb-6 text-purple-800">
             Select Subjects for Teacher
           </h2>
           <div className="mb-4">
-            <label className="text-gray-600 mb-2 block">
+            <label className="flex items-center text-gray-600 mb-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={!selectedSubject}
                 onChange={handleSelectAll}
-                className="mr-2"
+                className="mr-2 cursor-pointer"
               />
-              Select All
+              <span className="text-sm">Select All</span>
             </label>
           </div>
           <div className="mb-4">
-            <span className="ml-1">
+            <span className="ml-1 text-gray-800">
               Class {location.state.selectedClass.className}
             </span>
             {ClassSubject?.subjects?.map((subject: string, index: number) => (
-              <div key={index} className="mb-6">
-                <ul className="space-y-2">
-                  <li key={index} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={selectedSubject === subject}
-                      onChange={() =>
-                        handleCheckboxChange(
-                          subject,
-                          location.state.selectedClass.className
-                        )
-                      }
-                      className="mr-2"
-                    />
-                    <span className="text-gray-800">{subject}</span>
-                  </li>
-                </ul>
+              <div key={index} className="mb-3">
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedSubject === subject}
+                    onChange={() => handleCheckboxChange(subject)}
+                    className="mr-2 cursor-pointer"
+                  />
+                  <span className="text-gray-800">{subject}</span>
+                </label>
               </div>
             ))}
           </div>
@@ -89,7 +78,7 @@ function SubjectList() {
               </div>
             )}
             <button
-              className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none"
+              className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none mt-4"
               onClick={handleNextClick}
             >
               Next

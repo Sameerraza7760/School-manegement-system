@@ -6,7 +6,7 @@ import {
   ScheduleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, Route, Routes } from "react-router-dom";
 import { StudentDetail } from "../../../../types/types.student";
@@ -18,7 +18,7 @@ import StudentLogout from "../../StudentLogout/StudentLogout";
 import StudentSubjects from "../../StudentSubject/StudentSubject";
 import ViewAttendance from "../../ViewAttendence/ViewAttendence";
 import StudentProfile from "../StudentProfile";
-// import "./../style.css";
+
 import Quiz from "../../QuizTest/Quiz";
 
 const StudentDashboard = () => {
@@ -31,33 +31,23 @@ const StudentDashboard = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 600px)");
 
-    const handleMediaQueryChange = (event: any) => {
-      setSidebarOpen(!event.matches);
-    };
-
-    handleMediaQueryChange(mediaQuery);
-
-    mediaQuery.addListener(handleMediaQueryChange);
-
-    return () => {
-      mediaQuery.removeListener(handleMediaQueryChange);
-    };
-  }, []);
   return (
     <div className="flex h-60vh">
       {/* Sidebar */}
       <nav
-        className={`bg-indigo-900 text-white sm:w-20 md:w-60 p-4 min-h-screen transition-width duration-300 ${
-          isSidebarOpen ? "w-60" : "w-10"
+        className={`bg-indigo-900 text-white w-[40px] sm:w-40 md:w-60 p-4 min-h-screen transition-width duration-300 ${
+          isSidebarOpen ? "w-60" : "hidden"
         }`}
       >
         <div className="text-center mb-8">
-          <span className={`sm:text-none ${
-                  isSidebarOpen ? "sm:inline" : "hidden"
-                }`}>Student Dashboard</span>
+          <span
+            className={` hidden sm:text-none ${
+              isSidebarOpen ? "sm:inline" : "hidden"
+            }`}
+          >
+            Student Dashboard
+          </span>
         </div>
         <ul>
           <li className="mb-4">
@@ -67,7 +57,7 @@ const StudentDashboard = () => {
             >
               <HomeOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -80,7 +70,7 @@ const StudentDashboard = () => {
             <Link to="Sprofile" className="text-white hover:text-gray-300">
               <UserOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -93,7 +83,7 @@ const StudentDashboard = () => {
             <Link to="Ssubjects" className="text-white hover:text-gray-300">
               <BookOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -108,7 +98,7 @@ const StudentDashboard = () => {
             >
               <ScheduleOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -120,7 +110,7 @@ const StudentDashboard = () => {
             <Link to="SComplain" className="text-white hover:text-gray-300">
               <ExclamationCircleOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -132,7 +122,7 @@ const StudentDashboard = () => {
             <Link to="ClassMaterial" className="text-white hover:text-gray-300">
               <BookOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -146,7 +136,7 @@ const StudentDashboard = () => {
             <Link to="Sassignment" className="text-white hover:text-gray-300">
               <BookOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -156,11 +146,15 @@ const StudentDashboard = () => {
           </li>
           <li className="mb-4">
             <Link to="SLogout" className="text-white hover:text-gray-300">
-              <LogoutOutlined />  <span
-                className={`sm:text-none ${
+              <LogoutOutlined />{" "}
+              <span
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
-              >  Logout </span>
+              >
+                {" "}
+                Logout{" "}
+              </span>
             </Link>
           </li>
         </ul>

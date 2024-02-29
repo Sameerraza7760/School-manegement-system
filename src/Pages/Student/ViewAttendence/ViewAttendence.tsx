@@ -1,24 +1,8 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-
+import { calculateAttendancePercentage } from "../../../utills/calculateAttendence";
 import PieChartAttendence from "../../components/AttendenceChart/AttendenceChart";
 import { Attendance } from "../../../types/type.attendence";
-
-const calculateAttendancePercentage = (attendanceData: Attendance[]) => {
-  const totalEntries = attendanceData?.length;
-
-  const presentCount = attendanceData?.filter(
-    (entry) => entry.status.toLowerCase() === "present"
-  ).length;
-  const absentCount = attendanceData?.filter(
-    (entry) => entry.status.toLowerCase() === "absent"
-  ).length;
-
-  return {
-    presentPercentage: (presentCount / totalEntries) * 100,
-    absentPercentage: (absentCount / totalEntries) * 100,
-  };
-};
 
 const ViewAttendance = () => {
   const studentAttendance = useSelector(
@@ -75,16 +59,12 @@ const ViewAttendance = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {studentAttendance?.map(
-              (entry: Attendance, index: number) => (
-                <tr key={index}>
-                  <td className="px-6 py-4 whitespace-nowrap">{entry.date}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {entry.status}
-                  </td>
-                </tr>
-              )
-            )}
+            {studentAttendance?.map((entry: Attendance, index: number) => (
+              <tr key={index}>
+                <td className="px-6 py-4 whitespace-nowrap">{entry.date}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{entry.status}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

@@ -1,13 +1,12 @@
 // StudentSubjects.js
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ClassRoom } from "../../../types/types.class";
+import { useSelector } from "react-redux";
 import useTeacher from "../../../hooks/useTeacher";
+import { ClassRoom } from "../../../types/types.class";
 import { TeacherInfo } from "../../../types/types.teacher";
 import TeacherModal from "./TeacherModal";
 const StudentSubjects = () => {
   const { getAllTeacher } = useTeacher();
-
   const [isModalOpen, setModalOpen] = useState(false);
   const [sutbjectList, setSubjectList] = useState<string[] | undefined>([]);
   const [classRoomId, setClassId] = useState<string>("");
@@ -35,7 +34,6 @@ const StudentSubjects = () => {
     const getTeachers = async () => {
       const teachers = await getAllTeacher();
       setTeachers(teachers);
-      console.log("g", teachers);
     };
     getTeachers();
   }, []);
@@ -52,13 +50,12 @@ const StudentSubjects = () => {
       (item) => item.classId === classRoomId && item.selectedSubject === subject
     );
     if (subjectTeacher) {
+      console.log(subjectTeacher);
+
       setSelectedTeacher(subjectTeacher);
       openModal();
     }
   };
-
-  // if (subjectTeacher) {
-  // }
 
   return (
     <>
@@ -75,12 +72,30 @@ const StudentSubjects = () => {
               <p className="text-gray-600">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
                 euismod suscipit imperdiet.
-              </p>
+              </p>{" "}
+              <a className="text-indigo-500 inline-flex items-center mt-2">
+                View Detail
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  className="w-4 h-4 ml-2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+              </a>
             </div>
           ))}
         </div>
         {selectedTeacher ? (
-          <TeacherModal teacher={selectedTeacher} onClose={closeModal} isOpen={isModalOpen} />
+          <TeacherModal
+            teacher={selectedTeacher}
+            onClose={closeModal}
+            isOpen={isModalOpen}
+          />
         ) : null}
       </div>
     </>

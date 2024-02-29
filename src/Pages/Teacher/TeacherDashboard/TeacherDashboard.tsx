@@ -49,8 +49,8 @@ const TeacherDashboard = () => {
     <div className="flex h-60vh">
       {/* Sidebar */}
       <nav
-        className={`bg-gray-900 text-white sm:w-20 md:w-60 p-4 min-h-screen transition-width duration-300 ${
-          isSidebarOpen ? "w-60" : "w-10"
+        className={`bg-gray-900 text-white sm:w-40 md:w-60 p-4 min-h-screen transition-width duration-300 ${
+          isSidebarOpen ? "w-60" : "hidden"
         }`}
       >
         <div className="text-center mb-8">

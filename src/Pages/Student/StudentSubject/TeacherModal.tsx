@@ -3,7 +3,7 @@ import { TeacherInfo } from "../../../types/types.teacher";
 interface TeacherModalProps {
   teacher: TeacherInfo;
   onClose: () => void;
-  isOpen: boolean; 
+  isOpen: boolean;
 }
 
 const TeacherModal: React.FC<TeacherModalProps> = ({
@@ -14,7 +14,6 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
   const modalStyle = isOpen
     ? "fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50"
     : "hidden";
-
   return (
     <div className={modalStyle}>
       <div className="relative p-4 mx-auto mt-20 max-w-md">
@@ -32,7 +31,6 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
             <p className="mb-2">
               <span className="font-semibold">Email:</span> {teacher.email}
             </p>
-            {/* Add more details as needed */}
           </div>
         </div>
       </div>
