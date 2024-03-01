@@ -21,7 +21,7 @@ const StudentSubjects = () => {
   const studentId: string = useSelector(
     (state: any) => state.student.student.studentid
   );
-  console.log(studentId);
+  // console.log(studentId);
 
   useEffect(() => {
     const findclassRoomid = classDetail.find(
@@ -76,16 +76,16 @@ const StudentSubjects = () => {
               <a className="text-indigo-500 inline-flex items-center mt-2">
                 View Detail
                 <svg
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  className="w-4 h-4 ml-2"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7"></path>
-                </svg>
+    fill="none"
+    stroke="currentColor"
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+    strokeWidth="2" 
+    className="w-4 h-4 ml-2"
+    viewBox="0 0 24 24"
+  >
+    <path d="M5 12h14M12 5l7 7-7 7"></path>
+  </svg>
               </a>
             </div>
           ))}

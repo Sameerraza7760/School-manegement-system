@@ -24,7 +24,7 @@ function AdminHome() {
           <div className="p-4 bg-white rounded shadow-md flex flex-col items-center">
             <img src={Students} alt="Students" className="w-16 h-16 mb-2" />
             <h2 className="text-lg font-semibold">Total Students</h2>
-            {/* Replace Data component with your logic */}
+
             <span className="text-2xl font-bold text-green-500">
               {totalStudents?.length}
             </span>
@@ -34,7 +34,7 @@ function AdminHome() {
           <div className="p-4 bg-white rounded shadow-md flex flex-col items-center">
             <img src={Classes} alt="Classes" className="w-16 h-16 mb-2" />
             <h2 className="text-lg font-semibold">Total Classes</h2>
-            {/* Replace Data component with your logic */}
+
             <span className="text-2xl font-bold text-green-500">
               {totatClasses?.length}
             </span>
@@ -54,14 +54,13 @@ function AdminHome() {
           <div className="p-4 bg-white rounded shadow-md flex flex-col items-center">
             <img src={Fees} alt="Fees" className="w-16 h-16 mb-2" />
             <h2 className="text-lg font-semibold">Fees Collection</h2>
-            {/* Replace Data component with your logic */}
+
             <span className="text-2xl font-bold text-green-500">$23,000</span>
           </div>
         </div>
 
         <div className="mt-4 w-[100%] ">
           <div className="p-4 bg-white rounded shadow-md w-full">
-            {/* Your additional content goes here */}
             <SeeNotice />
           </div>
         </div>

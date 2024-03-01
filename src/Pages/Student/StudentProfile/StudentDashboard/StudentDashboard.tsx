@@ -19,7 +19,7 @@ import StudentSubjects from "../../StudentSubject/StudentSubject";
 import ViewAttendance from "../../ViewAttendence/ViewAttendence";
 import StudentProfile from "../StudentProfile";
 
-import Quiz from "../../QuizTest/Quiz";
+import QuizRoom from "../../QuizTest/QuizRoom";
 
 const StudentDashboard = () => {
   const { studentName }: StudentDetail = useSelector(
@@ -202,7 +202,7 @@ const StudentDashboard = () => {
               path="ClassMaterial"
               element={<ClassMaterials />}
             ></Route>{" "}
-            <Route path="SQuizTest/:quizId" element={<Quiz />} />
+            <Route path="SQuizTest/:quizId" element={<QuizRoom />} />
             <Route
               path="Sassignment"
               element={<StudentViewAssignment />}

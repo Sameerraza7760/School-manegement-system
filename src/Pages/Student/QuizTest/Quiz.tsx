@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import useQuiz from "../../../hooks/useQuiz";
 import { Question } from "../../../types/type.quiz";
 import { StudentResult } from "../../../types/types.student";
-const Quiz = () => {
-  const studentData = useSelector((state: any) => state.student.student);
-  const { quizId } = useParams();
+interface QuizProps {
+  quizId: string | undefined;
+}
+const Quiz = ({ quizId }: QuizProps) => {
+  const studentData = useSelector((state: any) => state?.student?.student);
+  // console.log(quizId);
   const { getQuizById, addResultofQuiz } = useQuiz();
-  console.log(studentData);
-
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);

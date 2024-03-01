@@ -12,5 +12,6 @@ export interface completeAssignment {
   studentClass: number;
   studentAssinment: string | undefined;
   submissionText: string;
-  assignmentId:string|null
+  assignmentId: string | null;
+  studentId: string | undefined;
 }

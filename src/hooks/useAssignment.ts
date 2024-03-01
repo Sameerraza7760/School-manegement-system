@@ -1,8 +1,11 @@
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   query,
+  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -27,12 +30,36 @@ const useAssignment = () => {
   const submitAssignment = async (assignmentContent: completeAssignment) => {
     try {
       await addDoc(collection(db, "completeAssignments"), assignmentContent);
+      if (assignmentContent.assignmentId && assignmentContent.studentId) {
+        await markAssignmentAsCompletedForStudent(
+          assignmentContent.assignmentId,
+          assignmentContent.studentId
+        );
+      }
       console.log("Assignment submitted successfully!");
     } catch (error) {
       console.error("Error submitting assignment:", error);
     }
   };
-
+  const markAssignmentAsCompletedForStudent = async (
+    assignmentId: string,
+    studentid: string
+  ) => {
+    try {
+      const completedAssignmentsDocRef = doc(
+        db,
+        "completedAssignment",
+        `${assignmentId}_${studentid}`
+      );
+      await setDoc(completedAssignmentsDocRef, { completed: true });
+      console.log(
+        `Assignment ${assignmentId} marked as completed for student ${studentid}`
+      );
+    } catch (error: any) {
+      console.error("Error marking Assignment as completed:", error.message);
+      throw new Error("Failed to mark Assignment as completed");
+    }
+  };
   const getCompleteAssignments = async (assignmentId: string) => {
     try {
       const completeAssignmentsRef = collection(db, "completeAssignments");
@@ -74,11 +101,32 @@ const useAssignment = () => {
       return null;
     }
   };
+  const checkIfAssignmentCompletedForStudent = async (
+    assignmentId: string | undefined,
+    studentId: string | undefined
+  ): Promise<boolean> => {
+    try {
+      const completedAssignmentDocRef = doc(
+        db,
+        "completedAssignment",
+        `${assignmentId}_${studentId}`
+      );
+      const completedAssignmentsDocSnapshot = await getDoc(completedAssignmentDocRef);
+      if (completedAssignmentsDocSnapshot.exists()) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error: any) {
+      console.error("Error checking Asssignment completion status:", error.message);
+      throw new Error("Failed to check Asssignment completion status");
+    }
+  };
   return {
     addAssignmentInClass,
     getAssignmentByClassId,
     submitAssignment,
-
+    checkIfAssignmentCompletedForStudent,
     getCompleteAssignments,
   };
 };

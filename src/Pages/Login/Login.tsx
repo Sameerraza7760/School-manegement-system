@@ -111,7 +111,8 @@ function Login() {
       const email = event?.currentTarget?.email?.value;
       const password = event?.currentTarget?.password?.value;
       if (!email || !password) {
-        // Handle validation errors
+        if (!email) setEmailError(true);
+        if (!password) setPasswordError(true);
         return;
       }
       if (Role === "Teacher") {

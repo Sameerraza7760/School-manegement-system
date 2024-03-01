@@ -41,6 +41,7 @@ import TeacherAttendance from "../../Pages/Teacher/TeacherAttendence/TeacherAtte
 import TeacherComplain from "../../Pages/Teacher/TeacherComplain/TeacherComplain";
 import TeacherLogout from "../../Pages/Teacher/TeacherLogout";
 import ViewStudent from "../../Pages/Teacher/ViewStudent/ViewStudent";
+import QuizRoom from "../../Pages/Student/QuizTest/QuizRoom";
 const AppRouter: React.FC = () => {
   return (
     <Routes>
@@ -77,7 +78,7 @@ const AppRouter: React.FC = () => {
         <Route path="SLogout" element={<StudentLogout />}></Route>
         <Route path="ClassMaterial" element={<ClassMaterials />}></Route>
         <Route path="Sassignment" element={<StudentViewAssignment />}></Route>
-        <Route path="SQuizTest/:quizId" element={<Quiz />} />
+        <Route path="SQuizTest/:quizId" element={<QuizRoom />} />
       </Route>
       <Route path="/TeacherDashboard" element={<TeacherDashboard />}>
         <Route path="Tprofile" element={<TeacherProfile />}></Route>

@@ -19,15 +19,51 @@ const StudentViewAssignment: React.FC = () => {
   >();
   const [file, setFile] = useState<File | null>(null);
   const [submissionText, setSubmissionText] = useState("");
-
-  const { getAssignmentByClassId, submitAssignment } = useAssignment();
+  const [completedAssignments, setCompletedAssignments] = useState<
+    Record<string, boolean>
+  >({});
+  const {
+    getAssignmentByClassId,
+    submitAssignment,
+    checkIfAssignmentCompletedForStudent,
+  } = useAssignment();
   const studentDetail: StudentDetail = useSelector(
     (state: any) => state.student.student
   );
+  const { studentid } = studentDetail;
+  const fetchAssignmentCompletionStatus = async (
+    assignmentId: string | undefined
+  ) => {
+    try {
+      const isAssignmentCompleted = await checkIfAssignmentCompletedForStudent(
+        assignmentId,
+        studentDetail.studentid
+      );
+      return isAssignmentCompleted;
+    } catch (error: any) {
+      console.error("Error checking quiz completion status:", error.message);
+      return false;
+    }
+  };
+  const fetchCompletionStatus = async () => {
+    const statusMap: Record<string, boolean> = {};
+    if (assignments?.length > 0) {
+      await Promise.all(
+        assignments.map(async (assignment) => {
+          const isCompleted = await fetchAssignmentCompletionStatus(
+            assignment.assignmentId
+          );
+          statusMap[assignment.assignmentId] = isCompleted;
+        })
+      );
+    }
+    setCompletedAssignments(statusMap);
+  };
 
   useEffect(() => {
     const getAssignment = async () => {
       const classId = studentDetail?.studentid?.slice(0, 20);
+
       const assignment: Assignment[] | null = await getAssignmentByClassId(
         classId as string
       );
@@ -35,6 +71,9 @@ const StudentViewAssignment: React.FC = () => {
     };
     getAssignment();
   }, [studentDetail]);
+  useEffect(() => {
+    fetchCompletionStatus();
+  }, [assignments]);
 
   const handleAssignmentSubmit = (assignmentId: string | undefined) => {
     setSelectedAssignment(assignmentId);
@@ -56,6 +95,7 @@ const StudentViewAssignment: React.FC = () => {
         studentRollNum: studentDetail.studentRollNum,
         studentClass: studentDetail.studentClass,
         studentAssinment: url,
+        studentId: studentid,
         submissionText: submissionText,
         assignmentId: selectedAssignmentId,
       };
@@ -101,24 +141,27 @@ const StudentViewAssignment: React.FC = () => {
                 <label className="block text-gray-600 font-semibold">
                   Submission Status:
                 </label>
-                <button
-                  onClick={() =>
-                    handleAssignmentSubmit(assignment?.assignmentId)
-                  }
-                  className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none"
-                >
-                  Submit Assignment
-                </button>
+                {completedAssignments[assignment.assignmentId] ? (
+                  <span className="text-red-500">Completed: Assignment</span>
+                ) : (
+                  <button
+                    onClick={() =>
+                      handleAssignmentSubmit(assignment?.assignmentId)
+                    }
+                    className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none"
+                  >
+                    Submit Assignment
+                  </button>
+                )}
               </div>
-              <ToastContainer />
             </div>
           ))}
         </div>
       )}
-
+      <ToastContainer />
       <AntModal
         title="Submit Assignment"
-        visible={isModalOpen}
+        open={isModalOpen}
         onOk={confirmSubmit}
         onCancel={closeModal}
         okButtonProps={{ style: { backgroundColor: "darkblue" } }}
