@@ -4,7 +4,7 @@ function QuizRoom() {
   console.log("componentrendered");
 
   const { quizId } = useParams();
-  console.log("f", quizId);
+  // console.log("f", quizId);
 
   return (
     <div>
