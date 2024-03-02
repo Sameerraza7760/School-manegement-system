@@ -4,7 +4,9 @@ import {
   collection,
   doc,
   getDocs,
+  query,
   setDoc,
+  where,
 } from "firebase/firestore";
 import { auth, db } from "../db/firebase";
 import { TeacherInfo } from "../types/types.teacher";
@@ -98,10 +100,36 @@ const useTeacher = () => {
       return [];
     }
   };
+  const getTeachersByClassId = async (
+    classId: string
+  ): Promise<TeacherInfo[]> => {
+    try {
+      const q = query(
+        collection(db, "Teachers"),
+        where("classId", "==", classId)
+      );
+
+      const querySnapshot = await getDocs(q);
+      const teachers: TeacherInfo[] = [];
+
+      querySnapshot.forEach((doc) => {
+        teachers.push({
+          ...doc.data(),
+        } as TeacherInfo);
+      });
+
+      dispatch(enrolledTeachers(teachers));
+
+      return teachers;
+    } catch (error: any) {
+      console.error("Error getting teachers in classroom:", error.message);
+      return [];
+    }
+  };
   return {
     addTeacherInDB,
     getAllTeacher,
-
+    getTeachersByClassId,
     takeTeacherAttendence,
   };
 };

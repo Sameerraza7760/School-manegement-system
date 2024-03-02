@@ -4,11 +4,13 @@ import { useState } from "react";
 import { StudentDetail } from "../../../types/types.student";
 import { calculateAttendancePercentage } from "../../../utills/calculateAttendence";
 import PieChartAttendence from "../../components/AttendenceChart/AttendenceChart";
-
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 interface StudentProps {
   student: StudentDetail;
 }
 const StudentCard = ({ student }: StudentProps) => {
+  const navigate = useNavigate();
   const { studentid, studentName, studentRollNum, studentClass, attendance } =
     student;
 
@@ -40,7 +42,7 @@ const StudentCard = ({ student }: StudentProps) => {
             className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full focus:outline-none transition duration-300 mt-2"
             onClick={toggleDrawer}
           >
-            View Attendance
+            View Detail
           </button>
         </div>
       </div>
@@ -80,6 +82,15 @@ const StudentCard = ({ student }: StudentProps) => {
               absentPercentage={absentPercentage}
             />
           </div>
+
+          {/* Add the Chat button */}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate(`/TecChatRoom/${studentid}`)}
+          >
+            Chat with Student
+          </Button>
         </Box>
       </Drawer>
     </div>

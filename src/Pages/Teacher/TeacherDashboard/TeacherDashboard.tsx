@@ -18,6 +18,7 @@ import TeacherHome from "../TeacherHome/TeacherHome";
 import TeacherLogout from "../TeacherLogout";
 import TeacherProfile from "../TeacherProfilePage/TeacherProfile";
 import ViewStudent from "../ViewStudent/ViewStudent";
+import TeacherChat from "../TeacherChat/TeacherChat";
 
 const TeacherDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -26,11 +27,9 @@ const TeacherDashboard = () => {
     (state: any) => state?.teacher?.teacher || {}
   );
 
-  
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 600px)");
@@ -43,7 +42,6 @@ const TeacherDashboard = () => {
       mediaQuery.removeListener(handleMediaQueryChange);
     };
   }, []);
-
 
   return (
     <div className="flex h-60vh">
@@ -192,7 +190,8 @@ const TeacherDashboard = () => {
               element={<TeacherAttendencePage />}
             ></Route>
             <Route path="TComplain" element={<TeacherComplain />}></Route>
-            <Route path="Tlogout" element={<TeacherLogout />}></Route>
+            <Route path="Tlogout" element={<TeacherLogout />}></Route>{" "}
+            {/* <Route path="TecChatRoom/:studentId" element={<TeacherChat />} /> */}
           </Routes>
         </main>
       </div>

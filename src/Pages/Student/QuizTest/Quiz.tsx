@@ -9,7 +9,6 @@ interface QuizProps {
 }
 const Quiz = ({ quizId }: QuizProps) => {
   const studentData = useSelector((state: any) => state?.student?.student);
-  // console.log(quizId);
   const { getQuizById, addResultofQuiz } = useQuiz();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
@@ -27,7 +26,6 @@ const Quiz = ({ quizId }: QuizProps) => {
         setQuestion(quiz.questions);
         setTime(quiz.timeLimit * 60);
       }
-      console.log(quiz);
     }
   };
 
@@ -63,24 +61,24 @@ const Quiz = ({ quizId }: QuizProps) => {
     return (score / questions.length) * 100;
   };
   useEffect(() => {
-    const addResultOfUser = async () => {
-      if (currentQuestion !== questions.length) return;
-      const stdData: StudentResult = {
-        studentName: studentData.studentName,
-        RollNumber: studentData.studentRollNum,
-        quizResult: calculatePercentage(),
-        classId: studentData.studentid.slice(0, 20),
-        studentId: studentData.studentid,
-        quizId: quizId,
-      };
-      await addResultofQuiz(stdData);
-      console.log(questions.length);
-
-      return;
-    };
-    console.log(currentQuestion);
     addResultOfUser();
   }, [currentQuestion]);
+
+  const addResultOfUser = async () => {
+    if (currentQuestion !== questions.length) return;
+    const stdData: StudentResult = {
+      studentName: studentData.studentName,
+      RollNumber: studentData.studentRollNum,
+      quizResult: calculatePercentage(),
+      classId: studentData.studentid.slice(0, 20),
+      studentId: studentData.studentid,
+      quizId: quizId,
+    };
+    await addResultofQuiz(stdData);
+    console.log(questions.length);
+
+    return;
+  };
   return (
     <div className="container mx-auto mt-8 p-8 bg-white rounded-md">
       <h1 className="text-3xl font-bold mb-8 text-center">Quiz Time!</h1>

@@ -68,6 +68,7 @@ const useAuth = () => {
       if (Role === "Admin") {
         const schoolid = userCredential.user.uid;
         await fetchAdminDataFromDatabase(schoolid);
+        dispatch(isAuthenticated(true))
         setTimeout(() => {
           navigate("/adminHome");
         }, 2000);

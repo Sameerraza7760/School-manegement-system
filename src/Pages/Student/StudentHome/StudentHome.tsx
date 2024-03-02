@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
-import { FaBell, FaBook, FaCalendar, FaList, FaUser } from "react-icons/fa"; // Import Font Awesome icons
+import {
+  FaBell,
+  FaBook,
+  FaCalendar,
+  FaComments,
+  FaList,
+  FaUser,
+} from "react-icons/fa"; // Import Font Awesome icons
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
+import useQuiz from "../../../hooks/useQuiz";
+import useTeacher from "../../../hooks/useTeacher";
 import { notics } from "../../../types/type.notics";
 import { StudentDetail } from "../../../types/types.student";
-import useQuiz from "../../../hooks/useQuiz";
+import { TeacherInfo } from "../../../types/types.teacher";
+
 const StudentHomePage = () => {
   const [completedQuizzes, setCompletedQuizzes] = useState<
     Record<string, boolean>
@@ -13,8 +23,12 @@ const StudentHomePage = () => {
   const studentDetail: StudentDetail = useSelector(
     (state: any) => state.student.student
   );
+
+  console.log(studentDetail.studentid);
+  const { getTeachersByClassId } = useTeacher();
   const { getNoticeFromDb } = useAuth();
   const { getQuizzesByClassId, checkIfQuizCompletedForStudent } = useQuiz();
+  const [teachers, setTeacher] = useState<TeacherInfo[]>([]);
   const [quizzes, setquiz] = useState<any[]>([]);
   const [notics, setNotics] = useState<notics>();
   const getNotics = async () => {
@@ -24,10 +38,10 @@ const StudentHomePage = () => {
       setNotics(notics);
     }
   };
+
+  const classId = studentDetail.studentid?.slice(0, 20);
   const getQuizbyClassId = async () => {
-    const quizze = await getQuizzesByClassId(
-      studentDetail.studentid?.slice(0, 20)
-    );
+    const quizze = await getQuizzesByClassId(classId);
 
     if (quizze) {
       setquiz(quizze);
@@ -56,9 +70,18 @@ const StudentHomePage = () => {
     setCompletedQuizzes(statusMap);
   };
 
+  const getTeacherByClassId = async () => {
+    if (classId) {
+      const teachers = await getTeachersByClassId(classId);
+      if (teachers) {
+        setTeacher(teachers);
+      }
+    }
+  };
   useEffect(() => {
     getNotics();
     getQuizbyClassId();
+    getTeacherByClassId();
   }, []);
   useEffect(() => {
     fetchCompletionStatus();
@@ -166,6 +189,25 @@ const StudentHomePage = () => {
             ) : (
               <p>No quizzes available.</p>
             )}
+          </ul>
+        </div>{" "}
+        <div className="bg-white p-6 rounded-md shadow-md transition duration-300 transform hover:scale-105">
+          <h2 className="text-lg font-semibold mb-4 text-blue-600 flex items-center">
+            <FaComments className="mr-2" /> Chat with Teacher
+          </h2>
+          <ul className="list-disc pl-5 text-gray-700">
+            {teachers?.map((teacher) => (
+              <div key={teacher.teacherId} className="mb-4">
+                <Link
+                  to={`StdChatRoom/${teacher.teacherId}`}
+                  className="block p-4 bg-white shadow-md rounded-md transition duration-300 transform hover:scale-105 hover:bg-gray-100"
+                >
+                  <span className="text-indigo-600 hover:underline">
+                    Teacher Name: {teacher.teacherName}
+                  </span>
+                </Link>
+              </div>
+            ))}
           </ul>
         </div>
       </div>

@@ -31,17 +31,18 @@ import TeacherProfile from "../../Pages/Teacher/TeacherProfilePage/TeacherProfil
 import ComplainsPage from "../../Pages/Admin/AdminHome/Complain";
 import ClassMaterials from "../../Pages/Student/ClassMaterial/ClassMaterial";
 import StudentViewAssignment from "../../Pages/Student/ClassMaterial/StudentAssignment";
-import Quiz from "../../Pages/Student/QuizTest/Quiz";
+import QuizRoom from "../../Pages/Student/QuizTest/QuizRoom";
+import StudentChat from "../../Pages/Student/StudentChat/studentChat";
 import TClassDetail from "../../Pages/Teacher/ClassDetail/TeacherClassDetail";
 import CreateQuiz from "../../Pages/Teacher/CreateTest/CreateTest";
-import QuizResult from "../../Pages/Teacher/QuizResult/QuizResult";
 import ManegeAssinment from "../../Pages/Teacher/ManegeAssinment/ManegeAssinment";
 import ViewCompletedAssignments from "../../Pages/Teacher/ManegeAssinment/ViewCompleteAssignment";
+import QuizResult from "../../Pages/Teacher/QuizResult/QuizResult";
 import TeacherAttendance from "../../Pages/Teacher/TeacherAttendence/TeacherAttendence";
 import TeacherComplain from "../../Pages/Teacher/TeacherComplain/TeacherComplain";
 import TeacherLogout from "../../Pages/Teacher/TeacherLogout";
 import ViewStudent from "../../Pages/Teacher/ViewStudent/ViewStudent";
-import QuizRoom from "../../Pages/Student/QuizTest/QuizRoom";
+import TeacherChat from "../../Pages/Teacher/TeacherChat/TeacherChat";
 const AppRouter: React.FC = () => {
   return (
     <Routes>
@@ -78,7 +79,8 @@ const AppRouter: React.FC = () => {
         <Route path="SLogout" element={<StudentLogout />}></Route>
         <Route path="ClassMaterial" element={<ClassMaterials />}></Route>
         <Route path="Sassignment" element={<StudentViewAssignment />}></Route>
-        <Route path="SQuizTest/:quizId" element={<QuizRoom />} />
+        <Route path="SQuizTest/:quizId" element={<QuizRoom />} />{" "}
+        <Route path="StdChatRoom/:teacherId" element={<StudentChat />} />
       </Route>
       <Route path="/TeacherDashboard" element={<TeacherDashboard />}>
         <Route path="Tprofile" element={<TeacherProfile />}></Route>
@@ -89,7 +91,8 @@ const AppRouter: React.FC = () => {
         <Route path="TcreateTest" element={<CreateQuiz />}></Route>
         <Route path="Tlogout" element={<TeacherLogout />}></Route>{" "}
       </Route>{" "}
-      <Route path="/TResult" element={<QuizResult />}></Route>
+      <Route path="/TResult" element={<QuizResult />}></Route>{" "}
+      <Route path="/TecChatRoom/:studentId" element={<TeacherChat />} />
       <Route path="/TmanegeAssignment" element={<ManegeAssinment />}></Route>
       <Route
         path="/ViewAssignment/:id"

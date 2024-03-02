@@ -3,10 +3,12 @@ import { AdminCredentials } from "../../../types/types.auth";
 
 export interface currentStudentState {
   admin: AdminCredentials | null;
+  isAuthenticated: boolean;
 }
 
 const initialState: currentStudentState = {
   admin: null,
+  isAuthenticated: false,
 };
 
 const currentAdminSlice = createSlice({
@@ -22,5 +24,5 @@ const currentAdminSlice = createSlice({
   },
 });
 
-export const { setAdmin,removeAdmin } = currentAdminSlice.actions;
+export const { setAdmin, removeAdmin } = currentAdminSlice.actions;
 export default currentAdminSlice.reducer;

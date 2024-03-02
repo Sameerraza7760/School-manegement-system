@@ -20,6 +20,7 @@ import ViewAttendance from "../../ViewAttendence/ViewAttendence";
 import StudentProfile from "../StudentProfile";
 
 import QuizRoom from "../../QuizTest/QuizRoom";
+import StudentChat from "../../StudentChat/studentChat";
 
 const StudentDashboard = () => {
   const { studentName }: StudentDetail = useSelector(
@@ -203,6 +204,7 @@ const StudentDashboard = () => {
               element={<ClassMaterials />}
             ></Route>{" "}
             <Route path="SQuizTest/:quizId" element={<QuizRoom />} />
+            <Route path="StdChatRoom/:teacherId" element={<StudentChat />} />
             <Route
               path="Sassignment"
               element={<StudentViewAssignment />}

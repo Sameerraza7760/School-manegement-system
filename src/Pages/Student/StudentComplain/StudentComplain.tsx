@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import useStudent from "../../../hooks/useStudent";
 import { Complain } from "../../../types/type.complain";
 import { ToastContainer } from "react-toastify";
+import { message } from "antd";
 const ComplainsPage = () => {
   const { submitComplain } = useStudent();
   const { student } = useSelector((state: any) => state.student);
@@ -17,7 +18,7 @@ const ComplainsPage = () => {
 
   const handleComplainSubmit = async () => {
     if (!studentComplaint.complainContent.trim()) {
-      alert("Please enter a complaint before submitting.");
+      message.error("Please enter a complaint before submitting.");
       return;
     }
 
@@ -33,7 +34,7 @@ const ComplainsPage = () => {
       <div className="container mx-auto mt-[5%]">
         <h1 className="text-3xl font-semibold mb-6">Complaints</h1>
 
-        <div className="bg-white p-6 rounded-md shadow-md mb-6">
+        <div className="container bg-white p-6 rounded-md shadow-md mb-6">
           <label htmlFor="complainText" className="text-lg font-semibold mb-2">
             Enter Complaint:
           </label>
@@ -56,19 +57,7 @@ const ComplainsPage = () => {
           </button>
         </div>
 
-        {/* Display Student Complaint */}
-        {studentComplaint.complaintsName && (
-          <div className="bg-white p-6 rounded-md shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Student Complaint</h2>
-            <p>
-              <strong>Name:</strong> {studentComplaint.complaintsName}
-            </p>
-            <p>
-              <strong>Complaint Content:</strong>{" "}
-              {studentComplaint.complainContent}
-            </p>
-          </div>
-        )}
+       
         <ToastContainer />
       </div>
     </>
