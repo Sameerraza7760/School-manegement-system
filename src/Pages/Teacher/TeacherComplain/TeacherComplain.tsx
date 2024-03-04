@@ -31,7 +31,9 @@ const TeacherComplain = () => {
   return (
     <div className="flex items-center justify-center mt-9 ">
       <div className="max-w-md">
-        <h1 className="text-4xl font-bold mb-4">Teacher Complaint Form</h1>
+        <h1 className="text-2xl font-bold  mb-4 sm:text-4xl">
+          Teacher Complaint Form
+        </h1>
         <div>
           <div className="mb-4">
             <label

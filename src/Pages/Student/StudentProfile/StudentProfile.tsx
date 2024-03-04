@@ -23,11 +23,11 @@ const StudentProfile = () => {
 
   return (
     <>
-      <div className="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md max-w-2xl">
+      <div className="container  mx-auto mt-8 p-8 bg-white rounded-lg shadow-md max-w-2xl">
         <h2 className="text-4xl font-bold mb-6 text-indigo-800">
           Student Profile
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1  sm:grid-cols-2 gap-4">
           <div className="mb-4">
             <label className="text-indigo-600 font-semibold">
               Profile Image:

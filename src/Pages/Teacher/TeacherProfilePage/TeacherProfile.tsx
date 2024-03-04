@@ -25,7 +25,7 @@ const TeacherProfile = () => {
       <h2 className="text-3xl font-bold mb-6 text-gray-800">
         {teacherProfile.teacherName} Profile
       </h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="mb-4">
           <label className="text-gray-600 font-semibold">TeacherName</label>
           <p className="text-gray-800">{teacherProfile.teacherName}</p>

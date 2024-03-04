@@ -32,9 +32,11 @@ const ComplainsPage = () => {
   return (
     <>
       <div className="container mx-auto mt-[5%]">
-        <h1 className="text-3xl font-semibold mb-6">Complaints</h1>
+        <h1 className="text-2xl font-semibold mb-6  sm:text-3xl ">
+          Complaints
+        </h1>
 
-        <div className="container bg-white p-6 rounded-md shadow-md mb-6">
+        <div className="container w-[90%] mx-auto  bg-white p-6 rounded-md shadow-md mb-6">
           <label htmlFor="complainText" className="text-lg font-semibold mb-2">
             Enter Complaint:
           </label>
@@ -57,7 +59,6 @@ const ComplainsPage = () => {
           </button>
         </div>
 
-       
         <ToastContainer />
       </div>
     </>

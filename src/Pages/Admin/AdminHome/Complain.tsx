@@ -34,7 +34,7 @@ const ComplainsPage = () => {
             {complaints.filter((item) => item.Role === "Teacher").length > 0 ? (
               <ul>
                 {complaints
-                  // .filter((item) => item.Role === "Teacher")
+                  .filter((item) => item.Role === "Teacher")
                   .map((complaint, index) => (
                     <li key={index} className="mb-2">
                       <strong>{complaint.complaintsName}:</strong>{" "}

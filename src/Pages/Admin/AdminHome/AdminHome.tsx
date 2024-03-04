@@ -5,15 +5,26 @@ import Fees from "./../../../assets/img4.png";
 import Header from "../../components/Header/Header";
 import SeeNotice from "../../components/SeeNotice/Notice";
 import { useSelector } from "react-redux";
-
+import { useEffect } from "react";
+import useTeacher from "../../../hooks/useTeacher";
+import { TeacherInfo } from "../../../types/types.teacher";
+import { StudentDetail } from "../../../types/types.student";
+import { ClassRoom } from "../../../types/types.class";
 function AdminHome() {
-  const totalTeachers = useSelector(
+  const { getAllTeacher } = useTeacher();
+  const totalTeachers: TeacherInfo[] = useSelector(
     (state: any) => state?.teachers?.enrolledTeachers
   );
-  const totalStudents = useSelector(
+  const totalStudents: StudentDetail[] = useSelector(
     (state: any) => state?.students?.enrolledStudents
   );
-  const totatClasses = useSelector((state: any) => state?.class?.classes);
+  const totatClasses: ClassRoom[] = useSelector(
+    (state: any) => state?.class?.classes
+  );
+
+  useEffect(() => {
+    getAllTeacher();
+  }, []);
 
   return (
     <>

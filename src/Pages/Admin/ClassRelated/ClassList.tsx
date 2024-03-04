@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useClassRoom from "../../../hooks/useClassRoom";
 import { ClassRoom } from "../../../types/types.class";
 import Header from "../../components/Header/Header";
 
 function ClassList() {
   const navigate = useNavigate();
   const classes = useSelector((state: any) => state?.class?.classes);
-  const { getClassesFromDb } = useClassRoom();
+  // const { getClassesFromDb } = useClassRoom();
 
   const [selectedClass, setSelectedClass] = useState<ClassRoom | null>(null);
 
@@ -30,9 +29,9 @@ function ClassList() {
     }
   };
 
-  useEffect(() => {
-    getClassesFromDb();
-  }, []);
+  // useEffect(() => {
+  //   getClassesFromDb();
+  // }, []);
 
   return (
     <>

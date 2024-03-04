@@ -54,7 +54,7 @@ const useAuth = () => {
     return setDoc(doc(db, "Admin", schoolid), adminData);
   };
 
-  // SIGNIN THE USER
+  // SIGNIN  USER
   const signin = async (userinfo: User) => {
     try {
       const { email, password, Role } = userinfo;
@@ -68,7 +68,7 @@ const useAuth = () => {
       if (Role === "Admin") {
         const schoolid = userCredential.user.uid;
         await fetchAdminDataFromDatabase(schoolid);
-        dispatch(isAuthenticated(true))
+
         setTimeout(() => {
           navigate("/adminHome");
         }, 2000);
@@ -159,7 +159,6 @@ const useAuth = () => {
 
   return {
     signup,
-
     signin,
     addNoticeinDb,
     getNoticeFromDb,

@@ -1,14 +1,13 @@
+import { message } from "antd";
 import { useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import useTeacher from "../../../hooks/useTeacher";
+import { Attendance } from "../../../types/type.attendence";
 import { TeacherInfo } from "../../../types/types.teacher";
 import Header from "../../components/Header/Header";
-import { useParams } from "react-router-dom";
-import Calendar from "react-calendar";
-import { Attendance } from "../../../types/type.attendence";
-import useTeacher from "../../../hooks/useTeacher";
-import "react-calendar/dist/Calendar.css";
-import { message } from "antd";
 const TeacherDetailsPage = () => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -16,12 +15,11 @@ const TeacherDetailsPage = () => {
   const [isCalendarOpen, setCalendarOpen] = useState(false);
 
   const [teacherId, setTeacherId] = useState<string | undefined>("");
-  const { id } = useParams();
+
   const teacherName: TeacherInfo[] = useSelector(
     (state: any) => state.teachers.enrolledTeachers
   );
   const { takeTeacherAttendence } = useTeacher();
-  const filterTeacher = teacherName.filter((item) => item.classId === id);
 
   const handleAttendance = (id: string | undefined) => {
     setCalendarOpen(true);
@@ -63,7 +61,7 @@ const TeacherDetailsPage = () => {
           Teacher Details
         </h2>
 
-        {filterTeacher?.map((teacher, index) => (
+        {teacherName?.map((teacher, index) => (
           <div key={index} className="bg-white p-6 rounded-md shadow-md mb-8">
             <h2 className="text-lg font-semibold mb-4">
               {teacher.teacherName}

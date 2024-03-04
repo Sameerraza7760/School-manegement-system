@@ -31,29 +31,19 @@ const TeacherDashboard = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 600px)");
-    const handleMediaQueryChange = (event: any) => {
-      setSidebarOpen(!event.matches);
-    };
-    handleMediaQueryChange(mediaQuery);
-    mediaQuery.addListener(handleMediaQueryChange);
-    return () => {
-      mediaQuery.removeListener(handleMediaQueryChange);
-    };
-  }, []);
-
   return (
     <div className="flex h-60vh">
       {/* Sidebar */}
       <nav
-        className={`bg-gray-900 text-white sm:w-40 md:w-60 p-4 min-h-screen transition-width duration-300 ${
+        className={`bg-gray-900 text-white w-[40px] sm:w-40 md:w-60 p-4 min-h-screen transition-width duration-300 ${
           isSidebarOpen ? "w-60" : "hidden"
         }`}
       >
-        <div className="text-center mb-8">
+        <div className="text-center sm:text-2xl  mb-8">
           <span
-            className={`sm:text-none ${isSidebarOpen ? "sm:inline" : "hidden"}`}
+            className={` hidden sm:text-none ${
+              isSidebarOpen ? "sm:inline" : "hidden"
+            }`}
           >
             Teacher Dashboard
           </span>
@@ -66,7 +56,7 @@ const TeacherDashboard = () => {
             >
               <HomeOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -78,7 +68,7 @@ const TeacherDashboard = () => {
             <Link to="Tprofile" className="text-white hover:text-gray-300">
               <UserOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -90,7 +80,7 @@ const TeacherDashboard = () => {
             <Link to="TViewStudent" className="text-white hover:text-gray-300">
               <BookOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -102,7 +92,7 @@ const TeacherDashboard = () => {
             <Link to="TClassDetail" className="text-white hover:text-gray-300">
               <BookOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -114,7 +104,7 @@ const TeacherDashboard = () => {
             <Link to="TAttendence" className="text-white hover:text-gray-300">
               <ScheduleOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -126,7 +116,7 @@ const TeacherDashboard = () => {
             <Link to="TComplain" className="text-white hover:text-gray-300">
               <ExclamationCircleOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >
@@ -138,7 +128,7 @@ const TeacherDashboard = () => {
             <Link to="Tlogout" className="text-white hover:text-gray-300">
               <LogoutOutlined />{" "}
               <span
-                className={`sm:text-none ${
+                className={` hidden sm:text-none ${
                   isSidebarOpen ? "sm:inline" : "hidden"
                 }`}
               >

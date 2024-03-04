@@ -22,7 +22,7 @@ const ClassDetail = () => {
   );
   const { getClassDetailById } = useClassRoom();
   const { id } = useParams();
-  const { getAllTeacher } = useTeacher();
+  const { getAllTeacher, getTeachersByClassId } = useTeacher();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +37,7 @@ const ClassDetail = () => {
       await getAllStudentsInClassroom();
 
       try {
-        await getAllTeacher();
+        await getTeachersByClassId(id);
       } catch (error) {
         console.error("Error fetching teachers:", error);
       }
@@ -49,9 +49,9 @@ const ClassDetail = () => {
     (item) => item.studentid?.slice(0, 20) === id
   );
 
-  const filteredTeacher: TeacherInfo[] = teacherName?.filter(
-    (item) => item.classId === id
-  );
+  // const filteredTeacher: TeacherInfo[] = teacherName?.filter(
+  //   (item) => item.classId === id
+  // );
   return (
     <>
       <Header />
@@ -84,7 +84,7 @@ const ClassDetail = () => {
               Number of Teachers:
             </p>
             <p className="text-indigo-800 text-base">
-              {filteredTeacher?.length}
+              {teacherName?.length}
             </p>
             <Button
               type="primary"

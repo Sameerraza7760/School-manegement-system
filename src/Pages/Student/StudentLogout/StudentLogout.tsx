@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 
 const StudentLogout = () => {
-  const {handleLogout} = useAuth()
+  const { handleLogout } = useAuth();
 
   return (
     <div className="flex items-center justify-center mt-9">
@@ -17,10 +17,7 @@ const StudentLogout = () => {
           >
             Logout
           </button>
-          <button
-            // onClick={() => history.push('/dashboard')} // Redirect to dashboard on cancel
-            className="border border-blue-500 text-blue-500 px-6 py-2 rounded hover:bg-blue-100 focus:outline-none"
-          >
+          <button className="border border-blue-500 text-blue-500 px-6 py-2 rounded hover:bg-blue-100 focus:outline-none">
             Cancel
           </button>
         </div>
