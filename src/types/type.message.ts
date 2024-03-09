@@ -3,6 +3,7 @@ import { FieldValue } from "firebase/firestore";
 export interface ChatRoomItem {
   message: FieldValue | string[];
   timestamp: any;
+  seen?: boolean;
 }
 
 export interface messegeData {
@@ -12,6 +13,7 @@ export interface messegeData {
   senderId: string | undefined;
   receiverId: string | undefined;
   timestamp: any;
+
   chatRoomId: {
     [key: string]: boolean;
   };

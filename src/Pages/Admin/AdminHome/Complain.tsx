@@ -25,7 +25,7 @@ const ComplainsPage = () => {
     <>
       <Header />
       <div className="container mx-auto mt-[130px]">
-        <h1 className="text-3xl font-semibold mb-6">Complaints</h1>
+        <h1 className="text-3xl font-semibold mb-6 ml-5">Complaints</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Teacher Complaints */}

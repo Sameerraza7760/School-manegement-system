@@ -1,20 +1,12 @@
 import {
-  DocumentData,
-  addDoc,
   collection,
   doc,
-  getDoc,
-  getDocs,
   onSnapshot,
   query,
-  serverTimestamp,
   setDoc,
-  where,
+  where
 } from "firebase/firestore";
-import { toast } from "react-toastify";
 import { db } from "../db/firebase";
-import { Question } from "../types/type.quiz";
-import { StudentResult } from "../types/types.student";
 import { messegeData } from "../types/type.message";
 
 const useChat = () => {

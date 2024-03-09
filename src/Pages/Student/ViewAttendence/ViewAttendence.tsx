@@ -30,7 +30,7 @@ const ViewAttendance = () => {
       </div>
       {showChart && (
         <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4 ml-3">
+          <h2 className="text-xl font-serif text-blue-900 font-semibold mb-4 ml-3">
             Attendance Overview
           </h2>
           <PieChartAttendence
@@ -39,7 +39,7 @@ const ViewAttendance = () => {
           />
         </div>
       )}
-      <h1 className="text-3xl font-semibold mb-4 ml-3 mt-3">View Attendance</h1>
+      <h1 className="text-3xl font-semibold mb-4 ml-3 mt-3 text-blue-900 font-serif">View Attendance</h1>
       <div className="bg-white shadow-md rounded-md overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">

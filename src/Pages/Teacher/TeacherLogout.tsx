@@ -1,5 +1,6 @@
 import { ToastContainer } from "react-toastify";
 import useAuth from "../../hooks/useAuth";
+
 const TeacherLogout = () => {
   const { handleLogout } = useAuth();
   return (

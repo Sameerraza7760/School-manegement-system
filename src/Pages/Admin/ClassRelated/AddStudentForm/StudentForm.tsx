@@ -64,82 +64,97 @@ const AddStudentForm = () => {
     <>
       <Header />
       <form
-        // onSubmit={handleEnrollStudent}
-        className="container mx-auto pt-9 mt-10"
         onSubmit={handleEnrollStudent}
-        ref={formRef}
-        noValidate
+        className="container w-full mx-auto mt-[100px] flex justify-center items-center"
+        // ref={formRef}
+        // noValidate
       >
-        <div className="w-[90%] mx-auto bg-white p-8 rounded-md shadow-md">
-          <Typography variant="h4" color="primary" gutterBottom>
+        <div className="w-[90%] sm:w-[70%] mx-auto bg-white p-8 rounded-md shadow-md">
+          <h2 className="text-3xl font-bold mb-6 text-purple-800 text-center">
             Enroll Student
-          </Typography>
-          <div className="mb-4">
-            <label htmlFor="studentName" className="text-gray-600 mb-2 block">
+          </h2>
+          <div className="mb-6">
+            <label
+              htmlFor="studentName"
+              className="text-gray-600 block text-sm mb-2"
+            >
               Student Name:
             </label>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="schoolName"
-              label="Enter Student Name"
+            <input
+              type="text"
+              className={`w-full px-4 py-2 rounded-md border ${
+                nameError ? "border-red-500" : "border-gray-300"
+              } focus:outline-none focus:border-purple-500`}
+              id="studentName"
               name="studentName"
+              placeholder="Enter Student Name"
               autoComplete="off"
-              error={nameError}
-              helperText={nameError && "Student Name is required"}
               onChange={handleInputChange}
             />
+            {nameError && (
+              <p className="text-red-500 text-sm mt-1">
+                Student Name is required
+              </p>
+            )}
           </div>
-          <div className="mb-4">
-            <label htmlFor="studentRollNo" className="text-gray-600 mb-2 block">
+          <div className="mb-6">
+            <label
+              htmlFor="studentRollNo"
+              className="text-gray-600 block text-sm mb-2"
+            >
               Roll Number:
             </label>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="rollNumber"
-              label="Enter Roll Number"
+            <input
+              type="text"
+              className={`w-full px-4 py-2 rounded-md border ${
+                studentRollNoError ? "border-red-500" : "border-gray-300"
+              } focus:outline-none focus:border-purple-500`}
+              id="studentRollNo"
               name="studentRollNo"
+              placeholder="Enter Roll Number"
               autoComplete="off"
-              error={studentRollNoError}
-              helperText={studentRollNoError && "Roll Number is required"}
               onChange={handleInputChange}
             />
+            {studentRollNoError && (
+              <p className="text-red-500 text-sm mt-1">
+                Roll Number is required
+              </p>
+            )}
           </div>
-          <div className="mb-4">
-            <label htmlFor="studentClass" className="text-gray-600 mb-2 block">
+          <div className="mb-6">
+            <label
+              htmlFor="studentClass"
+              className="text-gray-600 block text-sm mb-2"
+            >
               Class:
             </label>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
+            <input
+              type="text"
+              className={`w-full px-4 py-2 rounded-md border ${
+                classError ? "border-red-500" : "border-gray-300"
+              } focus:outline-none focus:border-purple-500`}
               id="className"
-              label="Enter Student Class"
               name="className"
+              placeholder="Enter Student Class"
               autoComplete="ClassName"
-              error={classError}
-              helperText={classError && "Class is required"}
               onChange={handleInputChange}
             />
+            {classError && (
+              <p className="text-red-500 text-sm mt-1">Class is required</p>
+            )}
           </div>
 
-          <Button
-            // onClick={handleEnrollStudent}
-            style={{ backgroundColor: "purple" }}
+          <button
             type="submit"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            className={`w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none ${
+              loader && "cursor-not-allowed"
+            }`}
+            disabled={loader}
           >
-            {loader ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              "Enroll Student"
-            )}
-          </Button>
+            {loader ? "Enrolling..." : "Enroll Student"}
+          </button>
         </div>
+
         <ToastContainer />
       </form>
     </>

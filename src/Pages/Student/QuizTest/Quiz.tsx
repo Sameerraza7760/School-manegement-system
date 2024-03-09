@@ -3,18 +3,24 @@ import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import useQuiz from "../../../hooks/useQuiz";
 import { Question } from "../../../types/type.quiz";
-import { StudentResult } from "../../../types/types.student";
+import { StudentDetail, StudentResult } from "../../../types/types.student";
+import { useCowndown } from "../../../hooks/useCowndown";
+import { useNavigate } from "react-router-dom";
+// import { Student } from "../../../types/types.stundent";
 interface QuizProps {
   quizId: string | undefined;
 }
 const Quiz = ({ quizId }: QuizProps) => {
-  const studentData = useSelector((state: any) => state?.student?.student);
+  const navigate = useNavigate();
+  const studentData: StudentDetail = useSelector(
+    (state: any) => state?.student?.student
+  );
   const { getQuizById, addResultofQuiz } = useQuiz();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);
-  const [questions, setQuestion] = useState<Question[]>([]);
-  const [time, setTime] = useState(300);
+  const [questions, setQuestion] = useState<Question[] | undefined>([]);
+
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
   };
@@ -24,7 +30,6 @@ const Quiz = ({ quizId }: QuizProps) => {
       const quiz = await getQuizById(quizId);
       if (quiz) {
         setQuestion(quiz.questions);
-        setTime(quiz.timeLimit * 60);
       }
     }
   };
@@ -33,63 +38,38 @@ const Quiz = ({ quizId }: QuizProps) => {
     getQuizbyId();
   }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
-    }, 1000);
-
-    if (time <= 0) {
-      clearInterval(timer);
-      console.log("Quiz timed out!");
-    }
-
-    return () => clearInterval(timer);
-  }, [time]);
-
   const handleNextQuestion = () => {
     if (selectedOption === questions[currentQuestion].correctAnswer) {
       setScore(score + 1);
+    }
+    if (currentQuestion === questions?.length - 1) {
+      addResultOfUser();
     }
     setSelectedOption("");
     setCurrentQuestion(currentQuestion + 1);
   };
 
-  const handleFinishQuiz = () => {
-    console.log("Quiz finished. Score:", score);
-  };
   const calculatePercentage = (): number => {
     return (score / questions.length) * 100;
   };
-  useEffect(() => {
-    addResultOfUser();
-  }, [currentQuestion]);
 
   const addResultOfUser = async () => {
-    if (currentQuestion !== questions.length) return;
     const stdData: StudentResult = {
       studentName: studentData.studentName,
       RollNumber: studentData.studentRollNum,
       quizResult: calculatePercentage(),
-      classId: studentData.studentid.slice(0, 20),
+      classId: studentData.studentid?.slice(0, 20),
       studentId: studentData.studentid,
       quizId: quizId,
     };
     await addResultofQuiz(stdData);
-    console.log(questions.length);
-
-    return;
   };
-  return (
-    <div className="container mx-auto mt-8 p-8 bg-white rounded-md">
-      <h1 className="text-3xl font-bold mb-8 text-center">Quiz Time!</h1>
-      <div className="mb-4 text-center">
-        <p className="text-gray-700">
-          Time Remaining: {Math.floor(time / 60)}:
-          {(time % 60).toString().padStart(2, "0")}
-        </p>
-      </div>
-      {currentQuestion < questions.length ? (
+
+  const renderQuizContent = () => {
+    if (currentQuestion < questions.length) {
+      return (
         <>
+          {" "}
           <div className="mb-8">
             <h2 className="text-xl font-semibold">
               {questions[currentQuestion].question}
@@ -121,7 +101,9 @@ const Quiz = ({ quizId }: QuizProps) => {
             )}
           </div>
         </>
-      ) : (
+      );
+    } else {
+      return (
         <>
           <div className="mb-8">
             <h2 className="text-xl font-semibold">Quiz Finished!</h2>{" "}
@@ -131,13 +113,27 @@ const Quiz = ({ quizId }: QuizProps) => {
           <div className="flex justify-end">
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={handleFinishQuiz}
+              onClick={() => navigate("/studentDashboard")}
             >
               Finish Quiz
             </button>
           </div>
         </>
-      )}
+      );
+    }
+  };
+  const time = useCowndown(200, addResultOfUser);
+  return (
+    <div className="container mx-auto mt-8 p-8 bg-white rounded-md">
+      <h1 className="text-3xl font-bold mb-8 text-center">Quiz Time!</h1>
+      <div className="mb-4 text-center">
+        <p className="text-gray-700">
+          Time Remaining: {Math.floor(time / 60)}:
+          {(time % 60).toString().padStart(2, "0")}
+        </p>
+      </div>
+      <div>{renderQuizContent()}</div>
+
       <ToastContainer />
     </div>
   );

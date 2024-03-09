@@ -1,4 +1,4 @@
-import { Button, Col, Row } from "antd";
+import { Button, Card, Col, Divider, Row, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,6 +10,7 @@ import { StudentDetail } from "../../../types/types.student";
 import { TeacherInfo } from "../../../types/types.teacher";
 import Header from "../../components/Header/Header";
 
+const { Title, Text } = Typography;
 const ClassDetail = () => {
   const navigate = useNavigate();
   const { getAllStudentsInClassroom } = useStudent();
@@ -22,7 +23,7 @@ const ClassDetail = () => {
   );
   const { getClassDetailById } = useClassRoom();
   const { id } = useParams();
-  const { getAllTeacher, getTeachersByClassId } = useTeacher();
+  const { getTeachersByClassId } = useTeacher();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,98 +50,84 @@ const ClassDetail = () => {
     (item) => item.studentid?.slice(0, 20) === id
   );
 
-  // const filteredTeacher: TeacherInfo[] = teacherName?.filter(
-  //   (item) => item.classId === id
-  // );
   return (
     <>
       <Header />
 
-      <div className="container mx-auto mt-10 w-full bg-blue-300">
-        <div className="mx-auto p-8 bg-gray-200 mt-[100px] ">
-          <h1 className="mb-6 text-indigo-800 text-3xl font-bold">
-            Class Details
-          </h1>
+      <div className="container w-full mt-[90px] p-8 mx-auto  text-white">
+        <div className="items-center flex justify-center w-full sm:w-[80%] mx-auto ">
+          <Space
+            direction="vertical"
+            size="large"
+            style={{ width: "95%", margin: "auto" }}
+          >
+            <Card className="rounded-lg" style={{ background: "#CCCCCC" }}>
+              <Title level={3} className="text-indigo-800">
+                Class Information
+              </Title>
+              <Divider />
+              <Text strong>Class Name:</Text> {classDetail?.className}
+              <br />
+              <Text strong>Current Date:</Text> 17 Feb 2023
+            </Card>
 
-          <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <p className="text-gray-800 text-lg font-semibold">
-                Current Date:
-              </p>
-              <p className="text-indigo-800 text-base">17 Feb 2023</p>
-            </Col>
-            <Col span={12}>
-              <p className="text-gray-800 text-lg font-semibold text-end">
-                Class Name:
-              </p>
-              <p className="text-indigo-800 text-base text-end">
-                {classDetail?.className}
-              </p>
-            </Col>
-          </Row>
-
-          <div className="mb-6">
-            <p className="text-gray-800 text-lg font-semibold">
-              Number of Teachers:
-            </p>
-            <p className="text-indigo-800 text-base">
-              {teacherName?.length}
-            </p>
-            <Button
-              type="primary"
-              className="bg-blue-800 text-base"
-              onClick={() => navigate(`/TeacherDetail/${id || ""}`)}
-            >
-              View Teachers
-            </Button>
-          </div>
-
-          <div className="mb-6">
-            <p className="text-gray-800 text-lg font-semibold">
-              Number of Students:
-            </p>
-            <p className="text-indigo-800 text-base">{filterStudent.length}</p>
-            <Button
-              type="primary"
-              className="bg-blue-800 text-base"
-              onClick={() => navigate(`/studentList/${id || ""}`)}
-            >
-              View Students
-            </Button>
-          </div>
-
-          <div className="mb-6">
-            <p className="text-gray-800 text-lg font-semibold">
-              Number of Subjects:
-            </p>
-            <p className="text-indigo-800 text-base">
+            <Card className="rounded-lg" style={{ background: "#F5F5DC" }}>
+              <Title level={3} className="text-indigo-800">
+                Statistics
+              </Title>
+              <Divider />
+              <Text strong>Number of Teachers:</Text> {teacherName?.length}
+              <br />
+              <Text strong>Number of Students:</Text> {filterStudent.length}
+              <br />
+              <Text strong>Number of Subjects:</Text>{" "}
               {classDetail?.subjects?.length}
-            </p>
-            <Button
-              type="primary"
-              className="bg-blue-800 text-base"
-              onClick={() => navigate(`/subjectDetail/${id || ""}`)}
-            >
-              View Subjects
-            </Button>
-          </div>
+            </Card>
 
-          <div className="flex justify-end space-x-4">
-            <Button
-              type="primary"
-              className="bg-green-600 text-base"
-              onClick={() => navigate(`/StudentForm/${id || ""}`)}
-            >
-              Enroll Students
-            </Button>
-            <Button
-              type="primary"
-              className="bg-green-600 text-base"
-              onClick={() => navigate(`/addSubject/${id || ""}`)}
-            >
-              Add Subject
-            </Button>
-          </div>
+            <div className="container w-[90%] mx-auto">
+              <div className="grid grid-cols-1 gap-5  sm:grid-cols-2 md:grid-cols-4">
+                <Button
+                  type="primary"
+                  onClick={() => navigate(`/TeacherDetail/${id || ""}`)}
+                  className="bg-blue-800 h-[40px] hover:bg-blue-900 text-white py-2 px-4 rounded-full transition duration-300"
+                >
+                  View Teachers
+                </Button>
+
+                <Button
+                  onClick={() => navigate(`/studentList/${id || ""}`)}
+                  type="primary"
+                  className="bg-blue-800 h-[40px] hover:bg-blue-900 text-white py-2 px-4 rounded-full transition duration-300"
+                >
+                  View Students
+                </Button>
+
+                <Button
+                  onClick={() => navigate(`/subjectDetail/${id || ""}`)}
+                  type="primary"
+                  className="bg-blue-800 h-[40px] hover:bg-blue-900 text-white py-2 px-4 rounded-full transition duration-300"
+                >
+                  View Subjects
+                </Button>
+
+                <Button
+                  onClick={() => navigate(`/StudentForm/${id || ""}`)}
+                  type="primary"
+                  className="bg-green-600 h-[40px] hover:bg-green-700 text-white py-2 px-4 rounded-full transition duration-300"
+                >
+                  Enroll Students
+                </Button>
+
+                <Button
+                  onClick={() => navigate(`/addSubject/${id || ""}`)}
+                  type="primary"
+                  className="bg-green-600 h-[40px] hover:bg-green-700 text-white py-2 px-4 rounded-full transition duration-300"
+                >
+                  Add Subject
+                </Button>
+              </div>
+            </div>
+          </Space>
         </div>
       </div>
     </>

@@ -52,7 +52,7 @@ const CreateQuiz: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    // Add logic to submit the quiz to the backend
+ 
     console.log("Quiz Submitted:", { quizTitle, questions });
     await submitQuizTest(quizTitle, questions, classId, timeLimit);
   };

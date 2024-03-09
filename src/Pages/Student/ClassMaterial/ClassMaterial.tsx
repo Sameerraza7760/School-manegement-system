@@ -28,7 +28,7 @@ const ClassMaterials = () => {
 
   return (
     <div className="container mx-auto mt-10 cursor-pointer">
-      <h1 className="ml-2 text-2xl sm:text-4xl font-extrabold text-blue-600 mb-8">
+      <h1 className="ml-2 text-2xl sm:text-4xl font-extrabold text-blue-600 mb-8 text-center">
         Explore Class Materials
       </h1>
 

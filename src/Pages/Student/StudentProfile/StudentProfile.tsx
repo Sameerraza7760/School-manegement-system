@@ -24,7 +24,7 @@ const StudentProfile = () => {
   return (
     <>
       <div className="container  mx-auto mt-8 p-8 bg-white rounded-lg shadow-md max-w-2xl">
-        <h2 className="text-4xl font-bold mb-6 text-indigo-800">
+        <h2 className="text-4xl font-bold mb-6 font-serif text-indigo-800">
           Student Profile
         </h2>
         <div className="grid grid-cols-1  sm:grid-cols-2 gap-4">
@@ -41,7 +41,7 @@ const StudentProfile = () => {
             <div key={label} className="mb-4">
               <label className="text-indigo-600 font-semibold">{label}:</label>
               {label === "attendance" ? null : (
-                <p className="text-gray-800">{value}</p>
+                <p className="text-gray-800 font-sans">{value}</p>
               )}
             </div>
           ))}

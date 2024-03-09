@@ -5,13 +5,13 @@ import PieChartAttendence from "../../components/AttendenceChart/AttendenceChart
 import { calculateAttendancePercentage } from "../../../utills/calculateAttendence";
 
 const TeacherAttendance = () => {
-  const teacherAttendance: Attendance[] = useSelector(
+  const [showChart, setShowChart] = useState(false);
+  const attendenceRecorded: Attendance[] = useSelector(
     (state: any) => state?.teacher?.teacher.attendance
   );
-  const [showChart, setShowChart] = useState(false);
 
   const { presentPercentage, absentPercentage } =
-    calculateAttendancePercentage(teacherAttendance);
+    calculateAttendancePercentage(attendenceRecorded);
 
   const handleToggleChart = () => {
     setShowChart(!showChart);
@@ -19,7 +19,9 @@ const TeacherAttendance = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h1 className=" text-gray-800 text-4xl font-bold mb-4">My Attendance</h1>
+      <h1 className=" text-gray-800 text-4xl font-bold mb-4 text-center">
+        My Attendance
+      </h1>
       <div className="mt-4 w-full flex justify-center">
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-md mx-auto"
@@ -30,7 +32,7 @@ const TeacherAttendance = () => {
       </div>
       {showChart && (
         <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4 ml-3">
+          <h2 className="text-xl text-gray-800 font-serif font-semibold mb-4 ml-3">
             Attendance Overview
           </h2>
           <PieChartAttendence
@@ -40,7 +42,7 @@ const TeacherAttendance = () => {
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {teacherAttendance?.map((record: Attendance, index: number) => (
+        {attendenceRecorded?.map((record: Attendance, index: number) => (
           <div
             key={index}
             className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 cursor-pointer"

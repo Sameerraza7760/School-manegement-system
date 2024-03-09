@@ -1,21 +1,25 @@
 import { arrayUnion, serverTimestamp } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useChat from "../../../hooks/useChat";
+import { useGetmessages } from "../../../hooks/useGetmessages";
 import { messegeData } from "../../../types/type.message";
 import { TeacherInfo } from "../../../types/types.teacher";
+import Messages from "../../components/Messeges/Messeges";
 function TeacherChat() {
   const { studentId } = useParams<{ studentId: string }>();
 
-  const { sendMessegeToDb, getMessagesFromDb } = useChat();
+  const { sendMessegeToDb } = useChat();
   const currentTeacher: TeacherInfo = useSelector(
     (state: any) => state.teacher.teacher
   );
   const [newMessage, setNewMessage] = useState<string>("");
-  const [messages, setMessages] = useState<messegeData[]>([]);
 
   const handleSendMessage = async () => {
+    if (!newMessage.trim()) {
+      return;
+    }
     const messageData: messegeData = {
       message: newMessage,
       email: currentTeacher?.email,
@@ -32,30 +36,13 @@ function TeacherChat() {
       },
     };
     messageData.chatRoom.message = arrayUnion(newMessage);
-    // setGetMessege(true);
+
     await sendMessegeToDb(messageData);
     setNewMessage(" ");
   };
-  const getMesseges = async () => {
-    const unsubscribe = getMessagesFromDb(
-      studentId,
-      currentTeacher.teacherId,
-      (messages) => {
-        console.log("Filtered Messages:", messages);
-        if (messages) {
-          setMessages(messages);
-          // setGetMessege(false);
-        }
-      }
-    );
-  };
 
-  useEffect(() => {
-    const chat = async () => {
-      await getMesseges();
-    };
-    chat();
-  }, [currentTeacher.teacherId]);
+  const messages = useGetmessages(studentId, currentTeacher.teacherId); // just give the student id and teacherid it gives the chat of there
+
   return (
     <div className="flex h-screen bg-gray-100">
       <div className="flex-1 p-4 overflow-y-scroll ">
@@ -65,31 +52,16 @@ function TeacherChat() {
         </div>
 
         <div className="flex flex-col space-y-4 mt-3 ">
-          {Array.isArray(messages) &&
-            messages.map(
-              (item, index) =>
-                Array.isArray(item.chatRoom.message) &&
-                item.chatRoom.message.map((message, messageIndex) => (
-                  <div key={messageIndex} className="flex items-start">
-                    <img
-                      className="h-10 w-10 rounded-full object-cover"
-                      src="https://via.placeholder.com/40"
-                      alt="User"
-                    />
-                    <div
-                      className={`flex items-start w-full ${
-                        item.senderId === currentTeacher.teacherId
-                          ? "bg-blue-200"
-                          : "bg-green-200"
-                      } p-3 rounded-lg w-3/4`}
-                    >
-                      <p className="text-sm text-blue-800 font-semibold">
-                        {message}
-                      </p>
-                    </div>
-                  </div>
-                ))
-            )}
+          <div className="flex flex-col space-y-4 h-[67vh] overflow-y-scroll p-4">
+            {Array.isArray(messages) &&
+              messages.map(
+                (item) =>
+                  Array.isArray(item.chatRoom.message) &&
+                  item.chatRoom.message.map((message, messageIndex) => (
+                    <Messages key={messageIndex} message={message} />
+                  ))
+              )}
+          </div>
 
           {/* Chat Input */}
           <div className="fixed bottom-0 left-0 right-0 bg-white p-4 flex items-center">

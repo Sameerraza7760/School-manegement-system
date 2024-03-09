@@ -26,7 +26,7 @@ const AdminNoticePage = () => {
     <>
       <Header />
       <div className="container mx-auto mt-[170px]">
-        <div className="max-w-md mx-auto bg-white p-8 border rounded-md shadow-md">
+        <div className="w-[90%] sm:max-w-md mx-auto bg-white p-8 border rounded-md shadow-md">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">
             Create Notice
           </h2>

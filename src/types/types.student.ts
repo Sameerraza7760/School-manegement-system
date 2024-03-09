@@ -9,10 +9,10 @@ export interface StudentDetail {
 }
 export interface StudentResult {
   studentName: string;
-  RollNumber: string;
+  RollNumber: number;
   quizResult: number;
-  classId: string;
+  classId: string | undefined;
   isStdCompleted?: boolean;
   quizId?: string;
-  studentId: string;
+  studentId: string | undefined;
 }

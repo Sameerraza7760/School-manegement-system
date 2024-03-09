@@ -56,54 +56,52 @@ const TeacherDetailsPage = () => {
     <>
       <Header />
 
-      <div className="container mx-auto mt-[120px]">
+      <div className="container w-[96%] mx-auto mt-[120px]">
         <h2 className="text-4xl font-extrabold mb-8 text-indigo-800">
           Teacher Details
         </h2>
 
         {teacherName?.map((teacher, index) => (
           <div key={index} className="bg-white p-6 rounded-md shadow-md mb-8">
-            <h2 className="text-lg font-semibold mb-4">
+            <h2 className="text-xl font-semibold mb-4">
               {teacher.teacherName}
             </h2>
             <div className="mb-4">
               <span className="font-medium text-gray-600">Subjects:</span>
-              <ol className="list-disc pl-5">
+              <ul className="list-disc pl-5">
                 <li className="text-gray-700">{teacher.selectedSubject}</li>
-              </ol>
+              </ul>
             </div>
-            <div className="flex justify-between">
+            <div className="flex items-center justify-between">
               <div>
                 <span className="font-medium text-gray-600">
                   Contact Number:
                 </span>
                 <p className="text-gray-700">{teacher.phoneNumber}</p>
               </div>
-              <div>
-                <button
-                  onClick={() => handleAttendance(teacher.teacherId)}
-                  className="bg-red-900 text-white px-4 py-2 rounded-full hover:bg-indigo-600 focus:outline-none"
-                >
-                  Mark Attendence
-                </button>
-              </div>
-              {isCalendarOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                  <div className="bg-white p-8 rounded-md shadow-lg">
-                    <Calendar
-                      onChange={handleCalendarChange}
-                      value={selectedDate}
-                    />
-                  </div>
-                </div>
-              )}
+              <button
+                onClick={() => handleAttendance(teacher.teacherId)}
+                className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 focus:outline-none"
+              >
+                Mark Attendance
+              </button>
             </div>
+            {isCalendarOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-8 rounded-md shadow-lg">
+                  <Calendar
+                    onChange={handleCalendarChange}
+                    value={selectedDate}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         ))}
 
         <button
           onClick={() => setIsAddingTeacher(true)}
-          className="bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 focus:outline-none"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 focus:outline-none"
         >
           Add Teacher
         </button>
@@ -111,11 +109,11 @@ const TeacherDetailsPage = () => {
         {isAddingTeacher && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
             <div className="bg-white p-6 rounded-md shadow-md">
-              <h2 className="text-lg font-semibold mb-4">Add New Teacher</h2>
+              <h2 className="text-2xl font-semibold mb-4">Add New Teacher</h2>
 
               <button
                 onClick={() => navigate("/ClassList")}
-                className="bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 focus:outline-none"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 focus:outline-none"
               >
                 Confirm
               </button>

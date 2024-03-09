@@ -60,7 +60,7 @@ const StudentSubjects = () => {
   return (
     <>
       <div className="container mx-auto mt-8 ml-[2%] ">
-        <h1 className="text-3xl font-semibold mb-4">Your Subjects</h1>
+        <h1 className="text-3xl font-semibold mb-4 text-blue-800 font-serif">Your Subjects</h1>
         <div className="grid grid-cols-1 w-[90%] mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 h-auto">
           {sutbjectList?.map((subject, index) => (
             <div

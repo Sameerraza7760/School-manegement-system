@@ -15,7 +15,7 @@ import useTeacher from "../../../hooks/useTeacher";
 import { notics } from "../../../types/type.notics";
 import { StudentDetail } from "../../../types/types.student";
 import { TeacherInfo } from "../../../types/types.teacher";
-
+import ChatWithTeachers from "../../components/ChatWithTeachers/ChatWithTeachers";
 const StudentHomePage = () => {
   const [completedQuizzes, setCompletedQuizzes] = useState<
     Record<string, boolean>
@@ -196,16 +196,7 @@ const StudentHomePage = () => {
           </h2>
           <ul className="list-disc pl-5 text-gray-700 mx-auto">
             {ClassTeachers?.map((teacher) => (
-              <div key={teacher.teacherId} className="mb-4">
-                <Link
-                  to={`StdChatRoom/${teacher.teacherId}`}
-                  className="block p-4 bg-white shadow-md rounded-md transition duration-300 transform hover:scale-105 hover:bg-gray-100"
-                >
-                  <span className="text-indigo-600 hover:underline">
-                    Teacher Name: {teacher.teacherName}
-                  </span>
-                </Link>
-              </div>
+              <ChatWithTeachers teacher={teacher} />
             ))}
           </ul>
         </div>

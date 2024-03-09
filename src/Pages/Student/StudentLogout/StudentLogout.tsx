@@ -8,8 +8,8 @@ const StudentLogout = () => {
   return (
     <div className="flex items-center justify-center mt-9">
       <div className="bg-white p-8 rounded shadow-md">
-        <h1 className="text-3xl font-bold mb-4 text-gray-800">Logout</h1>
-        <p className="text-gray-600 mb-8">Are you sure you want to logout?</p>
+        <h1 className="text-3xl font-bold mb-4 text-blue-900  font-sans">Logout</h1>
+        <p className="text-gray-600 mb-8 font-serif">Are you sure you want to logout?</p>
         <div className="flex justify-center space-x-4">
           <button
             onClick={handleLogout}

@@ -31,7 +31,7 @@ const StudentList = () => {
     setSearchTerm(e.target.value);
   };
 
-  const filterStudent: StudentDetail[] = enrolledStudents?.filter(
+  const filteredStudents: StudentDetail[] = enrolledStudents?.filter(
     (item) =>
       item.studentid?.slice(0, 20) === classRoomid &&
       (item.studentRollNum
@@ -79,75 +79,59 @@ const StudentList = () => {
 
   return (
     <>
-      {" "}
-      <Header />{" "}
-      <div className="flex flex-col items-center">
-        <div className="w-full max-w-screen-lg mt-[160px] p-4 bg-white rounded-md shadow-lg">
-          <h2 className="text-3xl font-bold mb-4 text-indigo-800">
-            Student List
-          </h2>
-
-          <div className="mb-4 w-full md:w-1/2">
-            <input
-              type="text"
-              placeholder="Search by Roll Number or Name"
-              className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-              value={searchTerm}
-              onChange={handleSearch}
-            />
-          </div>
-
-          <table className="min-w-full bg-white border border-gray-300">
-            <thead>
-              <tr className="bg-indigo-800 text-white">
-                <th className="py-2 px-4 border-b font-semibold">
-                  Roll Number
-                </th>
-                <th className="py-2 px-4 border-b font-semibold">Name</th>
-                <th className="py-2 px-4 border-b font-semibold">Actions</th>
-                <th className="py-2 px-4 border-b font-semibold">Attendance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filterStudent.map((student) => (
-                <tr
-                  key={student.studentid}
-                  className="hover:bg-gray-100 transition duration-300"
-                >
-                  <td className="py-3 px-4 border-b text-indigo-800">
-                    {student.studentRollNum}
-                  </td>
-                  <td className="py-3 px-4 border-b text-indigo-800">
-                    {student.studentName}
-                  </td>
-                  <td className="py-3 px-4 border-b">
-                    <button
-                      onClick={() => handleDelete(student.studentid)}
-                      className="text-red-500 hover:text-red-700 focus:outline-none"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                  <td className="py-3 px-4 border-b">
-                    <button
-                      onClick={() => handleAttendance(student.studentid)}
-                      className="text-green-500 hover:text-green-700 focus:outline-none"
-                    >
-                      Mark Attendance
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <Header />
+      <div className="container mx-auto mt-[100px]">
+        <h2 className="text-4xl font-extrabold mb-8 text-indigo-800 ml-4">
+          Students Detail
+        </h2>
+        <div className="mb-4 flex items-center justify-between mx-auto w-[90%] sm:w-[50%]">
+          <input
+            type="text"
+            placeholder="Search by name..."
+            className="px-4 py-2 border border-gray-300 rounded-md  mx-auto w-full"
+            onChange={handleSearch}
+          />
         </div>
-        {isCalendarOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-md shadow-lg">
-              <Calendar onChange={handleCalendarChange} value={selectedDate} />
+        <div className="grid grid-cols-1 w-[90%] mx-auto sm:w-full sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredStudents.map((student) => (
+            <div
+              key={student.studentid}
+              className="bg-white p-6 rounded-md shadow-md"
+            >
+              <h3 className="text-xl font-semibold mb-2">
+                {student.studentName}
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Roll Number: {student.studentRollNum}
+              </p>
+              <div className="flex justify-between">
+                <button
+                  onClick={() => handleDelete(student.studentid)}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none"
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() => handleAttendance(student.studentid)}
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none"
+                >
+                  Mark Attendance
+                </button>
+              </div>
+              {isCalendarOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                  {" "}
+                  <div className="bg-white p-8 rounded-md shadow-lg">
+                    <Calendar
+                      onChange={handleCalendarChange}
+                      value={selectedDate}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
     </>
   );
