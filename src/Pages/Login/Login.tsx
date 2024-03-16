@@ -1,136 +1,71 @@
-// import { Link } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
-  Checkbox,
   CircularProgress,
   CssBaseline,
-  FormControlLabel,
   Grid,
-  IconButton,
-  InputAdornment,
   Paper,
-  TextField,
   Typography,
 } from "@mui/material";
-
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { Link, useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { setStudent } from "../../Config/store/slice/CurrentStudentSlice";
-import { setTeacher } from "../../Config/store/slice/CurrentTeacherSlice";
-import bgpic from "../../assets/designlogin.jpg";
+import { loginSchema, studentLoginSchema } from "../../Schema/loginSchema";
 import useAuth from "../../hooks/useAuth";
+import useStudent from "../../hooks/useStudent";
 import useTeacher from "../../hooks/useTeacher";
 import { User } from "../../types/types.auth";
-import { StudentDetail } from "../../types/types.student";
-import { TeacherInfo } from "../../types/types.teacher";
+import AuthField from "../components/LoginFields/Authfield";
+import Studentfield from "../components/LoginFields/Studentfield";
+import GridImage from "../components/GridImage/GridImage";
 
 function Login() {
-  const dispatch = useDispatch();
-  const { getAllTeacher } = useTeacher();
-  const enrolledStudents: StudentDetail[] = useSelector(
-    (state?: any) => state.students.enrolledStudents
-  );
-  console.log(enrolledStudents);
-
-  const enrolledTeachers: TeacherInfo[] = useSelector(
-    (state: any) => state.teachers.enrolledTeachers
-  );
-  console.log("hi==>", enrolledTeachers);
+  const { handleTeacherLogin } = useTeacher();
+  const { handleStudentLogin, getAllStudentsInClassroom } = useStudent();
 
   const { Role } = useParams();
+  const views: any = {
+    Teacher: AuthField,
+    Admin: AuthField,
+    Student: Studentfield,
+  };
+
+  const CurrentFields = views[Role];
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<User>({
+    resolver: zodResolver(
+      Role === "Student" ? studentLoginSchema : loginSchema
+    ),
+  });
+
+  const { getAllTeacher } = useTeacher();
 
   const { signin } = useAuth();
-  const navigate = useNavigate();
-  const [toggle, setToggle] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [loader, setLoader] = useState(false);
-  const [rollNumberError, setRollNumberError] = useState(false);
-  const [studentNameError, setStudentNameError] = useState(false);
 
-  const handleStudentLogin = (rollNum: number, studentName: string) => {
-    const findStudent = enrolledStudents.find(
-      (std) => std.studentName === studentName && std.studentRollNum === rollNum
-    );
-    if (!findStudent) {
-      toast.warn("Wrong Name or Rollnumber");
-      return;
-    }
-    console.log(findStudent);
-    dispatch(setStudent(findStudent));
-    toast.success(`Signin ${Role}`);
-    setTimeout(() => {
-      navigate("/StudentDashboard");
-    }, 2000);
-  };
-
-  const handleTeacherLogin = async (email: string, password: string) => {
-    const fields: User = { email, password, Role };
-    const isTeacher = enrolledTeachers?.find((item) => item.email === email);
-    setLoader(true);
-    if (isTeacher) {
-      await signin(fields);
-      dispatch(setTeacher(isTeacher));
-      setLoader(false);
-      return;
-    }
-    toast.warn("Wrong Email or Password");
-    setLoader(false);
-  };
-
-  const handleAdminLogin = async (email: string, password: string) => {
-    const fields: User = { email, password, Role };
-    setLoader(true);
-    await signin(fields);
-    setLoader(false);
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = async (data: Record<string, any>) => {
     if (Role === "Student") {
-      const rollNum = event?.currentTarget?.rollNumber?.value;
-      const studentName = event?.currentTarget?.studentName?.value;
-
-      if (!rollNum || !studentName) {
-        if (!rollNum) setRollNumberError(true);
-        if (!studentName) setStudentNameError(true);
-        return;
-      }
-      handleStudentLogin(rollNum, studentName);
+      const { rollNumber, studentName } = data;
+      handleStudentLogin(rollNumber, studentName);
       return;
     }
-
-    // now this is for admin and teacher because both need email and password
-    else {
-      const email = event?.currentTarget?.email?.value;
-      const password = event?.currentTarget?.password?.value;
-      if (!email || !password) {
-        if (!email) setEmailError(true);
-        if (!password) setPasswordError(true);
-        return;
-      }
-      if (Role === "Teacher") {
-        handleTeacherLogin(email, password);
-      } else if (Role === "Admin") {
-        handleAdminLogin(email, password);
-      }
-    }
+    if (Role === "Teacher") {
+      handleTeacherLogin(data as User);
+      return;
+    } // for admin
+    await signin(data as User, Role || "Admin");
   };
+
   useEffect(() => {
     getAllTeacher();
+    getAllStudentsInClassroom();
   }, []);
-
-  const handleInputChange = (event: any) => {
-    const { name } = event.target;
-    if (name === "email") setEmailError(false);
-    if (name === "password") setPasswordError(false);
-  };
 
   return (
     <>
@@ -152,90 +87,14 @@ function Login() {
             <Typography>Welcome back! Please enter your details</Typography>
             <Box
               component="form"
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               noValidate
-              sx={{ mt: 2 }}
+              style={{ width: "100%", marginTop: 2 }}
             >
-              {Role === "Student" ? (
-                <>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="rollNumber"
-                    label="Enter your Roll Number"
-                    name="rollNumber"
-                    autoComplete="off"
-                    type="number"
-                    autoFocus
-                    error={rollNumberError}
-                    helperText={rollNumberError && "Roll Number is required"}
-                    onChange={handleInputChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="studentName"
-                    label="Enter your name"
-                    name="studentName"
-                    autoComplete="name"
-                    autoFocus
-                    error={studentNameError}
-                    helperText={studentNameError && "Name is required"}
-                    onChange={handleInputChange}
-                  />
-                </>
-              ) : (
-                // for teacher and admin
-                <>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Enter your email"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    error={emailError}
-                    helperText={emailError && "Email is required"}
-                    onChange={handleInputChange}
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type={toggle ? "text" : "password"}
-                    id="password"
-                    autoComplete="current-password"
-                    error={passwordError}
-                    helperText={passwordError && "Password is required"}
-                    onChange={handleInputChange}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={() => setToggle(!toggle)}>
-                            {toggle ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </>
+              {" "}
+              {CurrentFields && (
+                <CurrentFields formValidation={{ register, errors }} />
               )}
-              <Grid
-                container
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-                <p>Forgot password?</p>
-              </Grid>
               <Button
                 type="submit"
                 fullWidth
@@ -243,7 +102,7 @@ function Login() {
                 sx={{ mt: 3 }}
                 style={{ backgroundColor: "purple" }}
               >
-                {loader ? (
+                {isSubmitting ? (
                   <CircularProgress size={24} color="inherit" />
                 ) : (
                   "Login"
@@ -251,7 +110,6 @@ function Login() {
               </Button>
               <Button
                 fullWidth
-                // onClick={guestModeHandler}
                 variant="outlined"
                 sx={{
                   mt: 2,
@@ -272,23 +130,8 @@ function Login() {
               )}
             </Box>
           </Box>
-        </Grid>
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: `url(${bgpic})`,
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        </Grid>{" "}
+        <GridImage />
       </Grid>
       <ToastContainer />
     </>

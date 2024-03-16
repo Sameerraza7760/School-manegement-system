@@ -1,20 +1,23 @@
 import {
-  addDoc,
   arrayUnion,
   collection,
   doc,
   getDocs,
-  setDoc,
+  setDoc
 } from "firebase/firestore";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { setStudent } from "../Config/store/slice/CurrentStudentSlice";
 import { enrollStudent } from "../Config/store/slice/StudentSlice";
 import { db } from "../db/firebase";
-import { StudentDetail } from "../types/types.student";
 import { Attendance } from "../types/type.attendence";
-import { Complain } from "../types/type.complain";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { StudentDetail } from "../types/types.student";
 const useStudent = () => {
+  const enrolledStudents: StudentDetail[] = useSelector(
+    (state?: any) => state.students.enrolledStudents
+  );
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -78,32 +81,20 @@ const useStudent = () => {
       console.error("Error recording attendance:", error);
     }
   };
-  const submitComplain = async (complain: any) => {
-    try {
-      const docRef = await addDoc(collection(db, "Complain"), complain);
-      toast.success("Complain Submited");
-      console.log("Document written with ID: ", docRef.id);
-      return docRef;
-    } catch (error) {
-      console.error("Error adding document:", error);
-      throw error;
+
+  const handleStudentLogin = (rollNum: number, studentName: string) => {
+    const findStudent = enrolledStudents.find(
+      (std) => std.studentName === studentName && std.studentRollNum === rollNum
+    );
+    if (!findStudent) {
+      toast.warn("Wrong Name or Rollnumber");
+      return;
     }
-  };
-
-  const getComplaints = async () => {
-    try {
-      // Querying all documents from the "students" collection
-      const querySnapshot = await getDocs(collection(db, "Complain"));
-
-      // Extracting data from the query snapshot
-      const complaints = querySnapshot.docs.map((doc) => doc.data());
-
-      console.log("Complaints:", complaints);
-      return complaints as Complain[];
-    } catch (error) {
-      console.error("Error getting documents:", error);
-      throw error;
-    }
+    dispatch(setStudent(findStudent));
+    toast.success("Signin Succsesffuly");
+    setTimeout(() => {
+      navigate("/StudentDashboard");
+    }, 2000);
   };
 
   // Example usage
@@ -112,8 +103,8 @@ const useStudent = () => {
     addStudentDetail,
     getAllStudentsInClassroom,
     takeStudentAttendance,
-    submitComplain,
-    getComplaints,
+
+    handleStudentLogin,
   };
 };
 

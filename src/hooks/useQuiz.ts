@@ -31,7 +31,7 @@ const useQuiz = () => {
         classId,
         createdAt: serverTimestamp(),
       });
-      toast.success("Quiz submitted");
+      toast.success("Quiz Created");
     } catch (error: any) {
       toast.warn(error.message);
     }
@@ -85,7 +85,10 @@ const useQuiz = () => {
       const resultDocRef = doc(db, "results", stdData.RollNumber);
       await setDoc(resultDocRef, stdData);
       if (stdData.quizId) {
-        await markQuizAsCompletedForStudent(stdData.quizId, stdData.studentId);
+        await markQuizAsCompletedForStudent(
+          stdData.quizId,
+          stdData.studentId || ""
+        );
       }
     } catch (error) {
       console.error("Error adding quiz result:", error);
@@ -103,7 +106,10 @@ const useQuiz = () => {
       const resultsSnapshot = await getDocs(resultsQuery);
 
       resultsSnapshot.forEach((doc) => {
-        results.push({ ...(doc.data() as StudentResult), RollNumber: doc.id });
+        results.push({
+          ...(doc.data() as StudentResult),
+          RollNumber: parseInt(doc.id, 10), // covert string in to number,
+        });
       });
 
       return results;
@@ -156,7 +162,6 @@ const useQuiz = () => {
     }
   };
 
-  
   return {
     submitQuizTest,
     getQuizzesByClassId,

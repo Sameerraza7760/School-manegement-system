@@ -55,9 +55,9 @@ const useAuth = () => {
   };
 
   // SIGNIN  USER
-  const signin = async (userinfo: User) => {
+  const signin = async (userinfo: User, Role: string) => {
     try {
-      const { email, password, Role } = userinfo;
+      const { email, password } = userinfo;
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
@@ -140,7 +140,7 @@ const useAuth = () => {
     await updateDoc(userDocRef, updatedFields);
     message.success("Profile Update successfully!");
 
-    console.log("User updated successfully");
+    console.log("Profile updated successfully");
     try {
     } catch (error) {
       console.log(error);

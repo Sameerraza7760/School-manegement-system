@@ -1,51 +1,30 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircularProgress } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { teacherInfoSchema } from "../../../Schema/teacherSchema";
 import useTeacher from "../../../hooks/useTeacher";
 import { TeacherInfo } from "../../../types/types.teacher";
 import Header from "./../../components/Header/Header";
 const TeacherForm = () => {
-
-  const navigate = useNavigate();
   const location = useLocation();
   const selectedClass = location.state;
   const teacherDetail = selectedClass.teacherDetail;
   const { addTeacherInDB } = useTeacher();
-  
-
-  const [formData, setFormData] = useState<TeacherInfo>({
-    teacherName: "",
-    password: "",
-    email: "",
-    phoneNumber: 0,
-    ...teacherDetail,
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<TeacherInfo>({
+    resolver: zodResolver(teacherInfoSchema),
   });
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    if (
-      formData.teacherName === "" ||
-      formData.email === "" ||
-      formData.phoneNumber === null
-    ) {
-      alert("please fill all inputs");
-    }
+  const onSubmit = async (data: Record<string, any>) => {
     try {
+      const formData: TeacherInfo = { ...teacherDetail, ...data };
       await addTeacherInDB(formData);
-      console.log("Form Submitted:", formData);
-      toast.success("teacher Add");
-      setTimeout(() => {
-        navigate("/classAdd");
-      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -54,12 +33,12 @@ const TeacherForm = () => {
   return (
     <>
       <Header />
-      <div className="container mx-auto mt-[80px]">
+      <div className="container w-] mx-auto mt-[80px]">
         <div className="max-w-md mx-auto bg-white p-8 rounded-md shadow-md">
           <h2 className="text-3xl font-bold mb-6 text-purple-800">
             Teacher Information
           </h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
               <label htmlFor="firstName" className="text-gray-600 mb-2 block">
                 First Name:
@@ -67,11 +46,14 @@ const TeacherForm = () => {
               <input
                 type="text"
                 id="firstName"
-                name="teacherName"
-                value={formData.teacherName}
-                onChange={handleInputChange}
                 className="w-full border rounded-md p-2"
-              />
+                {...register("teacherName")}
+              />{" "}
+              {errors.teacherName && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.teacherName.message}
+                </p>
+              )}
             </div>
 
             <div className="mb-4">
@@ -81,11 +63,14 @@ const TeacherForm = () => {
               <input
                 type="email"
                 id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
+                {...register("email")}
                 className="w-full border rounded-md p-2"
-              />
+              />{" "}
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label htmlFor="password" className="text-gray-600 mb-2 block">
@@ -94,11 +79,14 @@ const TeacherForm = () => {
               <input
                 type="password"
                 id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
+                {...register("password")}
                 className="w-full border rounded-md p-2"
-              />
+              />{" "}
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
             <div className="mb-4">
               <label htmlFor="phoneNumber" className="text-gray-600 mb-2 block">
@@ -107,36 +95,24 @@ const TeacherForm = () => {
               <input
                 type="text"
                 id="phoneNumber"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
+                {...register("phoneNumber")}
                 className="w-full border rounded-md p-2"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="text-gray-600 mb-2 block">
-                Select Classes:
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {/* Replace 'availableClasses' with your actual list of classes */}
-                {/* {selectedClass.selectedSubjects.map(
-                  (classItem: TeacherInfo) => (
-                    <button
-                      key={classItem.classId}
-                      type="button"
-                      className={`${"bg-purple-500 text-white"} py-2 px-4 rounded-md focus:outline-none`}
-                    >
-                      {classItem.className}
-                    </button>
-                  )
-                )} */}
-              </div>
+              />{" "}
+              {errors.phoneNumber && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.phoneNumber.message}
+                </p>
+              )}
             </div>
             <button
               type="submit"
               className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none"
             >
-              Submit
+              {isSubmitting ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Submit"
+              )}
             </button>
           </form>
         </div>

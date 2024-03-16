@@ -1,11 +1,11 @@
+import { message } from "antd";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import useStudent from "../../../hooks/useStudent";
-import { Complain } from "../../../types/type.complain";
 import { ToastContainer } from "react-toastify";
-import { message } from "antd";
+import { useComplain } from "../../../hooks/useComplain";
+import { Complain } from "../../../types/type.complain";
 const ComplainsPage = () => {
-  const { submitComplain } = useStudent();
+  const { submitComplain } = useComplain();
   const { student } = useSelector((state: any) => state.student);
 
   const [studentComplaint, setStudentComplaint] = useState<Complain>({

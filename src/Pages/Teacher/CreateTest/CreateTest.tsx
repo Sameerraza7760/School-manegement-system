@@ -52,7 +52,6 @@ const CreateQuiz: React.FC = () => {
   };
 
   const handleSubmit = async () => {
- 
     console.log("Quiz Submitted:", { quizTitle, questions });
     await submitQuizTest(quizTitle, questions, classId, timeLimit);
   };

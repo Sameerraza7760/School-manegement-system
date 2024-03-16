@@ -1,7 +1,7 @@
 import { Button, Card, Col, Divider, Row, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useClassRoom from "../../../hooks/useClassRoom";
 import useStudent from "../../../hooks/useStudent";
 import useTeacher from "../../../hooks/useTeacher";
@@ -54,8 +54,8 @@ const ClassDetail = () => {
     <>
       <Header />
 
-      <div className="container w-full mt-[90px] p-8 mx-auto  text-white">
-        <div className="items-center flex justify-center w-full sm:w-[80%] mx-auto ">
+      <div className="container w-full mt-[90px] p-8 mx-auto text-white">
+        <div className="items-center flex justify-center w-full sm:w-[80%] mx-auto">
           <Space
             direction="vertical"
             size="large"
@@ -76,55 +76,48 @@ const ClassDetail = () => {
                 Statistics
               </Title>
               <Divider />
-              <Text strong>Number of Teachers:</Text> {teacherName?.length}
+              <div className="flex gap-5 text-blue-800">
+                {" "}
+                <Text strong>Number of Teachers:</Text> {teacherName?.length}{" "}
+                <Link to={`/TeacherDetail/${id || ""}`}>View Teachers</Link>
+              </div>
               <br />
-              <Text strong>Number of Students:</Text> {filterStudent.length}
+              <div className="flex gap-5 text-blue-900">
+                {" "}
+                <Text strong>Number of Students:</Text> {filterStudent.length}{" "}
+                <Link to={`/studentList/${id || ""}`} className="text-blue-900">
+                  View Students
+                </Link>
+              </div>
               <br />
-              <Text strong>Number of Subjects:</Text>{" "}
-              {classDetail?.subjects?.length}
+              <div className="text-blue-900 flex gap-5">
+                {" "}
+                <Text strong>Number of Subjects:</Text>{" "}
+                {classDetail?.subjects?.length}{" "}
+                <Link
+                  to={`/subjectDetail/${id || ""}`}
+                  // className="bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 rounded-full transition duration-300 block text-center"
+                >
+                  View Subjects
+                </Link>
+              </div>
             </Card>
 
             <div className="container w-[90%] mx-auto">
-              <div className="grid grid-cols-1 gap-5  sm:grid-cols-2 md:grid-cols-4">
-                <Button
-                  type="primary"
-                  onClick={() => navigate(`/TeacherDetail/${id || ""}`)}
-                  className="bg-blue-800 h-[40px] hover:bg-blue-900 text-white py-2 px-4 rounded-full transition duration-300"
-                >
-                  View Teachers
-                </Button>
-
-                <Button
-                  onClick={() => navigate(`/studentList/${id || ""}`)}
-                  type="primary"
-                  className="bg-blue-800 h-[40px] hover:bg-blue-900 text-white py-2 px-4 rounded-full transition duration-300"
-                >
-                  View Students
-                </Button>
-
-                <Button
-                  onClick={() => navigate(`/subjectDetail/${id || ""}`)}
-                  type="primary"
-                  className="bg-blue-800 h-[40px] hover:bg-blue-900 text-white py-2 px-4 rounded-full transition duration-300"
-                >
-                  View Subjects
-                </Button>
-
-                <Button
-                  onClick={() => navigate(`/StudentForm/${id || ""}`)}
-                  type="primary"
-                  className="bg-green-600 h-[40px] hover:bg-green-700 text-white py-2 px-4 rounded-full transition duration-300"
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
+                <Link
+                  to={`/StudentForm/${id || ""}`}
+                  className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full transition duration-300 block text-center"
                 >
                   Enroll Students
-                </Button>
+                </Link>
 
-                <Button
-                  onClick={() => navigate(`/addSubject/${id || ""}`)}
-                  type="primary"
-                  className="bg-green-600 h-[40px] hover:bg-green-700 text-white py-2 px-4 rounded-full transition duration-300"
+                <Link
+                  to={`/addSubject/${id || ""}`}
+                  className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full transition duration-300 block text-center"
                 >
                   Add Subject
-                </Button>
+                </Link>
               </div>
             </div>
           </Space>

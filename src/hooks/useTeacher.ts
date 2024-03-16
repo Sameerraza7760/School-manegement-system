@@ -8,13 +8,19 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import { auth, db } from "../db/firebase";
-import { TeacherInfo } from "../types/types.teacher";
-import { enrolledTeachers } from "../Config/store/slice/TeachersSlice";
-import { useDispatch } from "react-redux";
-import { Attendance } from "../types/type.attendence";
+import { enrolledTeachers as enrolledTeacher } from "../Config/store/slice/TeachersSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setTeacher } from "../Config/store/slice/CurrentTeacherSlice";
+import { auth, db } from "../db/firebase";
+import { Attendance } from "../types/type.attendence";
+import { User } from "../types/types.auth";
+import { TeacherInfo } from "../types/types.teacher";
+import useAuth from "./useAuth";
+import { toast } from "react-toastify";
 const useTeacher = () => {
+  const { signin } = useAuth();
+  const { enrolledTeachers } = useSelector((state: any) => state.teachers);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const addTeacherInDB = async (teacherInfo: TeacherInfo) => {
@@ -26,9 +32,13 @@ const useTeacher = () => {
         password
       );
       await addTeacherintoDb(teacherInfo, userCredential.user.uid);
+      toast.success("teacher Add");
+      setTimeout(() => {
+        navigate("/classAdd");
+      }, 2000);
       return userCredential;
     } catch (e: any) {
-      console.log(e);
+      toast.warning(e.message);
     }
   };
 
@@ -55,27 +65,11 @@ const useTeacher = () => {
     teacherInfo: TeacherInfo,
     teacherId: string
   ) => {
-    const {
-      email,
-      phoneNumber,
-      classId,
-      teacherName,
-      selectedSubject,
-      ClassName,
-    } = teacherInfo;
-
     const teacherData = {
-      email,
-      phoneNumber,
-      classId,
-      teacherName,
-      selectedSubject,
-      ClassName,
+      ...teacherInfo,
       teacherId,
     };
-
     await setDoc(doc(db, "Teachers", teacherId), teacherData);
-
     setTimeout(() => {
       navigate("/TeacherDashboard");
     }, 2000);
@@ -92,7 +86,7 @@ const useTeacher = () => {
           ...doc.data(),
         } as TeacherInfo);
       });
-      dispatch(enrolledTeachers(teachers));
+      dispatch(enrolledTeacher(teachers));
 
       return teachers;
     } catch (error: any) {
@@ -118,7 +112,7 @@ const useTeacher = () => {
         } as TeacherInfo);
       });
 
-      dispatch(enrolledTeachers(teachers));
+      dispatch(enrolledTeacher(teachers));
 
       return teachers;
     } catch (error: any) {
@@ -126,11 +120,27 @@ const useTeacher = () => {
       return [];
     }
   };
+  const handleTeacherLogin = async (data: User) => {
+    const { email } = data;
+    const isTeacher = enrolledTeachers?.find(
+      (item: TeacherInfo) => item.email === email
+    );
+    if (isTeacher) {
+      const Role = "Teacher";
+      await signin(data, Role);
+      dispatch(setTeacher(isTeacher));
+      return;
+    } else {
+      // Handle the case where the user is not a teacher
+      toast.warning("Invalid Teacher credentials");
+    }
+  };
   return {
     addTeacherInDB,
     getAllTeacher,
     getTeachersByClassId,
     takeTeacherAttendence,
+    handleTeacherLogin,
   };
 };
 

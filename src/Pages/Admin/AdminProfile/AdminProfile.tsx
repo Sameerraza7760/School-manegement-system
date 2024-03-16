@@ -1,7 +1,7 @@
 import { Button, Input, Modal } from "antd";
 import { useReducer, useState } from "react";
 import { useSelector } from "react-redux";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 import { initialState, reducer } from "../../../reducers/profilesReducer";
 import { uploadImage } from "../../../utills/uploadImage";
@@ -34,13 +34,13 @@ const AdminProfile = () => {
   };
 
   const submitProfile = async () => {
-    const url = await uploadImage(file);
-    dispatch({ type: "SET_IMAGE", payload: url });
     try {
+      const url = await uploadImage(file);
+      dispatch({ type: "SET_IMAGE", payload: url });
       await updateProfile(state, adminProfile.schoolid);
       await fetchAdminDataFromDatabase(adminProfile.schoolid);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.warn("Error updating profile:", error);
     }
   };
 

@@ -195,8 +195,8 @@ const StudentHomePage = () => {
             <FaComments className="mr-2" /> Chat with Teacher
           </h2>
           <ul className="list-disc pl-5 text-gray-700 mx-auto">
-            {ClassTeachers?.map((teacher) => (
-              <ChatWithTeachers teacher={teacher} />
+            {ClassTeachers?.map((teacher, index) => (
+              <ChatWithTeachers key={index} teacher={teacher} />
             ))}
           </ul>
         </div>

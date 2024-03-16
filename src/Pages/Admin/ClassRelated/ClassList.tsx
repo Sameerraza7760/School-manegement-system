@@ -36,7 +36,7 @@ function ClassList() {
   return (
     <>
       <Header />
-      <div className="max-w-2xl mt-[100px] mx-auto bg-gradient-to-br from-purple-200 to-white p-8 rounded-md shadow-lg w-[94%] sm:w-full">
+      <div className="mt-[100px] mx-auto bg-gradient-to-br from-purple-200 to-white p-8 rounded-md shadow-lg w-[90%] sm:w-[94%]">
         <h2 className="text-4xl font-bold mb-6 text-purple-800">
           Choose Classes for Teaching
         </h2>
@@ -52,7 +52,7 @@ function ClassList() {
                 width: "20px",
                 height: "20px",
                 border: "2px solid #D1D5DB",
-                backgroundColor: "#F3F4F6",
+                backgroundColor: "#F3F4 F6",
               }}
             />
             {selectedClass ? (

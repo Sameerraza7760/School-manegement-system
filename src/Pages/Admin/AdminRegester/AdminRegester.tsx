@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
@@ -13,60 +14,33 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { adminSchema } from "../../../Schema/adminSchema";
 import useAuth from "../../../hooks/useAuth";
-import bgpic from "./../../../assets/designlogin.jpg";
 import { AdminCredentials } from "../../../types/types.auth";
+import GridImage from "../../components/GridImage/GridImage";
 
-function AdminRegester() {
+function AdminRegister() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<AdminCredentials>({
+    resolver: zodResolver(adminSchema),
+  });
+
   const { signup } = useAuth();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [adminNameError, setAdminNameError] = useState(false);
-  const [schoolNameError, setSchoolNameError] = useState(false);
-  const [loader, setLoader] = useState(false);
+
   const role = "Admin";
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const target = event.target as any;
-    const userName = target.adminName.value;
-    const schoolName = target.schoolName.value;
-    const email = target.email.value;
-    const password = target.password.value;
-
-    if (!userName || !schoolName || !email || !password) {
-      if (!userName) setAdminNameError(true);
-      if (!schoolName) setSchoolNameError(true);
-      if (!email) setEmailError(true);
-      if (!password) setPasswordError(true);
-      return;
-    }
-    setLoader(true);
-    const fields: AdminCredentials = {
-      userName,
-      email,
-      password,
-      schoolName,
-      role: role,
-    };
-    await signup(fields);
-
-    setLoader(false);
-  };
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = event.target;
-    if (name === "email") setEmailError(false);
-    if (name === "password") setPasswordError(false);
-    if (name === "adminName") setAdminNameError(false);
-    if (name === "schoolName") setSchoolNameError(false);
+  const onSubmit: SubmitHandler<AdminCredentials> = async (data) => {
+    await signup({ ...data, role });
   };
 
   return (
@@ -94,9 +68,9 @@ function AdminRegester() {
             </Typography>
             <Box
               component="form"
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               noValidate
-              sx={{ mt: 2 }}
+              style={{ width: "100%", marginTop: 2 }}
             >
               <TextField
                 margin="normal"
@@ -104,49 +78,52 @@ function AdminRegester() {
                 fullWidth
                 id="adminName"
                 label="Enter your name"
-                name="adminName"
                 autoComplete="name"
                 autoFocus
-                error={adminNameError}
-                helperText={adminNameError && "Name is required"}
-                onChange={handleInputChange}
+                {...register("userName")}
               />
+              {errors.userName && (
+                <Typography variant="body2" color="error">
+                  {errors.userName.message}
+                </Typography>
+              )}
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="schoolName"
                 label="Enter Your School Name"
-                name="schoolName"
                 autoComplete="off"
-                error={schoolNameError}
-                helperText={schoolNameError && "School name is required"}
-                onChange={handleInputChange}
+                {...register("schoolName")}
               />
+              {errors.schoolName && (
+                <Typography variant="body2" color="error">
+                  {errors.schoolName.message}
+                </Typography>
+              )}
               <TextField
                 margin="normal"
                 required
                 fullWidth
                 id="email"
                 label="Enter your email"
-                name="email"
                 autoComplete="email"
-                error={emailError}
-                helperText={emailError && "Email is required"}
-                onChange={handleInputChange}
+                {...register("email")}
               />
+              {errors.email && (
+                <Typography variant="body2" color="error">
+                  {errors.email.message}
+                </Typography>
+              )}
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
                 label="Enter Your Password"
                 type={toggle ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
-                error={passwordError}
-                helperText={passwordError && "Password is required"}
-                onChange={handleInputChange}
+                {...register("password")}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -157,6 +134,11 @@ function AdminRegester() {
                   ),
                 }}
               />
+              {errors.password && (
+                <Typography variant="body2" color="error">
+                  {errors.password.message}
+                </Typography>
+              )}
               <Grid
                 container
                 sx={{ display: "flex", justifyContent: "space-between" }}
@@ -172,9 +154,10 @@ function AdminRegester() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={isSubmitting}
               >
-                {loader ? (
-                  <CircularProgress size={24} color="inherit" />
+                {isSubmitting ? (
+                  <CircularProgress size={24} sx={{ color: "white" }} />
                 ) : (
                   "Register"
                 )}
@@ -193,26 +176,11 @@ function AdminRegester() {
             </Box>
           </Box>
         </Grid>
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: `url(${bgpic})`,
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        <GridImage />
       </Grid>
       <ToastContainer />
     </div>
   );
 }
 
-export default AdminRegester;
+export default AdminRegister;

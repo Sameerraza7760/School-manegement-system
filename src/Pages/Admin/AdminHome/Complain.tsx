@@ -1,10 +1,9 @@
-import Header from "../../components/Header/Header";
-import useStudent from "../../../hooks/useStudent";
 import { useEffect, useState } from "react";
+import { useComplain } from "../../../hooks/useComplain";
 import { Complain } from "../../../types/type.complain";
-
+import Header from "../../components/Header/Header";
 const ComplainsPage = () => {
-  const { getComplaints } = useStudent();
+  const { getComplaints } = useComplain();
   const [complaints, setComplaints] = useState<Complain[]>([]);
 
   const generalComplaints = [

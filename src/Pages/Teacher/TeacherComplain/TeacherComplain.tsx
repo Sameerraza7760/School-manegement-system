@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import useStudent from "../../../hooks/useStudent";
-import { Complain } from "../../../types/type.complain";
 import { ToastContainer } from "react-toastify";
+import { useComplain } from "../../../hooks/useComplain";
+import { Complain } from "../../../types/type.complain";
 const TeacherComplain = () => {
-  const { submitComplain } = useStudent();
+  const { submitComplain } = useComplain();
 
   const { teacher } = useSelector((state: any) => state.teacher);
   const [teacherComplaint, setTeacherComplaint] = useState<Complain>({

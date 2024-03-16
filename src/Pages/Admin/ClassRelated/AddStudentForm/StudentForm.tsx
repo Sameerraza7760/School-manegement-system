@@ -1,73 +1,53 @@
-import { Button, CircularProgress, TextField, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { StudentSchema } from "../../../../Schema/studentSchema";
 import useStudent from "../../../../hooks/useStudent";
 import { StudentDetail } from "../../../../types/types.student";
 import Header from "../../../components/Header/Header";
-import { useSelector } from "react-redux";
-
 const AddStudentForm = () => {
-  const navigate = useNavigate();
-  const formRef = useRef<HTMLFormElement | null>(null);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<StudentDetail>({
+    resolver: zodResolver(StudentSchema),
+  });
+
+
   const { classRoomid } = useParams();
-  const [nameError, setNameError] = useState<boolean>();
-  const [studentRollNoError, setRollNumberError] = useState<boolean>();
-  const [classError, setClassError] = useState<boolean>(false);
+
   const schoolId: string = useSelector(
     (state: any) => state?.admin?.admin?.schoolid
   );
 
-  const [loader, setLoader] = useState(false);
   const { addStudentDetail } = useStudent();
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = event.target;
-    if (name === "studentName") setNameError(false);
-    if (name === "studentRollNo") setRollNumberError(false);
-    if (name === "className") setClassError(false);
-  };
 
-  const handleEnrollStudent = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const target = event.target as any;
-    const studentName = target.studentName.value;
-    const studentRollNum = target.studentRollNo.value;
-    const studentClass = target.className.value;
-
-    if (!studentName || !studentRollNum || !studentClass) {
-      if (!studentName) setNameError(true);
-      if (!studentRollNum) setRollNumberError(true);
-      if (!studentClass) setClassError(true);
-
-      return;
-    }
-    setLoader(true);
-    const StudentDetail: StudentDetail = {
-      studentName,
-      studentRollNum,
-      studentClass,
+  const onSubmit = async (data: Record<string, any>) => {
+    const studentDetail: StudentDetail = {
+      ...data,
       schoolId,
     };
+    console.log(studentDetail);
+
     if (classRoomid) {
       try {
-        await addStudentDetail(StudentDetail, classRoomid);
-        formRef.current?.reset();
+        await addStudentDetail(studentDetail, classRoomid);
       } catch (error) {
         console.log(error);
       }
     }
-    setLoader(false);
   };
 
   return (
     <>
       <Header />
       <form
-        onSubmit={handleEnrollStudent}
+        onSubmit={handleSubmit(onSubmit)}
         className="container w-full mx-auto mt-[100px] flex justify-center items-center"
-        // ref={formRef}
-        // noValidate
       >
         <div className="w-[90%] sm:w-[70%] mx-auto bg-white p-8 rounded-md shadow-md">
           <h2 className="text-3xl font-bold mb-6 text-purple-800 text-center">
@@ -83,17 +63,16 @@ const AddStudentForm = () => {
             <input
               type="text"
               className={`w-full px-4 py-2 rounded-md border ${
-                nameError ? "border-red-500" : "border-gray-300"
+                errors.studentName ? "border-red-500" : "border-gray-300"
               } focus:outline-none focus:border-purple-500`}
               id="studentName"
-              name="studentName"
+              {...register("studentName")}
               placeholder="Enter Student Name"
               autoComplete="off"
-              onChange={handleInputChange}
             />
-            {nameError && (
+            {errors.studentName && (
               <p className="text-red-500 text-sm mt-1">
-                Student Name is required
+                {errors.studentName.message}
               </p>
             )}
           </div>
@@ -107,17 +86,16 @@ const AddStudentForm = () => {
             <input
               type="text"
               className={`w-full px-4 py-2 rounded-md border ${
-                studentRollNoError ? "border-red-500" : "border-gray-300"
+                errors.studentRollNum ? "border-red-500" : "border-gray-300"
               } focus:outline-none focus:border-purple-500`}
               id="studentRollNo"
-              name="studentRollNo"
+              {...register("studentRollNum")}
               placeholder="Enter Roll Number"
               autoComplete="off"
-              onChange={handleInputChange}
             />
-            {studentRollNoError && (
+            {errors.studentRollNum && (
               <p className="text-red-500 text-sm mt-1">
-                Roll Number is required
+                {errors.studentRollNum.message}
               </p>
             )}
           </div>
@@ -131,27 +109,27 @@ const AddStudentForm = () => {
             <input
               type="text"
               className={`w-full px-4 py-2 rounded-md border ${
-                classError ? "border-red-500" : "border-gray-300"
+                errors.studentClass ? "border-red-500" : "border-gray-300"
               } focus:outline-none focus:border-purple-500`}
               id="className"
-              name="className"
+              {...register("studentClass")}
               placeholder="Enter Student Class"
               autoComplete="ClassName"
-              onChange={handleInputChange}
             />
-            {classError && (
-              <p className="text-red-500 text-sm mt-1">Class is required</p>
+            {errors.studentClass && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.studentClass.message}
+              </p>
             )}
           </div>
 
           <button
             type="submit"
             className={`w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 focus:outline-none ${
-              loader && "cursor-not-allowed"
+              isSubmitting && "cursor-not-allowed"
             }`}
-            disabled={loader}
           >
-            {loader ? "Enrolling..." : "Enroll Student"}
+            {isSubmitting ? "Enrolling..." : "Enroll Student"}
           </button>
         </div>
 

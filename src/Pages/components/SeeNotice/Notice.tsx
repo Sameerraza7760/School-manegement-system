@@ -6,7 +6,6 @@ import { notics } from "../../../types/type.notics";
 function Notice() {
   const schoolId = useSelector((state: any) => state.admin.admin.schoolid);
 
-
   const { getNoticeFromDb } = useAuth();
   const [noticeText, setNotice] = useState<notics | null>();
   useEffect(() => {
@@ -14,7 +13,7 @@ function Notice() {
       const noticsTxt: notics | null = await getNoticeFromDb(schoolId);
       console.log("hi==>", noticsTxt);
       if (noticsTxt) {
-        setNotice(noticsTxt); 
+        setNotice(noticsTxt);
       }
     };
     getNotics();
@@ -23,7 +22,7 @@ function Notice() {
     <div className="container mt-8 mx-auto w-[90%]">
       <div className="w-full mx-auto  bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-6 w-full">
-          <h2 className="text-2xl font-bold">Important Notice</h2>
+          <h2 className="text-2xl font-bold text-blue-500">Important Notice</h2>
           {/* <p className="text-gray-500">{noticeText?.timestamp}</p> */}
         </div>
         <p className="text-gray-700 mb-4">{noticeText?.noticeContent}</p>

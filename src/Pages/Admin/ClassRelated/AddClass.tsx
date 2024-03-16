@@ -76,7 +76,7 @@ const ClassAdd = () => {
                 Class List
               </h3>
               <ul className="space-y-4">
-                {classes?.map((item:ClassRoom) => (
+                {classes?.map((item: ClassRoom) => (
                   <li
                     key={item.id}
                     className="bg-gray-100 p-4 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105"
