@@ -12,7 +12,7 @@ import { uploadImage } from "../../../utills/uploadImage";
 const { TextArea } = Input;
 
 const StudentViewAssignment: React.FC = () => {
-  const [assignments, setAssignments] = useState<Assignment[] | null>();
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAssignmentId, setSelectedAssignment] = useState<
     string | undefined
@@ -47,13 +47,15 @@ const StudentViewAssignment: React.FC = () => {
   };
   const fetchCompletionStatus = async () => {
     const statusMap: Record<string, boolean> = {};
-    if (assignments?.length > 0) {
+    if (assignments.length > 0) {
       await Promise.all(
         assignments.map(async (assignment) => {
-          const isCompleted = await fetchAssignmentCompletionStatus(
-            assignment.assignmentId
-          );
-          statusMap[assignment.assignmentId] = isCompleted;
+          if (assignment.assignmentId) {
+            const isCompleted = await fetchAssignmentCompletionStatus(
+              assignment.assignmentId
+            );
+            statusMap[assignment.assignmentId] = isCompleted;
+          }
         })
       );
     }
@@ -67,7 +69,9 @@ const StudentViewAssignment: React.FC = () => {
       const assignment: Assignment[] | null = await getAssignmentByClassId(
         classId as string
       );
-      setAssignments(assignment);
+      if (assignment) {
+        setAssignments(assignment);
+      }
     };
     getAssignment();
   }, [studentDetail]);
@@ -141,7 +145,7 @@ const StudentViewAssignment: React.FC = () => {
                 <label className="block text-gray-600 font-semibold">
                   Submission Status:
                 </label>
-                {completedAssignments[assignment.assignmentId] ? (
+                {completedAssignments[assignment.assignmentId || ""] ? (
                   <span className="text-red-500">Completed: Assignment</span>
                 ) : (
                   <button

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useCowndown = (countDown: number, addResultOfUser) => {
+export const useCowndown = (countDown: number, addResultOfUser: () => void) => {
   const [time, setTime] = useState(countDown);
   useEffect(() => {
     const timer = setInterval(() => {

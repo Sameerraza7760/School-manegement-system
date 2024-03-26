@@ -27,7 +27,7 @@ const TeacherDetailsPage = () => {
     console.log(id);
   };
 
-  const handleCalendarChange = async (date: Date) => {
+  const handleCalendarChange = async (date: any) => {
     setSelectedDate(date);
     setCalendarOpen(false);
     const confirmResult = window.confirm("Is the student present?");

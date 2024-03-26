@@ -17,7 +17,7 @@ function TeacherChat() {
   const [newMessage, setNewMessage] = useState<string>("");
 
   const handleSendMessage = async () => {
-    if (!newMessage.trim()) {
+    if (!newMessage.trim() || !studentId) {
       return;
     }
     const messageData: messegeData = {

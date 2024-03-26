@@ -63,7 +63,7 @@ function SubjectList() {
           <span className="ml-1 text-gray-800">
             Class {location.state.selectedClass.className}
           </span>
-          {ClassSubject?.subjects?.map((subject, index) => (
+          {ClassSubject?.subjects?.map((subject: string, index: number) => (
             <div key={index} className="mb-3">
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input

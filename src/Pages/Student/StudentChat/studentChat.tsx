@@ -16,7 +16,7 @@ function StudentChat() {
     (state: any) => state.student.student
   );
   const handleSendMessege = async () => {
-    if (!newMessage.trim()) {
+    if (!newMessage.trim() || !teacherId || !currentStudent?.studentid) {
       return;
     }
 
@@ -44,7 +44,7 @@ function StudentChat() {
 
   return (
     <div className="flex h-auto bg-gray-100">
-      <div className="flex-1 p-4 overflow-y-scrol ">
+      <div className="flex-1 p-4 overflow-y-scrol">
         <div className="bg-white border-b p-4">
           <h2 className="text-2xl font-semibold">Chat with Teacher A</h2>
         </div>

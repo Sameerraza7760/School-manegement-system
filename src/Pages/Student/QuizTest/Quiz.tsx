@@ -19,7 +19,7 @@ const Quiz = ({ quizId }: QuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);
-  const [questions, setQuestion] = useState<Question[] | undefined>([]);
+  const [questions, setQuestion] = useState<Question[]>([]);
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
@@ -28,7 +28,7 @@ const Quiz = ({ quizId }: QuizProps) => {
   const getQuizbyId = async () => {
     if (quizId) {
       const quiz = await getQuizById(quizId);
-      if (quiz) {
+      if (quiz?.questions) {
         setQuestion(quiz.questions);
       }
     }
@@ -49,8 +49,10 @@ const Quiz = ({ quizId }: QuizProps) => {
     setCurrentQuestion(currentQuestion + 1);
   };
 
-  const calculatePercentage = (): number => {
-    return (score / questions.length) * 100;
+  const calculatePercentage = () => {
+    if (questions) {
+      return (score / questions.length) * 100;
+    }
   };
 
   const addResultOfUser = async () => {

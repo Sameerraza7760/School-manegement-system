@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import Header from "../../components/Header/Header";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import useAuth from "../../../hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
 import { notics } from "../../../types/type.notics";
+import Header from "../../components/Header/Header";
 const AdminNoticePage = () => {
-  const { addNoticeinDb, getNoticeFromDb } = useAuth();
+  const { addNoticeinDb } = useAuth();
   const [noticeText, setNotice] = useState("");
   const schoolId = useSelector((state: any) => state.admin.admin.schoolid);
 

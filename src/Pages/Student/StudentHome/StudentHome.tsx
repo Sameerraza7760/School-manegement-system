@@ -34,6 +34,9 @@ const StudentHomePage = () => {
   const [quizzes, setquiz] = useState<any[]>([]);
   const [notics, setNotics] = useState<notics>();
   const getNotics = async () => {
+    if (!studentDetail.schoolId) {
+      return;
+    }
     const notics: notics | null = await getNoticeFromDb(studentDetail.schoolId);
     console.log(notics);
     if (notics) {

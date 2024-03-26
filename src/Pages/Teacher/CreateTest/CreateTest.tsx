@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import useQuiz from "../../../hooks/useQuiz";
 import { Question } from "../../../types/type.quiz";
-import { useNavigate } from "react-router-dom";
 const CreateQuiz: React.FC = () => {
   const navigate = useNavigate();
   const {
@@ -13,7 +13,7 @@ const CreateQuiz: React.FC = () => {
 
   const { submitQuizTest } = useQuiz();
   const [quizTitle, setQuizTitle] = useState<string>("");
-  const [timeLimit, setTimeLimit] = useState<number>(10);
+  // const [timeLimit, setTimeLimit] = useState<number>(10);
   const [questions, setQuestions] = useState<Question[]>([
     { question: "", options: ["", "", ""], correctAnswer: "" },
   ]);
@@ -25,12 +25,8 @@ const CreateQuiz: React.FC = () => {
     ]);
   };
 
-  const handleQuestionChange = (
-    index: number,
-    field: keyof Question,
-    value: string
-  ) => {
-    const updatedQuestions = [...questions];
+  const handleQuestionChange = (index: number, field: any, value: string) => {
+    const updatedQuestions: any[] = [...questions];
     updatedQuestions[index][field] = value;
     setQuestions(updatedQuestions);
   };
@@ -53,7 +49,7 @@ const CreateQuiz: React.FC = () => {
 
   const handleSubmit = async () => {
     console.log("Quiz Submitted:", { quizTitle, questions });
-    await submitQuizTest(quizTitle, questions, classId, timeLimit);
+    await submitQuizTest(quizTitle, questions, classId, 10);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { z, object, string } from "zod";
+import {  object, string } from "zod";
 
 export const StudentSchema = object({
   studentName: string().min(1).max(255),

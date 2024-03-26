@@ -1,7 +1,7 @@
-import { Button, Card, Col, Divider, Row, Space, Typography } from "antd";
+import { Card, Divider, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useClassRoom from "../../../hooks/useClassRoom";
 import useStudent from "../../../hooks/useStudent";
 import useTeacher from "../../../hooks/useTeacher";
@@ -12,7 +12,6 @@ import Header from "../../components/Header/Header";
 
 const { Title, Text } = Typography;
 const ClassDetail = () => {
-  const navigate = useNavigate();
   const { getAllStudentsInClassroom } = useStudent();
   const [classDetail, setClassDetail] = useState<ClassRoom | null>();
   const enrolledStudents: StudentDetail[] = useSelector(
@@ -24,25 +23,23 @@ const ClassDetail = () => {
   const { getClassDetailById } = useClassRoom();
   const { id } = useParams();
   const { getTeachersByClassId } = useTeacher();
+  const getClassDetail = async () => {
+    if (!id) return;
+    const classDetail: ClassRoom | null = await getClassDetailById(id);
+    setClassDetail(classDetail);
+  };
+  const fetchData = async () => {
+    if (!id) return;
+    await getClassDetail();
+    await getAllStudentsInClassroom();
 
+    try {
+      await getTeachersByClassId(id);
+    } catch (error) {
+      console.error("Error fetching teachers:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const getClassDetail = async () => {
-        if (id) {
-          const classDetail: ClassRoom | null = await getClassDetailById(id);
-          setClassDetail(classDetail);
-        }
-      };
-
-      await getClassDetail();
-      await getAllStudentsInClassroom();
-
-      try {
-        await getTeachersByClassId(id);
-      } catch (error) {
-        console.error("Error fetching teachers:", error);
-      }
-    };
     fetchData();
   }, []);
 

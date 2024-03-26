@@ -110,10 +110,8 @@ function AdminRegister() {
                 autoComplete="email"
                 {...register("email")}
               />
-              {errors.email && (
-                <Typography variant="body2" color="error">
-                  {errors.email.message}
-                </Typography>
+              {errors.email && typeof errors.email === "string" && (
+                <Typography color="error">{errors.email}</Typography>
               )}
               <TextField
                 margin="normal"

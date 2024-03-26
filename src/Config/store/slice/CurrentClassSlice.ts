@@ -16,7 +16,7 @@ const currentClassSlice = createSlice({
     setClass: (state, action: PayloadAction<ClassRoom | null>) => {
       state.currentClass = action.payload;
     },
-    removeClass: (state, action: PayloadAction) => {
+    removeClass: (state) => {
       state.currentClass = null;
     },
   },

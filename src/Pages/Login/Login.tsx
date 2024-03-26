@@ -8,7 +8,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -18,9 +18,11 @@ import useAuth from "../../hooks/useAuth";
 import useStudent from "../../hooks/useStudent";
 import useTeacher from "../../hooks/useTeacher";
 import { User } from "../../types/types.auth";
+import GridImage from "../components/GridImage/GridImage";
 import AuthField from "../components/LoginFields/Authfield";
 import Studentfield from "../components/LoginFields/Studentfield";
-import GridImage from "../components/GridImage/GridImage";
+
+// interface Views { [x: string]: ({ formValidation }: TeacherFieldProps) => JSX.Element  }
 
 function Login() {
   const { handleTeacherLogin } = useTeacher();
@@ -33,7 +35,7 @@ function Login() {
     Student: Studentfield,
   };
 
-  const CurrentFields = views[Role];
+  const CurrentFields = Role ? views[Role] : "";
 
   const {
     handleSubmit,

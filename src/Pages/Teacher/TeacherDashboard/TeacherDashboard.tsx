@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
 import {
@@ -18,7 +18,6 @@ import TeacherHome from "../TeacherHome/TeacherHome";
 import TeacherLogout from "../TeacherLogout";
 import TeacherProfile from "../TeacherProfilePage/TeacherProfile";
 import ViewStudent from "../ViewStudent/ViewStudent";
-import TeacherChat from "../TeacherChat/TeacherChat";
 
 const TeacherDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);

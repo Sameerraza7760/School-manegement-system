@@ -17,19 +17,19 @@ const AddStudentForm = () => {
     resolver: zodResolver(StudentSchema),
   });
 
-
   const { classRoomid } = useParams();
 
-  const schoolId: string = useSelector(
+  const schoolId = useSelector(
     (state: any) => state?.admin?.admin?.schoolid
   );
 
   const { addStudentDetail } = useStudent();
 
-  const onSubmit = async (data: Record<string, any>) => {
+  const onSubmit = async (data: any) => {
+
     const studentDetail: StudentDetail = {
       ...data,
-      schoolId,
+     schoolId,
     };
     console.log(studentDetail);
 

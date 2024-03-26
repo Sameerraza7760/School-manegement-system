@@ -82,8 +82,11 @@ const useQuiz = () => {
 
   const addResultofQuiz = async (stdData: StudentResult) => {
     try {
-      const resultDocRef = doc(db, "results", stdData.RollNumber);
+      const rollNumber = stdData.RollNumber.toString();
+
+      const resultDocRef = doc(db, "results", rollNumber);
       await setDoc(resultDocRef, stdData);
+
       if (stdData.quizId) {
         await markQuizAsCompletedForStudent(
           stdData.quizId,

@@ -18,7 +18,7 @@ const currentAdminSlice = createSlice({
     setAdmin: (state, action: PayloadAction<AdminCredentials | null>) => {
       state.admin = action.payload;
     },
-    removeAdmin: (state, action: PayloadAction) => {
+    removeAdmin: (state) => {
       state.admin = null;
     },
   },

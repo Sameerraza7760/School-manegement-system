@@ -16,7 +16,7 @@ const currentTeacherSlice = createSlice({
     setTeacher: (state, action: PayloadAction<TeacherInfo | null>) => {
       state.teacher = action.payload;
     },
-    removeTeacher: (state, action: PayloadAction) => {
+    removeTeacher: (state) => {
       state.teacher = null;
     },
   },

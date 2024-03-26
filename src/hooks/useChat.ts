@@ -4,7 +4,7 @@ import {
   onSnapshot,
   query,
   setDoc,
-  where
+  where,
 } from "firebase/firestore";
 import { db } from "../db/firebase";
 import { messegeData } from "../types/type.message";
@@ -27,7 +27,7 @@ const useChat = () => {
     callback: (messages: messegeData[]) => void
   ) => {
     const messagesCollection = collection(db, "messages");
-    const chatId = [teacherId, studentId].sort().join("-");
+    [teacherId, studentId].sort().join("-");
 
     const q = query(
       messagesCollection,
@@ -44,7 +44,6 @@ const useChat = () => {
           const messageData = doc.data() as messegeData;
           messages.push(messageData);
         });
-        console.log("hi", messages);
 
         callback(messages);
       },

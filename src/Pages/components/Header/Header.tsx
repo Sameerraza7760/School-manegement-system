@@ -9,14 +9,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Button } from "antd";
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Sidebar from "../Sidebar/Sidebar";
+import { useNavigate } from "react-router-dom";
 import { AdminCredentials } from "../../../types/types.auth";
+import Sidebar from "../Sidebar/Sidebar";
 
 function Header() {
   const navigate = useNavigate();
-  const [auth, setAuth] = React.useState(true);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [drawerVisible, setDrawerVisible] = React.useState(false);
   const adminDetail: AdminCredentials = useSelector(
@@ -51,46 +51,45 @@ function Header() {
             onClick={showDrawer}
           />
           <Sidebar visible={drawerVisible} onClosed={closeDrawer} />
-
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {adminDetail?.schoolName}
           </Typography>
-          {auth && (
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => handleClose("/adminProfile")}>
-                  Profile
-                </MenuItem>
-                <MenuItem onClick={() => handleClose("/adminProfile")}>
-                  My account
-                </MenuItem>
-              </Menu>
-            </div>
-          )}
+          (
+          <div>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => handleClose("/adminProfile")}>
+                Profile
+              </MenuItem>
+              <MenuItem onClick={() => handleClose("/adminProfile")}>
+                My account
+              </MenuItem>
+            </Menu>
+          </div>
+          )
         </Toolbar>
       </AppBar>
     </Box>

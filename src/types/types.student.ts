@@ -10,7 +10,7 @@ export interface StudentDetail {
 export interface StudentResult {
   studentName: string;
   RollNumber: number;
-  quizResult: number;
+  quizResult: number | undefined;
   classId: string | undefined;
   isStdCompleted?: boolean;
   quizId?: string;

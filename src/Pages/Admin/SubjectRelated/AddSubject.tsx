@@ -39,11 +39,12 @@ function AddSubject() {
               {...register("subjectName")}
               className="w-full border rounded-md p-2 focus:outline-none focus:border-purple-500"
             />
-            {errors.subjectName && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.subjectName.message}
-              </p>
-            )}
+            {errors.subjectName?.message &&
+              typeof errors.subjectName.message === "string" && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.subjectName?.message}
+                </p>
+              )}
           </div>
           <button
             type="submit"
